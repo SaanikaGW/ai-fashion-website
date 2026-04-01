@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DRIP — Social Feed</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --bg: #fafafa; --white: #fff; --border: #dbdbdb; --text: #262626; --muted: #8e8e8e; --blue: #0095f6; --red: #ed4956; --surface: #fff; }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; font-size: 14px; }
+
+    /* App Shell */
+    .app { display: grid; grid-template-columns: 245px 1fr 320px; min-height: 100vh; max-width: 1200px; margin: 0 auto; }
+
+    /* Left Sidebar */
+    .sidebar-left { border-right: 1px solid var(--border); padding: 1.5rem 1rem; position: sticky; top: 0; height: 100vh; overflow-y: auto; background: var(--white); }
+    .sidebar-logo { font-size: 1.4rem; font-weight: 700; padding: 0.75rem 0.75rem 1.5rem; letter-spacing: -0.03em; border-bottom: 1px solid var(--border); margin-bottom: 1rem; }
+    .sidebar-logo span { background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .nav-item { display: flex; align-items: center; gap: 1rem; padding: 0.85rem 0.75rem; border-radius: 10px; cursor: pointer; transition: background 0.15s; font-weight: 400; color: var(--text); text-decoration: none; }
+    .nav-item:hover { background: #f0f0f0; }
+    .nav-item.active { font-weight: 600; }
+    .nav-icon { width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
+    .nav-badge { background: var(--red); color: #fff; font-size: 0.6rem; font-weight: 700; padding: 0.15rem 0.4rem; border-radius: 100px; min-width: 18px; text-align: center; margin-left: auto; }
+    .sidebar-divider { height: 1px; background: var(--border); margin: 1rem 0.75rem; }
+    .profile-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; border-radius: 10px; margin-top: auto; cursor: pointer; }
+    .avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #f09433, #dc2743, #bc1888); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 0.7rem; font-weight: 700; flex-shrink: 0; }
+    .avatar.lg { width: 56px; height: 56px; font-size: 1.2rem; }
+    .back-btn { display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; border-radius: 10px; cursor: pointer; font-size: 0.85rem; color: var(--muted); text-decoration: none; transition: background 0.15s; }
+    .back-btn:hover { background: #f0f0f0; color: var(--text); }
+
+    /* Stories */
+    .stories { padding: 1rem 0; border-bottom: 1px solid var(--border); overflow-x: auto; display: flex; gap: 1rem; padding: 1rem 1.5rem; scrollbar-width: none; }
+    .stories::-webkit-scrollbar { display: none; }
+    .story { display: flex; flex-direction: column; align-items: center; gap: 0.4rem; cursor: pointer; flex-shrink: 0; }
+    .story-ring { width: 64px; height: 64px; border-radius: 50%; padding: 2px; background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+    .story-avatar { width: 100%; height: 100%; border-radius: 50%; background: var(--bg); border: 2px solid var(--white); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; overflow: hidden; }
+    .story-name { font-size: 0.65rem; color: var(--text); text-align: center; max-width: 70px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .story.add .story-ring { background: var(--border); }
+    .story.add .story-avatar { background: var(--bg); font-size: 1.4rem; color: var(--blue); }
+
+    /* Feed */
+    .feed { padding: 0; max-width: 614px; }
+    .post { background: var(--white); border: 1px solid var(--border); margin-bottom: 1rem; }
+    .post-header { display: flex; align-items: center; gap: 0.75rem; padding: 1rem; }
+    .post-header .ring { width: 42px; height: 42px; border-radius: 50%; padding: 2px; background: linear-gradient(135deg, #f09433, #dc2743, #bc1888); flex-shrink: 0; }
+    .post-header .ring-inner { width: 100%; height: 100%; border-radius: 50%; background: var(--bg); border: 2px solid var(--white); display: flex; align-items: center; justify-content: center; font-size: 1rem; }
+    .post-username { font-weight: 600; font-size: 0.9rem; }
+    .post-location { font-size: 0.75rem; color: var(--muted); }
+    .post-more { margin-left: auto; font-size: 1.2rem; cursor: pointer; color: var(--muted); }
+    .post-image { width: 100%; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 5rem; }
+    .pi-a { background: linear-gradient(135deg, #ffecd2, #fcb69f); }
+    .pi-b { background: linear-gradient(135deg, #a1c4fd, #c2e9fb); }
+    .pi-c { background: linear-gradient(135deg, #d4fc79, #96e6a1); }
+    .pi-d { background: linear-gradient(135deg, #fbc2eb, #a6c1ee); }
+    .pi-e { background: linear-gradient(135deg, #ffeaa7, #dfe6e9); }
+    .post-actions { display: flex; align-items: center; gap: 1rem; padding: 0.75rem 1rem 0.5rem; }
+    .action-btn { background: none; border: none; cursor: pointer; font-size: 1.5rem; padding: 0; line-height: 1; transition: transform 0.1s; display: flex; align-items: center; }
+    .action-btn:hover { transform: scale(1.15); }
+    .action-save { margin-left: auto; }
+    .post-likes { padding: 0 1rem; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.3rem; }
+    .post-caption { padding: 0 1rem; font-size: 0.9rem; line-height: 1.5; margin-bottom: 0.3rem; }
+    .post-caption .username { font-weight: 600; }
+    .post-ai-tag { display: inline-flex; align-items: center; gap: 0.4rem; background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; font-size: 0.65rem; font-weight: 600; padding: 0.2rem 0.6rem; border-radius: 100px; margin-left: 0.3rem; }
+    .post-comments-count { padding: 0 1rem; font-size: 0.85rem; color: var(--muted); cursor: pointer; margin-bottom: 0.3rem; }
+    .post-time { padding: 0 1rem 1rem; font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+    .post-comment-box { border-top: 1px solid var(--border); display: flex; align-items: center; padding: 0.75rem 1rem; gap: 0.75rem; }
+    .emoji-btn { font-size: 1.3rem; cursor: pointer; }
+    .comment-input { flex: 1; border: none; outline: none; font-family: inherit; font-size: 0.9rem; color: var(--text); background: none; }
+    .comment-input::placeholder { color: var(--muted); }
+    .comment-post { font-size: 0.9rem; font-weight: 600; color: var(--blue); cursor: pointer; }
+
+    /* Suggested / AI Panel */
+    .sidebar-right { padding: 2rem 1.5rem; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+    .sr-profile { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+    .sr-name { font-weight: 600; font-size: 0.9rem; }
+    .sr-handle { font-size: 0.8rem; color: var(--muted); }
+    .sr-switch { margin-left: auto; font-size: 0.85rem; font-weight: 600; color: var(--blue); cursor: pointer; }
+    .suggestions-title { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+    .sug-label { font-size: 0.85rem; font-weight: 600; color: var(--muted); }
+    .sug-all { font-size: 0.8rem; font-weight: 600; color: var(--text); cursor: pointer; }
+    .sug-item { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
+    .sug-info { flex: 1; }
+    .sug-name { font-weight: 500; font-size: 0.85rem; }
+    .sug-reason { font-size: 0.75rem; color: var(--muted); }
+    .sug-follow { font-size: 0.8rem; font-weight: 600; color: var(--blue); cursor: pointer; background: none; border: none; }
+
+    /* AI Style Box */
+    .ai-style-box { background: linear-gradient(135deg, #667eea22, #764ba222); border: 1px solid #764ba240; border-radius: 12px; padding: 1.25rem; margin-top: 1.5rem; }
+    .ai-box-title { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+    .ai-box-body { font-size: 0.8rem; color: var(--muted); line-height: 1.6; margin-bottom: 1rem; }
+    .ai-box-btn { width: 100%; padding: 0.6rem; background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; border: none; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
+
+    .sr-footer { margin-top: 2rem; font-size: 0.7rem; color: #c7c7c7; line-height: 2; }
+    .sr-footer a { color: #c7c7c7; text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- Left Sidebar -->
+  <aside class="sidebar-left">
+    <div class="sidebar-logo"><span>DRIP</span></div>
+    <a href="#" class="nav-item active">
+      <div class="nav-icon">🏠</div> Home
+    </a>
+    <a href="#" class="nav-item">
+      <div class="nav-icon">🔍</div> Explore
+    </a>
+    <a href="#" class="nav-item">
+      <div class="nav-icon">🎬</div> Reels
+    </a>
+    <a href="#" class="nav-item">
+      <div class="nav-icon">✉️</div> Messages
+      <span class="nav-badge">4</span>
+    </a>
+    <a href="#" class="nav-item">
+      <div class="nav-icon">🔔</div> Notifications
+    </a>
+    <a href="#" class="nav-item">
+      <div class="nav-icon">✨</div> AI Stylist
+    </a>
+    <a href="#" class="nav-item">
+      <div class="nav-icon">👗</div> My Wardrobe
+    </a>
+    <div class="sidebar-divider"></div>
+    <a href="#" class="nav-item">
+      <div class="nav-icon">🛍️</div> Shop
+    </a>
+    <a href="#" class="nav-item">
+      <div class="nav-icon">📊</div> Trend Board
+    </a>
+    <div class="sidebar-divider"></div>
+    <a href="index.html" class="back-btn">← Back to All Formats</a>
+    <div class="profile-item" style="margin-top:1rem;">
+      <div class="avatar">ME</div>
+      <div>
+        <div style="font-weight:600;font-size:0.85rem;">my_style_24</div>
+        <div style="font-size:0.75rem;color:var(--muted);">Your Profile</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Feed -->
+  <main class="feed">
+    <!-- Stories -->
+    <div class="stories">
+      <div class="story add">
+        <div class="story-ring"><div class="story-avatar">＋</div></div>
+        <div class="story-name">Your Story</div>
+      </div>
+      <div class="story">
+        <div class="story-ring"><div class="story-avatar">👗</div></div>
+        <div class="story-name">aura_fits</div>
+      </div>
+      <div class="story">
+        <div class="story-ring"><div class="story-avatar">✨</div></div>
+        <div class="story-name">the_edit</div>
+      </div>
+      <div class="story">
+        <div class="story-ring"><div class="story-avatar">🌿</div></div>
+        <div class="story-name">eco_drip</div>
+      </div>
+      <div class="story">
+        <div class="story-ring"><div class="story-avatar">🖤</div></div>
+        <div class="story-name">noir.daily</div>
+      </div>
+      <div class="story">
+        <div class="story-ring"><div class="story-avatar">💫</div></div>
+        <div class="story-name">runway_ai</div>
+      </div>
+      <div class="story">
+        <div class="story-ring"><div class="story-avatar">🎨</div></div>
+        <div class="story-name">avantlooks</div>
+      </div>
+    </div>
+
+    <!-- Post 1 -->
+    <div class="post">
+      <div class="post-header">
+        <div class="ring"><div class="ring-inner">✨</div></div>
+        <div>
+          <div class="post-username">ai_stylist_drip</div>
+          <div class="post-location">AI Curated · For You</div>
+        </div>
+        <div class="post-more">···</div>
+      </div>
+      <div class="post-image pi-a">👗</div>
+      <div class="post-actions">
+        <button class="action-btn">🤍</button>
+        <button class="action-btn">💬</button>
+        <button class="action-btn">✈️</button>
+        <button class="action-btn action-save">🔖</button>
+      </div>
+      <div class="post-likes">2,847 likes</div>
+      <div class="post-caption">
+        <span class="username">ai_stylist_drip</span> The terracotta linen set that's taking over every aesthetic 🤎 AI trend confidence: 96% <span class="post-ai-tag">🤖 AI Pick</span>
+      </div>
+      <div class="post-comments-count">View all 143 comments</div>
+      <div class="post-time">3 hours ago</div>
+      <div class="post-comment-box">
+        <span class="emoji-btn">😊</span>
+        <input type="text" class="comment-input" placeholder="Add a comment..."/>
+        <span class="comment-post">Post</span>
+      </div>
+    </div>
+
+    <!-- Post 2 -->
+    <div class="post">
+      <div class="post-header">
+        <div class="ring"><div class="ring-inner">🖤</div></div>
+        <div>
+          <div class="post-username">noir.daily</div>
+          <div class="post-location">Paris, France</div>
+        </div>
+        <div class="post-more">···</div>
+      </div>
+      <div class="post-image pi-b">🧥</div>
+      <div class="post-actions">
+        <button class="action-btn">❤️</button>
+        <button class="action-btn">💬</button>
+        <button class="action-btn">✈️</button>
+        <button class="action-btn action-save">🔖</button>
+      </div>
+      <div class="post-likes">8,102 likes</div>
+      <div class="post-caption">
+        <span class="username">noir.daily</span> When your AI stylist says "navy wool overcoat" and it hits different every single time. Non-negotiable wardrobe piece fr 🫶
+      </div>
+      <div class="post-comments-count">View all 389 comments</div>
+      <div class="post-time">8 hours ago</div>
+      <div class="post-comment-box">
+        <span class="emoji-btn">😊</span>
+        <input type="text" class="comment-input" placeholder="Add a comment..."/>
+        <span class="comment-post">Post</span>
+      </div>
+    </div>
+
+    <!-- Post 3 -->
+    <div class="post">
+      <div class="post-header">
+        <div class="ring"><div class="ring-inner">🌿</div></div>
+        <div>
+          <div class="post-username">eco_drip</div>
+          <div class="post-location">Sustainable Fashion</div>
+        </div>
+        <div class="post-more">···</div>
+      </div>
+      <div class="post-image pi-c">🌿</div>
+      <div class="post-actions">
+        <button class="action-btn">🤍</button>
+        <button class="action-btn">💬</button>
+        <button class="action-btn">✈️</button>
+        <button class="action-btn action-save">🔖</button>
+      </div>
+      <div class="post-likes">4,530 likes</div>
+      <div class="post-caption">
+        <span class="username">eco_drip</span> AI calculated this outfit's carbon footprint: 0.3kg CO₂. The planet said thank you 🌍 #SustainableFashion <span class="post-ai-tag">🌿 Eco Score: A+</span>
+      </div>
+      <div class="post-comments-count">View all 201 comments</div>
+      <div class="post-time">1 day ago</div>
+      <div class="post-comment-box">
+        <span class="emoji-btn">😊</span>
+        <input type="text" class="comment-input" placeholder="Add a comment..."/>
+        <span class="comment-post">Post</span>
+      </div>
+    </div>
+
+    <!-- Post 4 -->
+    <div class="post">
+      <div class="post-header">
+        <div class="ring"><div class="ring-inner">💫</div></div>
+        <div>
+          <div class="post-username">runway_ai</div>
+          <div class="post-location">AI-Generated Collection</div>
+        </div>
+        <div class="post-more">···</div>
+      </div>
+      <div class="post-image pi-d">💎</div>
+      <div class="post-actions">
+        <button class="action-btn">🤍</button>
+        <button class="action-btn">💬</button>
+        <button class="action-btn">✈️</button>
+        <button class="action-btn action-save">🔖</button>
+      </div>
+      <div class="post-likes">12,441 likes</div>
+      <div class="post-caption">
+        <span class="username">runway_ai</span> Every single stitch in this collection was designed by our neural network. No human designers were involved. The future of fashion is <em>here</em>. ✨
+      </div>
+      <div class="post-comments-count">View all 892 comments</div>
+      <div class="post-time">2 days ago</div>
+      <div class="post-comment-box">
+        <span class="emoji-btn">😊</span>
+        <input type="text" class="comment-input" placeholder="Add a comment..."/>
+        <span class="comment-post">Post</span>
+      </div>
+    </div>
+  </main>
+
+  <!-- Right Sidebar -->
+  <aside class="sidebar-right">
+    <div class="sr-profile">
+      <div class="avatar lg">ME</div>
+      <div>
+        <div class="sr-name">my_style_24</div>
+        <div class="sr-handle">Style Explorer</div>
+      </div>
+      <div class="sr-switch">Switch</div>
+    </div>
+
+    <div class="suggestions-title">
+      <span class="sug-label">Suggested for you</span>
+      <span class="sug-all">See All</span>
+    </div>
+
+    <div class="sug-item">
+      <div class="avatar" style="width:40px;height:40px;">👠</div>
+      <div class="sug-info">
+        <div class="sug-name">luxe_minimalist</div>
+        <div class="sug-reason">Suggested · AI match 94%</div>
+      </div>
+      <button class="sug-follow">Follow</button>
+    </div>
+    <div class="sug-item">
+      <div class="avatar" style="width:40px;height:40px;background:linear-gradient(135deg,#d4fc79,#96e6a1);">🌿</div>
+      <div class="sug-info">
+        <div class="sug-name">green_wardrobe</div>
+        <div class="sug-reason">Suggested · Eco fashion</div>
+      </div>
+      <button class="sug-follow">Follow</button>
+    </div>
+    <div class="sug-item">
+      <div class="avatar" style="width:40px;height:40px;background:linear-gradient(135deg,#fbc2eb,#a6c1ee);">✿</div>
+      <div class="sug-info">
+        <div class="sug-name">y2k_revival</div>
+        <div class="sug-reason">Followed by aura_fits</div>
+      </div>
+      <button class="sug-follow">Follow</button>
+    </div>
+    <div class="sug-item">
+      <div class="avatar" style="width:40px;height:40px;background:#111;">⚡</div>
+      <div class="sug-info">
+        <div class="sug-name">cyber_fits</div>
+        <div class="sug-reason">Suggested · Techwear</div>
+      </div>
+      <button class="sug-follow">Follow</button>
+    </div>
+    <div class="sug-item">
+      <div class="avatar" style="width:40px;height:40px;background:linear-gradient(135deg,#667eea,#764ba2);">🎨</div>
+      <div class="sug-info">
+        <div class="sug-name">avant.archive</div>
+        <div class="sug-reason">Suggested · Avant-garde</div>
+      </div>
+      <button class="sug-follow">Follow</button>
+    </div>
+
+    <div class="ai-style-box">
+      <div class="ai-box-title">🤖 Your AI Style Report</div>
+      <div class="ai-box-body">Based on your saves and likes, your current aesthetic is: <strong>Clean Minimalist with Quiet Luxury influences.</strong> Want your full weekly curation?</div>
+      <button class="ai-box-btn">Get My AI Report ✨</button>
+    </div>
+
+    <div class="sr-footer">
+      <a href="#">About</a> · <a href="#">Help</a> · <a href="#">Privacy</a> · <a href="#">Terms</a><br/>
+      <a href="index.html">← Back to All Formats</a><br/>
+      © 2025 DRIP AI Fashion
+    </div>
+  </aside>
+
+</div>
+
+</body>
+</html>

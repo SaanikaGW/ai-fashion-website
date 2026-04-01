@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GLITCH — Cyberpunk Fashion</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --bg: #020408; --cyan: #00f5ff; --magenta: #ff006e; --green: #39ff14; --yellow: #ffe600; --surface: #080f1a; --border: rgba(0,245,255,0.15); }
+    body { background: var(--bg); color: #cdd6f4; font-family: 'Rajdhani', sans-serif; overflow-x: hidden; }
+
+    /* Scanlines overlay */
+    body::after { content: ''; position: fixed; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px); pointer-events: none; z-index: 9999; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(2,4,8,0.95); border-bottom: 1px solid var(--border); padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; backdrop-filter: blur(10px); }
+    .nav-logo { font-family: 'Share Tech Mono', monospace; font-size: 1.4rem; color: var(--cyan); text-shadow: 0 0 20px var(--cyan); letter-spacing: 0.1em; }
+    .nav-links { display: flex; gap: 2rem; }
+    .nav-links a { font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; color: rgba(205,214,244,0.6); transition: all 0.2s; }
+    .nav-links a:hover { color: var(--cyan); text-shadow: 0 0 10px var(--cyan); }
+    .nav-back { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; color: var(--magenta); text-shadow: 0 0 10px var(--magenta); }
+
+    /* Hero */
+    .hero { min-height: 100vh; padding-top: 80px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; position: relative; overflow: hidden; padding: 6rem 2rem; }
+    .hero-grid-bg { position: absolute; inset: 0; background-image: linear-gradient(rgba(0,245,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,245,255,0.03) 1px, transparent 1px); background-size: 50px 50px; }
+    .hero-glow-c { position: absolute; width: 800px; height: 400px; background: radial-gradient(ellipse, rgba(0,245,255,0.06) 0%, transparent 70%); top: 50%; left: 50%; transform: translate(-50%, -50%); }
+    .hero-glow-m { position: absolute; width: 600px; height: 300px; background: radial-gradient(ellipse, rgba(255,0,110,0.04) 0%, transparent 70%); top: 30%; left: 20%; }
+    .hero-badge { font-family: 'Share Tech Mono', monospace; font-size: 0.7rem; color: var(--green); border: 1px solid rgba(57,255,20,0.3); padding: 0.4rem 1rem; margin-bottom: 2rem; letter-spacing: 0.2em; position: relative; z-index: 1; animation: pulse-green 2s ease-in-out infinite; }
+    @keyframes pulse-green { 0%,100%{ box-shadow: 0 0 5px rgba(57,255,20,0.3); } 50%{ box-shadow: 0 0 20px rgba(57,255,20,0.6); } }
+    .hero-title { font-size: clamp(4rem, 12vw, 11rem); font-weight: 700; line-height: 0.85; letter-spacing: -0.02em; position: relative; z-index: 1; margin-bottom: 1.5rem; }
+    .hero-title .glitch { color: var(--cyan); text-shadow: 0 0 30px var(--cyan), 0 0 60px rgba(0,245,255,0.3); position: relative; display: inline-block; animation: glitch 3s steps(1) infinite; }
+    @keyframes glitch { 0%,90%,100%{ transform: translate(0,0) skew(0deg); text-shadow: 0 0 30px var(--cyan), 0 0 60px rgba(0,245,255,0.3); } 92%{ transform: translate(-4px, 2px) skew(-1deg); text-shadow: 4px 0 var(--magenta), -4px 0 var(--cyan); } 94%{ transform: translate(4px, -2px) skew(1deg); text-shadow: -4px 0 var(--magenta), 4px 0 var(--cyan); } 96%{ transform: translate(0,0); } }
+    .hero-title .sub { color: var(--magenta); text-shadow: 0 0 30px var(--magenta); }
+    .hero-deck { font-size: 1rem; color: rgba(205,214,244,0.6); max-width: 500px; line-height: 1.7; margin-bottom: 3rem; position: relative; z-index: 1; font-family: 'Share Tech Mono', monospace; }
+    .hero-actions { display: flex; gap: 1.5rem; position: relative; z-index: 1; }
+    .btn-c { padding: 1rem 2.5rem; border: 1px solid var(--cyan); color: var(--cyan); text-decoration: none; font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600; transition: all 0.3s; background: transparent; display: inline-block; }
+    .btn-c:hover { background: var(--cyan); color: var(--bg); box-shadow: 0 0 30px rgba(0,245,255,0.5); }
+    .btn-m { padding: 1rem 2.5rem; border: 1px solid var(--magenta); color: var(--magenta); text-decoration: none; font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600; transition: all 0.3s; background: transparent; display: inline-block; }
+    .btn-m:hover { background: var(--magenta); color: var(--bg); box-shadow: 0 0 30px rgba(255,0,110,0.5); }
+
+    /* Ticker */
+    .ticker { background: var(--cyan); color: var(--bg); padding: 0.5rem 0; overflow: hidden; font-family: 'Share Tech Mono', monospace; font-size: 0.75rem; letter-spacing: 0.1em; }
+    .ticker-inner { display: inline-block; animation: tick 18s linear infinite; white-space: nowrap; }
+    @keyframes tick { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    .tsep { margin: 0 1.5rem; color: var(--magenta); }
+
+    /* Panels */
+    .panels { padding: 5rem 2rem; max-width: 1400px; margin: 0 auto; }
+    .panels-title { font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--cyan); margin-bottom: 0.5rem; font-family: 'Share Tech Mono', monospace; }
+    .panels-head { font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; margin-bottom: 3rem; }
+    .panels-head .cy { color: var(--cyan); }
+    .panels-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); }
+    .panel { background: var(--surface); padding: 2.5rem; position: relative; overflow: hidden; transition: background 0.3s; }
+    .panel:hover { background: #0d1829; }
+    .panel::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(to right, transparent, var(--cyan), transparent); opacity: 0; transition: opacity 0.3s; }
+    .panel:hover::before { opacity: 1; }
+    .panel-icon { font-family: 'Share Tech Mono', monospace; font-size: 0.65rem; color: var(--green); margin-bottom: 1.5rem; letter-spacing: 0.1em; }
+    .panel-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 1rem; color: #fff; }
+    .panel-body { font-size: 0.85rem; line-height: 1.7; color: rgba(205,214,244,0.6); }
+    .panel-cta { display: inline-block; margin-top: 1.5rem; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--cyan); text-decoration: none; }
+    .panel-cta::after { content: ' →'; }
+
+    /* Drop Grid */
+    .drops { padding: 5rem 2rem; max-width: 1400px; margin: 0 auto; }
+    .drops-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 3rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem; }
+    .drops-title { font-size: 1.5rem; font-weight: 700; letter-spacing: 0.05em; }
+    .drops-count { font-family: 'Share Tech Mono', monospace; font-size: 0.7rem; color: var(--cyan); }
+    .drops-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+    .drop-card { border: 1px solid var(--border); background: var(--surface); overflow: hidden; transition: all 0.3s; }
+    .drop-card:hover { border-color: var(--cyan); box-shadow: 0 0 20px rgba(0,245,255,0.1); transform: translateY(-4px); }
+    .drop-swatch { aspect-ratio: 3/4; position: relative; overflow: hidden; }
+    .ds-a { background: linear-gradient(160deg, #001a1f, #003d4d); }
+    .ds-b { background: linear-gradient(160deg, #1a001a, #4d004d); }
+    .ds-c { background: linear-gradient(160deg, #001a00, #004d00); }
+    .ds-d { background: linear-gradient(160deg, #1a1a00, #4d4d00); }
+    .drop-swatch::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%); }
+    .drop-tag { position: absolute; bottom: 1rem; left: 1rem; z-index: 1; font-family: 'Share Tech Mono', monospace; font-size: 0.6rem; color: var(--cyan); letter-spacing: 0.1em; }
+    .drop-info { padding: 1rem; }
+    .drop-name { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.3rem; }
+    .drop-price { font-family: 'Share Tech Mono', monospace; font-size: 0.8rem; color: var(--magenta); }
+
+    /* Terminal AI */
+    .terminal-section { background: #000; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 5rem 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; max-width: 1400px; margin: 0 auto; }
+    .term-info .t-label { font-family: 'Share Tech Mono', monospace; font-size: 0.65rem; color: var(--green); letter-spacing: 0.2em; margin-bottom: 1.5rem; }
+    .term-info h2 { font-size: 2.5rem; font-weight: 700; margin-bottom: 1.5rem; }
+    .term-info h2 .cy { color: var(--cyan); }
+    .term-info p { font-size: 0.9rem; line-height: 1.8; color: rgba(205,214,244,0.6); margin-bottom: 2rem; font-family: 'Share Tech Mono', monospace; }
+    .terminal { background: #000; border: 1px solid var(--border); padding: 0; font-family: 'Share Tech Mono', monospace; font-size: 0.75rem; }
+    .term-bar { background: #111; padding: 0.75rem 1rem; display: flex; align-items: center; gap: 0.5rem; border-bottom: 1px solid var(--border); }
+    .term-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .term-bar-title { margin-left: auto; font-size: 0.65rem; color: rgba(205,214,244,0.3); letter-spacing: 0.1em; }
+    .term-body { padding: 1.5rem; line-height: 2; }
+    .tl { display: flex; flex-direction: column; }
+    .tl-p { color: var(--cyan); }
+    .tl-out { color: rgba(205,214,244,0.5); padding-left: 1rem; }
+    .tl-out.ok { color: var(--green); }
+    .tl-out.warn { color: var(--yellow); }
+    .cursor { display: inline-block; width: 8px; height: 14px; background: var(--cyan); animation: blink 1s step-end infinite; vertical-align: middle; margin-left: 2px; }
+    @keyframes blink { 0%,100%{ opacity:1; } 50%{ opacity:0; } }
+
+    footer { background: var(--surface); border-top: 1px solid var(--border); padding: 2rem; display: flex; justify-content: space-between; align-items: center; font-family: 'Share Tech Mono', monospace; font-size: 0.7rem; }
+    footer .f-left { color: var(--cyan); }
+    footer .f-right a { color: var(--magenta); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-logo">GLITCH_WEAR</div>
+    <div class="nav-links">
+      <a href="#">Drops</a>
+      <a href="#">Neural Style</a>
+      <a href="#">Cyberfit</a>
+      <a href="#">Manifesto</a>
+    </div>
+    <a href="index.html" class="nav-back">← HUB</a>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-grid-bg"></div>
+    <div class="hero-glow-c"></div>
+    <div class="hero-glow-m"></div>
+    <div class="hero-badge">[SYS]: AI_STYLE_ENGINE v3.7.2 // ONLINE</div>
+    <h1 class="hero-title">
+      <span class="glitch">DRESS</span><br/>
+      <span class="sub">THE</span><br/>
+      <span class="glitch">FUTURE</span>
+    </h1>
+    <p class="hero-deck">// Neural-net curated fashion for the post-digital human. Style computed at the speed of light.</p>
+    <div class="hero-actions">
+      <a href="#" class="btn-c">Initialize Profile</a>
+      <a href="#" class="btn-m">View Drops</a>
+    </div>
+  </section>
+
+  <div class="ticker">
+    <span class="ticker-inner">
+      NEW DROP: CYBER_SILK COLLECTION<span class="tsep">■</span>AI STYLE SCAN: ACTIVE<span class="tsep">■</span>NEURAL PATTERN v4.2 ONLINE<span class="tsep">■</span>LIMITED: CHROME JACKET 001<span class="tsep">■</span>TREND SIGNAL: +97% CONFIDENCE<span class="tsep">■</span>NEW DROP: CYBER_SILK COLLECTION<span class="tsep">■</span>AI STYLE SCAN: ACTIVE<span class="tsep">■</span>NEURAL PATTERN v4.2 ONLINE<span class="tsep">■</span>LIMITED: CHROME JACKET 001<span class="tsep">■</span>TREND SIGNAL: +97% CONFIDENCE<span class="tsep">■</span>
+    </span>
+  </div>
+
+  <section class="panels">
+    <div class="panels-title">// SYS.FEATURES</div>
+    <h2 class="panels-head">Augmented <span class="cy">Style</span> Systems</h2>
+    <div class="panels-grid">
+      <div class="panel">
+        <div class="panel-icon">[MODULE_01] // NEURAL_SCAN</div>
+        <div class="panel-title">Body Architecture Mapping</div>
+        <div class="panel-body">Upload a photo and our AI maps 214 body data points to predict exactly how every garment will drape, fit, and move on your specific form.</div>
+        <a href="#" class="panel-cta">Run Scan</a>
+      </div>
+      <div class="panel">
+        <div class="panel-icon">[MODULE_02] // STYLE_MATRIX</div>
+        <div class="panel-title">Aesthetic DNA Profiling</div>
+        <div class="panel-body">Our style matrix cross-references your past selections, saved images, and preference signals to build a living model of your aesthetic identity.</div>
+        <a href="#" class="panel-cta">Build Profile</a>
+      </div>
+      <div class="panel">
+        <div class="panel-icon">[MODULE_03] // TREND_ENGINE</div>
+        <div class="panel-title">Predictive Trend Surfing</div>
+        <div class="panel-body">Real-time processing of 50K social signals per hour. Our engine predicts what's about to break into mainstream 6 weeks before it happens.</div>
+        <a href="#" class="panel-cta">View Signals</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="drops">
+    <div class="drops-header">
+      <div class="drops-title">// LATEST_DROPS</div>
+      <div class="drops-count">04 items loaded</div>
+    </div>
+    <div class="drops-grid">
+      <div class="drop-card">
+        <div class="drop-swatch ds-a"><div class="drop-tag">[DROP_001]</div></div>
+        <div class="drop-info">
+          <div class="drop-name">CHROME LATTICE JACKET</div>
+          <div class="drop-price">$380</div>
+        </div>
+      </div>
+      <div class="drop-card">
+        <div class="drop-swatch ds-b"><div class="drop-tag">[DROP_002]</div></div>
+        <div class="drop-info">
+          <div class="drop-name">VOID MESH BODYSUIT</div>
+          <div class="drop-price">$220</div>
+        </div>
+      </div>
+      <div class="drop-card">
+        <div class="drop-swatch ds-c"><div class="drop-tag">[DROP_003]</div></div>
+        <div class="drop-info">
+          <div class="drop-name">NEON UTILITY CARGO</div>
+          <div class="drop-price">$165</div>
+        </div>
+      </div>
+      <div class="drop-card">
+        <div class="drop-swatch ds-d"><div class="drop-tag">[DROP_004]</div></div>
+        <div class="drop-info">
+          <div class="drop-name">ACID WASH OVERCOAT</div>
+          <div class="drop-price">$490</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div style="max-width:1400px;margin:0 auto;padding:0 2rem;">
+    <section class="terminal-section" style="padding:5rem 0;">
+      <div class="term-info">
+        <div class="t-label">[SYS.AI_CORE]</div>
+        <h2>Style <span class="cy">Intelligence</span><br/>Online</h2>
+        <p>// Run your style scan in real-time. Our AI processes your aesthetic signals and returns a personalized outfit matrix with 97.3% trend alignment.</p>
+        <a href="#" class="btn-c" style="font-size:0.75rem;">Run Style Scan →</a>
+      </div>
+      <div class="terminal">
+        <div class="term-bar">
+          <div class="term-dot" style="background:#ff5f57;"></div>
+          <div class="term-dot" style="background:#ffbd2e;"></div>
+          <div class="term-dot" style="background:#28ca41;"></div>
+          <div class="term-bar-title">GLITCH_WEAR // AI STYLE ENGINE</div>
+        </div>
+        <div class="term-body">
+          <div class="tl"><span class="tl-p">› initializing style_scan --user=ghost_mode</span></div>
+          <div class="tl"><span class="tl-out">Connecting to neural_style_engine...</span></div>
+          <div class="tl"><span class="tl-out ok">✓ Engine online (v3.7.2)</span></div>
+          <div class="tl"><span class="tl-p">› analyze.aesthetic_dna(depth="full")</span></div>
+          <div class="tl"><span class="tl-out">Processing 214 body data points...</span></div>
+          <div class="tl"><span class="tl-out">Cross-referencing 50K trend signals...</span></div>
+          <div class="tl"><span class="tl-out warn">⚠ Rare aesthetic detected: CYBER_MINIMAL</span></div>
+          <div class="tl"><span class="tl-out ok">✓ Match confidence: 97.3%</span></div>
+          <div class="tl"><span class="tl-p">› generate.outfit_matrix() <span class="cursor"></span></span></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <div class="f-left">GLITCH_WEAR © 2025 // AI_FASHION_SYSTEM v3.7.2</div>
+    <div class="f-right"><a href="index.html">← ALL_FORMATS</a></div>
+  </footer>
+
+</body>
+</html>

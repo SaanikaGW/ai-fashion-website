@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>xoSTYLE — Y2K AI Fashion</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Inter:wght@400;700;900&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --pink: #ff69b4; --hot: #ff1493; --purple: #bf5fff; --blue: #00bfff; --yellow: #fff700; --mint: #00f0a0; --bg: #fff0f8; --white: #fff; }
+    body { background: var(--bg); color: #1a1a2e; font-family: 'Inter', sans-serif; overflow-x: hidden; cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Ccircle cx='12' cy='12' r='6' fill='%23ff69b4'/%3E%3C/svg%3E") 12 12, auto; }
+
+    /* Stars bg */
+    body::before { content: '✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧ ✦'; position: fixed; top: 0; left: -100px; right: -100px; color: rgba(255,105,180,0.12); font-size: 1.5rem; letter-spacing: 2rem; white-space: nowrap; overflow: hidden; z-index: 0; pointer-events: none; line-height: 1; word-break: break-all; }
+
+    /* Nav */
+    nav { position: sticky; top: 0; z-index: 100; background: linear-gradient(90deg, var(--pink), var(--purple), var(--blue)); padding: 0; }
+    .nav-inner { background: var(--white); margin: 3px; display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 2rem; }
+    .logo { font-family: 'Fredoka One', cursive; font-size: 2rem; background: linear-gradient(135deg, var(--hot), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: 0.02em; }
+    .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+    .nav-links a { font-size: 0.8rem; font-weight: 700; text-decoration: none; color: #555; letter-spacing: 0.05em; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--hot); }
+    .nav-back { background: linear-gradient(135deg, var(--pink), var(--purple)); color: #fff; font-size: 0.7rem; font-weight: 700; text-decoration: none; padding: 0.4rem 1rem; border-radius: 100px; letter-spacing: 0.05em; }
+
+    /* Marquee */
+    .marquee { background: var(--yellow); color: #1a1a2e; padding: 0.5rem 0; overflow: hidden; font-weight: 900; font-size: 0.85rem; letter-spacing: 0.05em; border-top: 2px solid #1a1a2e; border-bottom: 2px solid #1a1a2e; }
+    .marquee-inner { display: inline-block; animation: marquee 14s linear infinite; white-space: nowrap; }
+    @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+    .msep { margin: 0 1.5rem; color: var(--hot); }
+
+    /* Hero */
+    .hero { min-height: 80vh; display: grid; grid-template-columns: 1fr 1fr; align-items: center; padding: 4rem 4rem; gap: 4rem; position: relative; z-index: 1; }
+    .hero-left {}
+    .hero-eyebrow { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; }
+    .hero-chip { background: var(--yellow); color: #1a1a2e; font-size: 0.7rem; font-weight: 900; padding: 0.3rem 0.8rem; border-radius: 100px; border: 2px solid #1a1a2e; letter-spacing: 0.05em; text-transform: uppercase; }
+    .hero-chip.pink { background: var(--pink); color: #fff; }
+    .hero-title { font-family: 'Fredoka One', cursive; font-size: clamp(3rem, 7vw, 6.5rem); line-height: 0.95; margin-bottom: 1.5rem; }
+    .hero-title .line1 { background: linear-gradient(135deg, var(--hot), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero-title .line2 { color: #1a1a2e; }
+    .hero-title .line3 { background: linear-gradient(135deg, var(--blue), var(--mint)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero-body { font-size: 1rem; line-height: 1.7; color: #666; max-width: 400px; margin-bottom: 2.5rem; }
+    .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-y2k { font-family: 'Fredoka One', cursive; font-size: 1.1rem; padding: 0.9rem 2.5rem; border-radius: 100px; text-decoration: none; border: 3px solid #1a1a2e; box-shadow: 4px 4px 0 #1a1a2e; transition: all 0.15s; display: inline-block; }
+    .btn-y2k:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 #1a1a2e; }
+    .btn-y2k.primary { background: linear-gradient(135deg, var(--pink), var(--purple)); color: #fff; }
+    .btn-y2k.secondary { background: var(--yellow); color: #1a1a2e; }
+
+    .hero-right { display: flex; flex-direction: column; gap: 1rem; }
+    .hero-card { background: var(--white); border: 3px solid #1a1a2e; border-radius: 20px; padding: 1.5rem; box-shadow: 6px 6px 0 #1a1a2e; }
+    .hero-card-title { font-family: 'Fredoka One', cursive; font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--hot); }
+    .hero-card p { font-size: 0.85rem; color: #666; }
+    .hero-big-card { background: linear-gradient(135deg, #ffe0f0, #e8d0ff); border: 3px solid #1a1a2e; border-radius: 20px; padding: 2rem; box-shadow: 6px 6px 0 #1a1a2e; text-align: center; }
+    .hbc-emoji { font-size: 4rem; margin-bottom: 1rem; }
+    .hbc-title { font-family: 'Fredoka One', cursive; font-size: 1.4rem; margin-bottom: 0.5rem; }
+    .hbc-sub { font-size: 0.85rem; color: #888; }
+
+    /* Products */
+    .products { padding: 4rem; }
+    .prod-title { font-family: 'Fredoka One', cursive; font-size: 3rem; text-align: center; margin-bottom: 0.5rem; background: linear-gradient(135deg, var(--hot), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .prod-sub { text-align: center; color: #888; font-size: 0.95rem; margin-bottom: 3rem; }
+    .prod-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+    .prod-card { background: var(--white); border: 3px solid #1a1a2e; border-radius: 20px; overflow: hidden; box-shadow: 5px 5px 0 #1a1a2e; transition: all 0.15s; }
+    .prod-card:hover { transform: translate(-3px,-3px); box-shadow: 8px 8px 0 #1a1a2e; }
+    .prod-swatch { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 4rem; }
+    .ps-a { background: linear-gradient(135deg, #ffe0f0, #ffc8e8); }
+    .ps-b { background: linear-gradient(135deg, #e0e8ff, #c8d0ff); }
+    .ps-c { background: linear-gradient(135deg, #fffce0, #fff5b0); }
+    .ps-d { background: linear-gradient(135deg, #e0fff5, #b0ffe8); }
+    .prod-info { padding: 1rem 1.25rem; }
+    .prod-name { font-family: 'Fredoka One', cursive; font-size: 1rem; margin-bottom: 0.3rem; }
+    .prod-price-row { display: flex; justify-content: space-between; align-items: center; }
+    .prod-price { font-weight: 900; font-size: 1rem; color: var(--hot); }
+    .prod-badge { font-size: 0.6rem; font-weight: 700; background: var(--yellow); padding: 0.2rem 0.5rem; border-radius: 100px; border: 1px solid #1a1a2e; text-transform: uppercase; letter-spacing: 0.05em; }
+
+    /* AI section */
+    .ai-y2k { background: linear-gradient(135deg, var(--hot), var(--purple), var(--blue)); padding: 5rem 4rem; position: relative; overflow: hidden; }
+    .ai-y2k-inner { background: var(--white); border-radius: 30px; border: 3px solid rgba(255,255,255,0.5); padding: 4rem; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
+    .ai-y2k-label { display: inline-flex; gap: 0.5rem; align-items: center; background: linear-gradient(135deg, var(--pink), var(--purple)); color: #fff; font-size: 0.7rem; font-weight: 700; padding: 0.4rem 1rem; border-radius: 100px; margin-bottom: 1.5rem; letter-spacing: 0.05em; text-transform: uppercase; }
+    .ai-y2k-title { font-family: 'Fredoka One', cursive; font-size: 3rem; line-height: 1.1; margin-bottom: 1rem; }
+    .ai-y2k-body { font-size: 0.95rem; line-height: 1.7; color: #666; margin-bottom: 2rem; }
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .stat-card { background: linear-gradient(135deg, #fff0f8, #f0e8ff); border: 2px solid #1a1a2e; border-radius: 16px; padding: 1.25rem; text-align: center; }
+    .stat-num { font-family: 'Fredoka One', cursive; font-size: 2rem; background: linear-gradient(135deg, var(--hot), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .stat-lbl { font-size: 0.75rem; color: #888; margin-top: 0.2rem; }
+
+    footer { background: #1a1a2e; color: #fff; padding: 2rem 4rem; display: flex; justify-content: space-between; align-items: center; }
+    .f-logo { font-family: 'Fredoka One', cursive; font-size: 1.5rem; background: linear-gradient(135deg, var(--pink), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .f-copy { font-size: 0.8rem; color: rgba(255,255,255,0.5); }
+    footer a { color: var(--pink); text-decoration: none; font-size: 0.8rem; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-inner">
+      <div class="logo">xoSTYLE ✿</div>
+      <div class="nav-links">
+        <a href="#">Shop</a>
+        <a href="#">Trends</a>
+        <a href="#">AI Stylist</a>
+        <a href="#">Lookbook</a>
+      </div>
+      <a href="index.html" class="nav-back">← All Formats</a>
+    </div>
+  </nav>
+
+  <div class="marquee">
+    <span class="marquee-inner">
+      ✿ AI PICKS JUST FOR U ✿ <span class="msep">💕</span> NEW DROP EVERY FRIDAY <span class="msep">💕</span> Y2K VIBES FOREVER <span class="msep">💕</span> AI KNOWS UR STYLE <span class="msep">💕</span> FREE SHIPPING ON $50+ <span class="msep">💕</span> ✿ AI PICKS JUST FOR U ✿ <span class="msep">💕</span> NEW DROP EVERY FRIDAY <span class="msep">💕</span> Y2K VIBES FOREVER <span class="msep">💕</span> AI KNOWS UR STYLE <span class="msep">💕</span> FREE SHIPPING ON $50+ <span class="msep">💕</span>
+    </span>
+  </div>
+
+  <section class="hero">
+    <div class="hero-left">
+      <div class="hero-eyebrow">
+        <span class="hero-chip">✨ New</span>
+        <span class="hero-chip pink">AI Powered</span>
+      </div>
+      <h1 class="hero-title">
+        <span class="line1">Slay</span><br/>
+        <span class="line2">Every</span><br/>
+        <span class="line3">Moment 💅</span>
+      </h1>
+      <p class="hero-body">Our AI is literally obsessed with your style. Tell it your vibe and it'll build your entire wardrobe in seconds. No cap.</p>
+      <div class="hero-buttons">
+        <a href="#" class="btn-y2k primary">Get My Looks ✨</a>
+        <a href="#" class="btn-y2k secondary">Shop Drops 💕</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-big-card">
+        <div class="hbc-emoji">👗✨</div>
+        <div class="hbc-title">Your AI Style BFF</div>
+        <div class="hbc-sub">Tell us your vibe and we'll dress you like a main character.</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+        <div class="hero-card">
+          <div class="hero-card-title">🔮 Style Quiz</div>
+          <p>Find your aesthetic in 60 seconds</p>
+        </div>
+        <div class="hero-card">
+          <div class="hero-card-title">💌 Weekly Drops</div>
+          <p>AI-curated fits every Friday</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="products">
+    <div class="prod-title">Trending Now 🔥</div>
+    <div class="prod-sub">AI-picked based on what's blowing up rn</div>
+    <div class="prod-grid">
+      <div class="prod-card">
+        <div class="prod-swatch ps-a">👗</div>
+        <div class="prod-info">
+          <div class="prod-name">Butterfly Mini Dress</div>
+          <div class="prod-price-row">
+            <span class="prod-price">$68</span>
+            <span class="prod-badge">🔥 Hot</span>
+          </div>
+        </div>
+      </div>
+      <div class="prod-card">
+        <div class="prod-swatch ps-b">👖</div>
+        <div class="prod-info">
+          <div class="prod-name">Low-Rise Flares</div>
+          <div class="prod-price-row">
+            <span class="prod-price">$82</span>
+            <span class="prod-badge">💫 New</span>
+          </div>
+        </div>
+      </div>
+      <div class="prod-card">
+        <div class="prod-swatch ps-c">👟</div>
+        <div class="prod-info">
+          <div class="prod-name">Platform Sneakers</div>
+          <div class="prod-price-row">
+            <span class="prod-price">$124</span>
+            <span class="prod-badge">✨ AI Pick</span>
+          </div>
+        </div>
+      </div>
+      <div class="prod-card">
+        <div class="prod-swatch ps-d">💚</div>
+        <div class="prod-info">
+          <div class="prod-name">Mesh Crop Top</div>
+          <div class="prod-price-row">
+            <span class="prod-price">$38</span>
+            <span class="prod-badge">💕 Fave</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ai-y2k">
+    <div class="ai-y2k-inner">
+      <div>
+        <div class="ai-y2k-label">🤖 AI Fashion BFF</div>
+        <h2 class="ai-y2k-title">It lowkey reads<br/>ur mind bestie 💭</h2>
+        <p class="ai-y2k-body">Our AI has studied literally thousands of aesthetic categories — coquette, clean girl, dark academia, y2k, cottage core — and it knows exactly which one (or three) you are. No judgement, just vibes.</p>
+        <a href="#" class="btn-y2k primary" style="font-size:0.9rem;">Take the Style Quiz ✨</a>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-num">2M+</div>
+          <div class="stat-lbl">Outfits Styled</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">99%</div>
+          <div class="stat-lbl">Would Recommend</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">500+</div>
+          <div class="stat-lbl">Aesthetic Types</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">✿</div>
+          <div class="stat-lbl">Good Vibes Only</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="f-logo">xoSTYLE</div>
+    <div class="f-copy">© 2025 xoSTYLE · AI Fashion for everyone 💕</div>
+    <a href="index.html">← All Formats</a>
+  </footer>
+
+</body>
+</html>

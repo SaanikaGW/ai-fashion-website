@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Fashion — Choose Your World</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0a;
+      --surface: #111;
+      --border: #222;
+      --text: #fff;
+      --muted: #888;
+      --accent: #e8c96d;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      position: relative;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, #1a0a2e 0%, #0a0a0a 70%);
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(232,201,109,0.1);
+      border: 1px solid rgba(232,201,109,0.3);
+      color: var(--accent);
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 0.4rem 1rem;
+      border-radius: 100px;
+      margin-bottom: 2rem;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 8vw, 7rem);
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, #fff 0%, #e8c96d 50%, #fff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: var(--muted);
+      max-width: 500px;
+      line-height: 1.7;
+      margin-bottom: 3rem;
+    }
+
+    .scroll-hint {
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(6px); }
+    }
+
+    /* Grid Section */
+    .section {
+      padding: 5rem 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-sub {
+      color: var(--muted);
+      font-size: 1rem;
+      margin-bottom: 4rem;
+      max-width: 500px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(232,201,109,0.4);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(232,201,109,0.1);
+    }
+
+    .card-visual {
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-visual .num {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      color: rgba(255,255,255,0.3);
+      font-weight: 600;
+    }
+
+    .card-body {
+      padding: 1.5rem;
+      flex: 1;
+    }
+
+    .card-tag {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+    }
+
+    .card-desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .card-footer {
+      padding: 1rem 1.5rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .card-arrow {
+      width: 28px;
+      height: 28px;
+      background: rgba(232,201,109,0.1);
+      border: 1px solid rgba(232,201,109,0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      font-size: 0.75rem;
+      transition: background 0.2s;
+    }
+
+    .card:hover .card-arrow {
+      background: var(--accent);
+      color: #000;
+    }
+
+    /* Visual themes per card */
+    .v1 { background: linear-gradient(135deg, #f8f8f8 0%, #e8e8e8 100%); }
+    .v2 { background: linear-gradient(135deg, #1a1200 0%, #3d2e00 100%); }
+    .v3 { background: linear-gradient(135deg, #1a0a2e 0%, #2d1b69 100%); }
+    .v4 { background: linear-gradient(135deg, #0d0d1a 0%, #1a0d3d 100%); }
+    .v5 { background: linear-gradient(135deg, #ff6eb4 0%, #ffb347 100%); }
+    .v6 { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); }
+    .v7 { background: linear-gradient(135deg, #0d1f0d 0%, #1a3d1a 100%); }
+    .v8 { background: linear-gradient(135deg, #1a0d0d 0%, #3d1a1a 100%); }
+    .v9 { background: linear-gradient(135deg, #0d1a1a 0%, #0d3d3d 100%); }
+    .v10 { background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%); }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 3rem 2rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    footer span {
+      color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+
+  <section class="hero">
+    <div class="badge">✦ Powered by Artificial Intelligence</div>
+    <h1>AI Fashion<br/>Universe</h1>
+    <p>Ten distinct visions of the future of fashion. Each world, a different aesthetic. Explore them all.</p>
+    <div class="scroll-hint">↓ scroll to explore</div>
+  </section>
+
+  <section class="section">
+    <div class="section-label">✦ 10 Worlds</div>
+    <h2 class="section-title">Choose Your Aesthetic</h2>
+    <p class="section-sub">From minimalist editorial to cyberpunk neon — discover every dimension of AI-powered style.</p>
+
+    <div class="grid">
+
+      <a href="01-minimalist.html" class="card">
+        <div class="card-visual v1">
+          <span class="num">01</span>
+          <span style="font-size:2.5rem; color:#222; letter-spacing:-0.05em; font-family:'Playfair Display',serif;">LESS.</span>
+        </div>
+        <div class="card-body">
+          <div class="card-tag">Format 01</div>
+          <div class="card-title">Minimalist Editorial</div>
+          <div class="card-desc">Pure white space, refined serif type, and silence as design. Fashion at its most considered.</div>
+        </div>
+        <div class="card-footer">
+          <span>Clean · Elegant · Timeless</span>
+          <div class="card-arrow">→</div>
+        </div>
+      </a>
+
+      <a href="02-dark-luxury.html" class="card">
+        <div class="card-visual v2">
+          <span class="num">02</span>
+          <span style="font-size:2rem; color:#e8c96d; letter-spacing:0.3em; font-family:'Playfair Display',serif;">LUXE</span>
+        </div>
+        <div class="card-body">
+          <div class="card-tag">Format 02</div>
+          <div class="card-title">Dark Luxury</div>
+          <div class="card-desc">Black obsidian backgrounds, gold leaf details, and couture at the intersection of night and wealth.</div>
+        </div>
+        <div class="card-footer">
+          <span>Dark · Gold · Opulent</span>
+          <div class="card-arrow">→</div>
+        </div>
+      </a>
+
+      <a href="03-magazine.html" class="card">
+        <div class="card-visual v3">
+          <span class="num">03</span>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;width:80px;height:60px;">
+            <div style="background:rgba(255,255,255,0.15);border-radius:3px;"></div>
+            <div style="background:rgba(255,255,255,0.3);border-radius:3px;"></div>
+            <div style="background:rgba(255,255,255,0.3);border-radius:3px;grid-column:span 2;"></div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-tag">Format 03</div>
+          <div class="card-title">Magazine Grid</div>
+          <div class="card-desc">Bold editorial grid layout inspired by Vogue and Harper's Bazaar — fashion journalism meets AI.</div>
+        </div>
+        <div class="card-footer">
+          <span>Bold · Editorial · Structured</span>
+          <div class="card-arrow">→</div>
+        </div>
+      </a>
+
+      <a href="04-cyberpunk.html" class="card">
+        <div class="card-visual v4">
+          <span class="num">04</span>
+          <span style="font-size:1.4rem; color:#00f5ff; text-shadow:0 0 20px #00f5ff, 0 0 40px #00f5ff; font-weight:700; letter-spacing:0.1em;">CYBER</span>
+        </div>
+        <div class="card-body">
+          <div class="card-tag">Format 04</div>
+          <div class="card-title">Futuristic Cyberpunk</div>
+          <div class="card-desc">Neon glows, glitch animations, and chrome textures. Fashion from 2077 delivered to your screen.</div>
+        </div>
+        <div class="card-footer">
+          <span>Neon · Glitch · Digital</span>
+          <div class="card-arrow">→</div>
+        </div>
+      </a>
+
+      <a href="05-y2k.html" class="card">
+        <div class="card-visual v5">
+          <span class="num" style="color:rgba(0,0,0,0.4);">05</span>
+          <span style="font-size:2rem; color:#fff; font-weight:900; text-shadow:3px 3px 0 #ff1493; letter-spacing:-0.02em;">Y2K ✿</span>
+        </div>
+        <div class="card-body">
+          <div class="card-tag">Format 05</div>
+          <div class="card-title">Retro Y2K</div>
+          <div class="card-desc">Butterfly clips, bubblegum pinks, and early-internet energy — nostalgia weaponized into style.</div>
+        </div>
+        <div class="card-footer">
+          <span>Playful · Nostalgic · Bold</span>
+          <div class="card-arrow">→</div>
+        </div>
+      </a>
+
+      <a href="06-social-feed.html" class="card">
+        <div class="card-visual v6">
+          <span class="num">06</span>
+          <div style="width:60px; background:#1e1e2e; border-radius:12px; padding:6px; display:flex; flex-direction:column; gap:4px;">
+            <div style="height:36px; background:rgba(255,255,255,0.1); border-radius:6px;"></div>
+            <div style="height:8px; background:rgba(255,255,255,0.15); border-radius:4px; width:70%;"></div>
+            <div style="height:6px; background:rgba(255,255,255,0.08); border-radius:4px; width:50%;"></div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-tag">Format 06</div>
+          <div class="card-title">Social Feed</div>
+          <div class="card-desc">Swipeable outfit cards, like buttons, and AI style commentary — fashion as infinite scroll.</div>
+        </div>
+        <div class="card-footer">
+          <span>Social · Swipeable · Fresh</span>
+          <div class="card-arrow">→</div>
+        </div>
+      </a>
+
+      <a href="07-lookbook.html" class="card">
+        <div class="card-visual v7">
+          <span class="num">07</span>
+          <span style="font-size:1rem; color:rgba(255,255,255,0.6); letter-spacing:0.4em; text-transform:uppercase;">LOOK</span>
+        </div>
+        <div class="card-body">
+          <div class="card-tag">Format 07</div>
+          <div class="card-title">Lookbook Fullscreen</div>
+          <div class="card-desc">Cinematic, full-bleed imagery with typographic overlays. A visual editorial with no distractions.</div>
+        </div>
+        <div class="card-footer">
+          <span>Cinematic · Immersive · Art</span>
+          <div class="card-arrow">→</div>
+        </div>
+      </a>
+
+      <a href="08-eco.html" class="card">
+        <div class="card-visual v7" style="background: linear-gradient(135deg, #1a2e1a 0%, #2d4a1e 100%);">
+          <span class="num">08</span>
+          <span style="font-size:2.5rem;">🌿</span>
+        </div>
+        <div class="card-body">
+          <div class="card-tag">Format 08</div>
+          <div class="card-title">Eco & Sustainable</div>
+          <div class="card-desc">Earthy palettes, organic textures, and AI that calculates your wardrobe's carbon footprint.</div>
+        </div>
+        <div class="card-footer">
+          <span>Earth · Conscious · Natural</span>
+          <div class="card-arrow">→</div>
+        </div>
+      </a>
+
+      <a href="09-avant-garde.html" class="card">
+        <div class="card-visual" style="background: linear-gradient(135deg, #1a0a2e 0%, #2e0a1a 100%); position:relative; overflow:hidden;">
+          <span class="num">09</span>
+          <div style="position:absolute; width:120px; height:120px; background:rgba(200,0,200,0.2); border-radius:50%; top:-20px; right:-20px;"></div>
+          <div style="position:absolute; width:80px; height:80px; background:rgba(0,200,200,0.15); transform:rotate(45deg); bottom:-10px; left:20px;"></div>
+          <span style="font-size:1.3rem; color:rgba(255,255,255,0.8); font-style:italic; font-family:'Playfair Display',serif; z-index:1;">avant</span>
+        </div>
+        <div class="card-body">
+          <div class="card-tag">Format 09</div>
+          <div class="card-title">Avant-Garde Artistic</div>
+          <div class="card-desc">Asymmetric layouts, deconstructed UI, and fashion as pure conceptual art. Expect the unexpected.</div>
+        </div>
+        <div class="card-footer">
+          <span>Experimental · Asymmetric · Art</span>
+          <div class="card-arrow">→</div>
+        </div>
+      </a>
+
+      <a href="10-techwear.html" class="card">
+        <div class="card-visual v10">
+          <span class="num">10</span>
+          <div style="font-family:monospace; font-size:0.65rem; color:#00ff41; text-align:left; line-height:1.6; opacity:0.8;">
+            <div>AI_STYLE v2.4.1</div>
+            <div>SCAN: <span style="color:#fff">ACTIVE</span></div>
+            <div>FIT: <span style="color:#ffff00">OPTIMIZING</span></div>
+            <div>OUTPUT: <span style="color:#00f5ff">READY</span></div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-tag">Format 10</div>
+          <div class="card-title">AI Techwear Dashboard</div>
+          <div class="card-desc">Dark data UI, system readouts, and wearable tech specs. Fashion meets the command line.</div>
+        </div>
+        <div class="card-footer">
+          <span>Data · Terminal · Tactical</span>
+          <div class="card-arrow">→</div>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <footer>
+    <p>AI Fashion Universe &mdash; <span>10 worlds, one vision</span></p>
+    <p style="margin-top:0.5rem; font-size:0.75rem;">Built with pure HTML & CSS · No frameworks needed</p>
+  </footer>
+
+</body>
+</html>

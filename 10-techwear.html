@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SYS.WEAR — AI Techwear Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --bg: #040608; --panel: #080c10; --panel2: #0c1218; --border: rgba(0,200,100,0.12); --green: #00c864; --cyan: #00b4d8; --amber: #ffb703; --red: #ef233c; --text: #a8c8b8; --dim: rgba(168,200,184,0.4); }
+    body { background: var(--bg); color: var(--text); font-family: 'Rajdhani', sans-serif; overflow-x: hidden; font-size: 14px; }
+    code, .mono { font-family: 'Share Tech Mono', monospace; }
+
+    /* Top bar */
+    .topbar { background: var(--panel); border-bottom: 1px solid var(--border); padding: 0.5rem 1.5rem; display: flex; align-items: center; justify-content: space-between; font-family: 'Share Tech Mono', monospace; font-size: 0.65rem; }
+    .tb-left { display: flex; align-items: center; gap: 2rem; color: var(--dim); }
+    .tb-status { color: var(--green); }
+    .tb-status::before { content: '● '; }
+    .tb-right { display: flex; align-items: center; gap: 2rem; }
+    .tb-item { color: var(--dim); }
+    .tb-item span { color: var(--text); }
+    .tb-time { color: var(--green); }
+    .back-link { color: var(--cyan); text-decoration: none; letter-spacing: 0.1em; }
+    .back-link:hover { color: var(--text); }
+
+    /* Main nav */
+    nav { background: var(--panel2); border-bottom: 1px solid var(--border); padding: 0 1.5rem; display: flex; align-items: center; gap: 0; }
+    .nav-tab { padding: 0.85rem 1.5rem; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; color: var(--dim); border-bottom: 2px solid transparent; transition: all 0.2s; display: flex; align-items: center; gap: 0.5rem; }
+    .nav-tab.active { color: var(--green); border-bottom-color: var(--green); }
+    .nav-tab:hover { color: var(--text); }
+    .nav-tab .badge { background: var(--green); color: #000; font-size: 0.55rem; font-weight: 700; padding: 0.1rem 0.4rem; border-radius: 3px; }
+
+    /* Layout */
+    .layout { display: grid; grid-template-columns: 240px 1fr 280px; height: calc(100vh - 80px); overflow: hidden; }
+
+    /* Left panel */
+    .panel-left { background: var(--panel); border-right: 1px solid var(--border); overflow-y: auto; display: flex; flex-direction: column; }
+    .pl-section { border-bottom: 1px solid var(--border); }
+    .pl-header { padding: 0.75rem 1rem; display: flex; align-items: center; gap: 0.5rem; }
+    .pl-header-text { font-family: 'Share Tech Mono', monospace; font-size: 0.6rem; color: var(--dim); letter-spacing: 0.1em; }
+    .pl-item { padding: 0.6rem 1rem; display: flex; align-items: center; gap: 0.75rem; cursor: pointer; transition: background 0.15s; }
+    .pl-item:hover, .pl-item.active { background: rgba(0,200,100,0.06); }
+    .pl-item.active .pl-name { color: var(--green); }
+    .pl-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+    .dot-green { background: var(--green); box-shadow: 0 0 6px var(--green); }
+    .dot-cyan { background: var(--cyan); }
+    .dot-amber { background: var(--amber); }
+    .dot-red { background: var(--red); }
+    .dot-dim { background: rgba(168,200,184,0.2); }
+    .pl-name { font-size: 0.8rem; font-weight: 500; flex: 1; }
+    .pl-val { font-family: 'Share Tech Mono', monospace; font-size: 0.65rem; color: var(--dim); }
+
+    /* Mini chart */
+    .mini-chart { padding: 1rem; }
+    .mc-label { font-family: 'Share Tech Mono', monospace; font-size: 0.55rem; color: var(--dim); margin-bottom: 0.5rem; letter-spacing: 0.1em; }
+    .mc-bars { display: flex; align-items: flex-end; gap: 3px; height: 40px; }
+    .mc-bar { flex: 1; background: rgba(0,200,100,0.15); border-radius: 2px 2px 0 0; transition: background 0.15s; }
+    .mc-bar:hover { background: rgba(0,200,100,0.4); }
+    .mc-bar.peak { background: var(--green); }
+
+    /* Main content */
+    .main { overflow-y: auto; padding: 1.5rem; display: flex; flex-direction: column; gap: 1.5rem; background: var(--bg); }
+
+    /* Stats row */
+    .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); }
+    .stat-box { background: var(--panel2); padding: 1.25rem 1.5rem; }
+    .sb-label { font-family: 'Share Tech Mono', monospace; font-size: 0.55rem; color: var(--dim); letter-spacing: 0.1em; margin-bottom: 0.5rem; text-transform: uppercase; }
+    .sb-val { font-size: 1.8rem; font-weight: 700; line-height: 1; margin-bottom: 0.25rem; }
+    .sb-val.green { color: var(--green); }
+    .sb-val.cyan { color: var(--cyan); }
+    .sb-val.amber { color: var(--amber); }
+    .sb-val.red { color: var(--red); }
+    .sb-change { font-family: 'Share Tech Mono', monospace; font-size: 0.6rem; }
+    .up { color: var(--green); }
+    .down { color: var(--red); }
+
+    /* Items table */
+    .table-panel { background: var(--panel2); border: 1px solid var(--border); }
+    .tp-header { padding: 0.85rem 1.25rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .tp-title { font-family: 'Share Tech Mono', monospace; font-size: 0.65rem; color: var(--dim); letter-spacing: 0.1em; }
+    .tp-actions { display: flex; gap: 0.5rem; }
+    .tp-btn { padding: 0.25rem 0.75rem; border: 1px solid var(--border); background: none; color: var(--dim); font-family: 'Share Tech Mono', monospace; font-size: 0.55rem; cursor: pointer; transition: all 0.15s; letter-spacing: 0.08em; }
+    .tp-btn:hover, .tp-btn.active { border-color: var(--green); color: var(--green); }
+    .table { width: 100%; border-collapse: collapse; }
+    .th { padding: 0.6rem 1.25rem; text-align: left; font-family: 'Share Tech Mono', monospace; font-size: 0.55rem; color: var(--dim); letter-spacing: 0.1em; text-transform: uppercase; border-bottom: 1px solid var(--border); background: rgba(0,200,100,0.03); }
+    .td { padding: 0.75rem 1.25rem; border-bottom: 1px solid rgba(0,200,100,0.06); font-size: 0.82rem; }
+    tr:last-child .td { border-bottom: none; }
+    tr:hover .td { background: rgba(0,200,100,0.04); }
+    .td-name { font-weight: 600; color: var(--text); }
+    .td-id { font-family: 'Share Tech Mono', monospace; font-size: 0.6rem; color: var(--dim); }
+    .tag { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 3px; font-family: 'Share Tech Mono', monospace; font-size: 0.55rem; font-weight: 700; }
+    .tag-g { background: rgba(0,200,100,0.15); color: var(--green); }
+    .tag-c { background: rgba(0,180,216,0.15); color: var(--cyan); }
+    .tag-a { background: rgba(255,183,3,0.15); color: var(--amber); }
+    .tag-r { background: rgba(239,35,60,0.15); color: var(--red); }
+    .progress-cell { display: flex; align-items: center; gap: 0.75rem; }
+    .prog-bar { flex: 1; height: 4px; background: rgba(168,200,184,0.1); border-radius: 2px; overflow: hidden; }
+    .prog-fill { height: 100%; border-radius: 2px; }
+    .pf-g { background: var(--green); }
+    .pf-c { background: var(--cyan); }
+    .pf-a { background: var(--amber); }
+    .prog-val { font-family: 'Share Tech Mono', monospace; font-size: 0.6rem; color: var(--dim); width: 35px; text-align: right; }
+
+    /* Activity Feed */
+    .activity { background: var(--panel2); border: 1px solid var(--border); }
+    .activity-body { padding: 0; }
+    .act-item { padding: 0.7rem 1.25rem; border-bottom: 1px solid rgba(0,200,100,0.06); display: flex; align-items: flex-start; gap: 1rem; }
+    .act-item:last-child { border-bottom: none; }
+    .act-time { font-family: 'Share Tech Mono', monospace; font-size: 0.55rem; color: var(--dim); width: 55px; flex-shrink: 0; padding-top: 2px; }
+    .act-icon { width: 20px; height: 20px; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; flex-shrink: 0; }
+    .ai-g { background: rgba(0,200,100,0.15); }
+    .ai-c { background: rgba(0,180,216,0.15); }
+    .ai-a { background: rgba(255,183,3,0.15); }
+    .act-text { font-size: 0.78rem; line-height: 1.5; }
+    .act-text strong { color: var(--text); font-weight: 600; }
+    .act-text .hl { font-family: 'Share Tech Mono', monospace; font-size: 0.7rem; }
+    .hl-g { color: var(--green); }
+    .hl-c { color: var(--cyan); }
+
+    /* Right panel */
+    .panel-right { background: var(--panel); border-left: 1px solid var(--border); overflow-y: auto; display: flex; flex-direction: column; }
+    .pr-section { border-bottom: 1px solid var(--border); padding: 1rem; }
+    .pr-title { font-family: 'Share Tech Mono', monospace; font-size: 0.6rem; color: var(--dim); letter-spacing: 0.1em; margin-bottom: 1rem; }
+
+    /* Donut */
+    .donut-wrap { display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+    .donut { width: 100px; height: 100px; border-radius: 50%; background: conic-gradient(var(--green) 0% 42%, var(--cyan) 42% 65%, var(--amber) 65% 80%, rgba(168,200,184,0.1) 80% 100%); display: flex; align-items: center; justify-content: center; position: relative; }
+    .donut::after { content: ''; position: absolute; width: 60px; height: 60px; border-radius: 50%; background: var(--panel); }
+    .donut-val { font-family: 'Share Tech Mono', monospace; font-size: 0.7rem; color: var(--green); z-index: 1; }
+    .donut-legend { display: flex; flex-direction: column; gap: 0.4rem; width: 100%; }
+    .dl-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; }
+    .dl-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+
+    /* AI recommendation */
+    .ai-rec { font-family: 'Share Tech Mono', monospace; font-size: 0.65rem; line-height: 1.8; background: rgba(0,200,100,0.04); border: 1px solid rgba(0,200,100,0.15); padding: 1rem; border-radius: 3px; }
+    .ar-prompt { color: var(--green); margin-bottom: 0.5rem; }
+    .ar-text { color: var(--dim); }
+    .ar-output { color: var(--text); margin-top: 0.5rem; }
+    .ar-cursor { display: inline-block; width: 6px; height: 10px; background: var(--green); animation: blink 1s step-end infinite; vertical-align: middle; }
+    @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0;} }
+
+    /* Gauges */
+    .gauges { display: flex; flex-direction: column; gap: 0.75rem; }
+    .gauge-row { display: flex; flex-direction: column; gap: 0.25rem; }
+    .gr-label { display: flex; justify-content: space-between; font-size: 0.72rem; }
+    .gr-name { color: var(--dim); }
+    .gr-val { font-family: 'Share Tech Mono', monospace; font-size: 0.6rem; }
+    .gr-bar { height: 4px; background: rgba(168,200,184,0.08); border-radius: 2px; overflow: hidden; }
+    .gr-fill { height: 100%; border-radius: 2px; }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="tb-left">
+      <span class="mono">SYS.WEAR // v4.2.1</span>
+      <span class="tb-status">ALL_SYSTEMS_NOMINAL</span>
+      <span class="tb-item">NODE: <span>FASHION_AI_CORE</span></span>
+    </div>
+    <div class="tb-right">
+      <span class="tb-item">USER: <span>ghost_protocol</span></span>
+      <span class="tb-item">SESSION: <span>0x4F2A</span></span>
+      <span class="tb-time mono" id="clock">--:--:--</span>
+      <a href="index.html" class="back-link mono">← ALL_FORMATS</a>
+    </div>
+  </div>
+
+  <nav>
+    <a href="#" class="nav-tab active">⚡ Dashboard</a>
+    <a href="#" class="nav-tab">👗 Inventory <span class="badge">48</span></a>
+    <a href="#" class="nav-tab">🤖 AI Engine</a>
+    <a href="#" class="nav-tab">📊 Analytics</a>
+    <a href="#" class="nav-tab">🔬 Lab</a>
+    <a href="#" class="nav-tab">⚙️ Config</a>
+  </nav>
+
+  <div class="layout">
+
+    <!-- Left Panel -->
+    <div class="panel-left">
+      <div class="pl-section">
+        <div class="pl-header"><span class="pl-header-text">// STYLE_PROFILES</span></div>
+        <div class="pl-item active">
+          <div class="pl-dot dot-green"></div>
+          <span class="pl-name">My_Profile</span>
+          <span class="pl-val">97%</span>
+        </div>
+        <div class="pl-item">
+          <div class="pl-dot dot-cyan"></div>
+          <span class="pl-name">Work_Mode</span>
+          <span class="pl-val">84%</span>
+        </div>
+        <div class="pl-item">
+          <div class="pl-dot dot-amber"></div>
+          <span class="pl-name">Weekend</span>
+          <span class="pl-val">91%</span>
+        </div>
+        <div class="pl-item">
+          <div class="pl-dot dot-dim"></div>
+          <span class="pl-name">Formal</span>
+          <span class="pl-val">73%</span>
+        </div>
+      </div>
+      <div class="pl-section">
+        <div class="pl-header"><span class="pl-header-text">// TREND_SIGNALS</span></div>
+        <div class="pl-item">
+          <div class="pl-dot dot-green"></div>
+          <span class="pl-name">Utility Tech</span>
+          <span class="pl-val">+34%</span>
+        </div>
+        <div class="pl-item">
+          <div class="pl-dot dot-green"></div>
+          <span class="pl-name">Quiet Luxury</span>
+          <span class="pl-val">+28%</span>
+        </div>
+        <div class="pl-item">
+          <div class="pl-dot dot-cyan"></div>
+          <span class="pl-name">Neo-Minimal</span>
+          <span class="pl-val">+19%</span>
+        </div>
+        <div class="pl-item">
+          <div class="pl-dot dot-amber"></div>
+          <span class="pl-name">Y2K Revival</span>
+          <span class="pl-val">+12%</span>
+        </div>
+        <div class="pl-item">
+          <div class="pl-dot dot-red"></div>
+          <span class="pl-name">Maximalism</span>
+          <span class="pl-val">-8%</span>
+        </div>
+      </div>
+      <div class="mini-chart">
+        <div class="mc-label">// STYLE_MATCH_SCORE_7D</div>
+        <div class="mc-bars">
+          <div class="mc-bar" style="height:40%"></div>
+          <div class="mc-bar" style="height:55%"></div>
+          <div class="mc-bar" style="height:48%"></div>
+          <div class="mc-bar" style="height:70%"></div>
+          <div class="mc-bar" style="height:62%"></div>
+          <div class="mc-bar" style="height:85%"></div>
+          <div class="mc-bar peak" style="height:97%"></div>
+        </div>
+      </div>
+      <div class="pl-section">
+        <div class="pl-header"><span class="pl-header-text">// WARDROBE_STATUS</span></div>
+        <div class="pl-item">
+          <div class="pl-dot dot-green"></div>
+          <span class="pl-name">Active Items</span>
+          <span class="pl-val">48</span>
+        </div>
+        <div class="pl-item">
+          <div class="pl-dot dot-amber"></div>
+          <span class="pl-name">Underused</span>
+          <span class="pl-val">7</span>
+        </div>
+        <div class="pl-item">
+          <div class="pl-dot dot-red"></div>
+          <span class="pl-name">Flagged</span>
+          <span class="pl-val">2</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main -->
+    <div class="main">
+
+      <div class="stats-row">
+        <div class="stat-box">
+          <div class="sb-label">// STYLE_SCORE</div>
+          <div class="sb-val green">97.3</div>
+          <div class="sb-change"><span class="up">▲ +2.1</span> vs yesterday</div>
+        </div>
+        <div class="stat-box">
+          <div class="sb-label">// OUTFITS_GENERATED</div>
+          <div class="sb-val cyan">2,847</div>
+          <div class="sb-change"><span class="up">▲ +143</span> this week</div>
+        </div>
+        <div class="stat-box">
+          <div class="sb-label">// ECO_RATING</div>
+          <div class="sb-val amber">A+</div>
+          <div class="sb-change"><span class="up">▲ Improved</span> from A</div>
+        </div>
+        <div class="stat-box">
+          <div class="sb-label">// PENDING_RECS</div>
+          <div class="sb-val red">4</div>
+          <div class="sb-change"><span class="down">● Action required</span></div>
+        </div>
+      </div>
+
+      <div class="table-panel">
+        <div class="tp-header">
+          <span class="tp-title">// RECOMMENDED_ITEMS</span>
+          <div class="tp-actions">
+            <button class="tp-btn active">ALL</button>
+            <button class="tp-btn">NEW</button>
+            <button class="tp-btn">FLAGGED</button>
+          </div>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th class="th">ITEM_ID</th>
+              <th class="th">DESIGNATION</th>
+              <th class="th">CATEGORY</th>
+              <th class="th">STATUS</th>
+              <th class="th">MATCH_SCORE</th>
+              <th class="th">PRICE</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="td"><span class="td-id">WRN-0042</span></td>
+              <td class="td"><span class="td-name">Technical Field Jacket</span></td>
+              <td class="td"><span class="tag tag-g">OUTER</span></td>
+              <td class="td"><span class="tag tag-g">RECOMMENDED</span></td>
+              <td class="td">
+                <div class="progress-cell">
+                  <div class="prog-bar"><div class="prog-fill pf-g" style="width:97%"></div></div>
+                  <span class="prog-val">97%</span>
+                </div>
+              </td>
+              <td class="td mono">$380</td>
+            </tr>
+            <tr>
+              <td class="td"><span class="td-id">WRN-0078</span></td>
+              <td class="td"><span class="td-name">Utility Cargo — Graphite</span></td>
+              <td class="td"><span class="tag tag-c">LOWER</span></td>
+              <td class="td"><span class="tag tag-g">RECOMMENDED</span></td>
+              <td class="td">
+                <div class="progress-cell">
+                  <div class="prog-bar"><div class="prog-fill pf-g" style="width:94%"></div></div>
+                  <span class="prog-val">94%</span>
+                </div>
+              </td>
+              <td class="td mono">$165</td>
+            </tr>
+            <tr>
+              <td class="td"><span class="td-id">WRN-0031</span></td>
+              <td class="td"><span class="td-name">Merino Layer Top</span></td>
+              <td class="td"><span class="tag tag-a">UPPER</span></td>
+              <td class="td"><span class="tag tag-c">PROCESSING</span></td>
+              <td class="td">
+                <div class="progress-cell">
+                  <div class="prog-bar"><div class="prog-fill pf-c" style="width:87%"></div></div>
+                  <span class="prog-val">87%</span>
+                </div>
+              </td>
+              <td class="td mono">$120</td>
+            </tr>
+            <tr>
+              <td class="td"><span class="td-id">WRN-0091</span></td>
+              <td class="td"><span class="td-name">Waterproof Shell Pants</span></td>
+              <td class="td"><span class="tag tag-c">LOWER</span></td>
+              <td class="td"><span class="tag tag-a">REVIEW</span></td>
+              <td class="td">
+                <div class="progress-cell">
+                  <div class="prog-bar"><div class="prog-fill pf-a" style="width:74%"></div></div>
+                  <span class="prog-val">74%</span>
+                </div>
+              </td>
+              <td class="td mono">$290</td>
+            </tr>
+            <tr>
+              <td class="td"><span class="td-id">WRN-0055</span></td>
+              <td class="td"><span class="td-name">Tactical Sneaker — Black</span></td>
+              <td class="td"><span class="tag tag-g">FOOT</span></td>
+              <td class="td"><span class="tag tag-g">RECOMMENDED</span></td>
+              <td class="td">
+                <div class="progress-cell">
+                  <div class="prog-bar"><div class="prog-fill pf-g" style="width:91%"></div></div>
+                  <span class="prog-val">91%</span>
+                </div>
+              </td>
+              <td class="td mono">$240</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="activity">
+        <div class="tp-header">
+          <span class="tp-title">// AI_ACTIVITY_LOG</span>
+          <div class="tp-actions"><button class="tp-btn active">LIVE</button></div>
+        </div>
+        <div class="activity-body">
+          <div class="act-item">
+            <span class="act-time">09:42:18</span>
+            <div class="act-icon ai-g">🤖</div>
+            <div class="act-text">AI Engine generated <strong>3 new outfit matrices</strong> based on updated weather data. Match confidence: <span class="hl hl-g">97.3%</span></div>
+          </div>
+          <div class="act-item">
+            <span class="act-time">09:38:54</span>
+            <div class="act-icon ai-c">📊</div>
+            <div class="act-text">Trend signal updated: <strong>Utility Techwear</strong> +34% momentum detected across 847 data sources. <span class="hl hl-c">Wardrobe alignment: HIGH</span></div>
+          </div>
+          <div class="act-item">
+            <span class="act-time">09:21:07</span>
+            <div class="act-icon ai-a">⚡</div>
+            <div class="act-text">Item <span class="hl hl-g">WRN-0042</span> flagged for purchase recommendation. Carbon footprint score: <strong>A+</strong>. Price within budget parameters.</div>
+          </div>
+          <div class="act-item">
+            <span class="act-time">08:55:33</span>
+            <div class="act-icon ai-g">🔬</div>
+            <div class="act-text">Style profile recalibration complete. <strong>4 new preference vectors</strong> identified from recent browsing behaviour.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right Panel -->
+    <div class="panel-right">
+      <div class="pr-section">
+        <div class="pr-title">// WARDROBE_COMPOSITION</div>
+        <div class="donut-wrap">
+          <div class="donut"><span class="donut-val">48</span></div>
+          <div class="donut-legend">
+            <div class="dl-item"><div class="dl-dot" style="background:var(--green)"></div><span>Outerwear (42%)</span></div>
+            <div class="dl-item"><div class="dl-dot" style="background:var(--cyan)"></div><span>Tops (23%)</span></div>
+            <div class="dl-item"><div class="dl-dot" style="background:var(--amber)"></div><span>Bottoms (15%)</span></div>
+            <div class="dl-item"><div class="dl-dot" style="background:rgba(168,200,184,0.2)"></div><span>Other (20%)</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pr-section">
+        <div class="pr-title">// AI_STYLIST</div>
+        <div class="ai-rec">
+          <div class="ar-prompt">› analyze.today_outfit()</div>
+          <div class="ar-text">Processing weather: 12°C overcast...</div>
+          <div class="ar-text">Scanning wardrobe inventory...</div>
+          <div class="ar-output">
+            ✓ TECH FIELD LAYER<br/>
+            ✓ GRAPHITE CARGO<br/>
+            ✓ TACTICAL SNEAKER<br/>
+            ✓ Confidence: 94.8%
+          </div>
+          <div class="ar-text">Ready <span class="ar-cursor"></span></div>
+        </div>
+      </div>
+
+      <div class="pr-section">
+        <div class="pr-title">// PERFORMANCE_GAUGES</div>
+        <div class="gauges">
+          <div class="gauge-row">
+            <div class="gr-label"><span class="gr-name">Style Coherence</span><span class="gr-val green">97%</span></div>
+            <div class="gr-bar"><div class="gr-fill" style="width:97%;background:var(--green);"></div></div>
+          </div>
+          <div class="gauge-row">
+            <div class="gr-label"><span class="gr-name">Eco Score</span><span class="gr-val cyan">A+</span></div>
+            <div class="gr-bar"><div class="gr-fill" style="width:92%;background:var(--cyan);"></div></div>
+          </div>
+          <div class="gauge-row">
+            <div class="gr-label"><span class="gr-name">Budget Utilization</span><span class="gr-val amber">73%</span></div>
+            <div class="gr-bar"><div class="gr-fill" style="width:73%;background:var(--amber);"></div></div>
+          </div>
+          <div class="gauge-row">
+            <div class="gr-label"><span class="gr-name">Trend Alignment</span><span class="gr-val green">89%</span></div>
+            <div class="gr-bar"><div class="gr-fill" style="width:89%;background:var(--green);"></div></div>
+          </div>
+          <div class="gauge-row">
+            <div class="gr-label"><span class="gr-name">Wardrobe Utilization</span><span class="gr-val cyan">84%</span></div>
+            <div class="gr-bar"><div class="gr-fill" style="width:84%;background:var(--cyan);"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Live clock
+    function updateClock() {
+      const now = new Date();
+      document.getElementById('clock').textContent = now.toTimeString().slice(0,8);
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+  </script>
+
+</body>
+</html>

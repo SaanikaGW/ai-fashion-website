@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>VOLT — Magazine</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,700;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #f2f0eb; color: #111; font-family: 'Inter', sans-serif; }
+
+    /* Masthead */
+    .masthead { background: #111; color: #fff; padding: 0.6rem 2rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; }
+    .masthead a { color: rgba(255,255,255,0.5); text-decoration: none; }
+    .masthead a:hover { color: #fff; }
+
+    nav { background: #f2f0eb; border-bottom: 2px solid #111; display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; }
+    .nav-left { display: flex; gap: 0; }
+    .nav-left a { padding: 1rem 1.2rem; font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; color: #111; border-right: 1px solid #ddd; transition: background 0.2s; }
+    .nav-left a:hover { background: #111; color: #fff; }
+    .nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 3rem; letter-spacing: 0.05em; line-height: 1; padding: 0.5rem 0; }
+    .nav-right { display: flex; gap: 0; }
+    .nav-right a { padding: 1rem 1.2rem; font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; color: #111; border-left: 1px solid #ddd; transition: background 0.2s; }
+    .nav-right a:hover { background: #111; color: #fff; }
+
+    /* Cover Story */
+    .cover { display: grid; grid-template-columns: 2fr 1fr; min-height: 80vh; border-bottom: 2px solid #111; }
+    .cover-main { position: relative; background: #1a1a1a; overflow: hidden; display: flex; align-items: flex-end; padding: 3rem; }
+    .cover-bg { position: absolute; inset: 0; background: linear-gradient(160deg, #1a1200 0%, #2d1f0a 50%, #0d0d0d 100%); }
+    .cover-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.2) 60%, transparent 100%); }
+    .cover-content { position: relative; z-index: 1; }
+    .cover-label { display: inline-block; background: #e63c2f; color: #fff; font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; padding: 0.25rem 0.75rem; margin-bottom: 1.5rem; }
+    .cover-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3rem, 7vw, 7rem); color: #fff; line-height: 0.9; margin-bottom: 1.5rem; letter-spacing: 0.02em; }
+    .cover-deck { font-size: 1rem; color: rgba(255,255,255,0.7); max-width: 400px; line-height: 1.6; margin-bottom: 1.5rem; font-style: italic; font-family: 'Playfair Display', serif; }
+    .cover-byline { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.5); }
+    .cover-sidebar { border-left: 2px solid #111; display: flex; flex-direction: column; }
+    .sidebar-item { padding: 2rem; border-bottom: 1px solid #ddd; flex: 1; display: flex; flex-direction: column; justify-content: flex-end; position: relative; overflow: hidden; }
+    .sidebar-item .sb-bg { position: absolute; inset: 0; opacity: 0.3; }
+    .sb-bg-a { background: linear-gradient(135deg, #c9a84c, #8b6914); }
+    .sb-bg-b { background: linear-gradient(135deg, #2d4a1e, #1a2e1a); }
+    .sb-bg-c { background: linear-gradient(135deg, #1a1a2e, #2d1b69); }
+    .sb-cat { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: #e63c2f; margin-bottom: 0.5rem; position: relative; z-index: 1; }
+    .sb-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; line-height: 1.3; position: relative; z-index: 1; }
+    .sb-teaser { font-size: 0.75rem; color: #555; margin-top: 0.5rem; line-height: 1.5; position: relative; z-index: 1; }
+
+    /* Ticker */
+    .ticker { background: #e63c2f; color: #fff; padding: 0.6rem 0; overflow: hidden; white-space: nowrap; font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; }
+    .ticker-inner { display: inline-block; animation: ticker 20s linear infinite; }
+    @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    .tick-sep { margin: 0 2rem; opacity: 0.5; }
+
+    /* Feature Grid */
+    .features { padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 2px solid #111; }
+    .feat { padding: 2.5rem 2rem; border-right: 1px solid #ddd; }
+    .feat:last-child { border-right: none; }
+    .feat-num { font-family: 'Bebas Neue', sans-serif; font-size: 4rem; color: #ddd; line-height: 1; margin-bottom: 0.5rem; }
+    .feat-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.75rem; }
+    .feat-body { font-size: 0.8rem; line-height: 1.7; color: #555; }
+
+    /* Editorial Grid */
+    .editorial { padding: 3rem 2rem; }
+    .ed-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 2rem; border-bottom: 2px solid #111; padding-bottom: 1rem; }
+    .ed-title { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; letter-spacing: 0.05em; }
+    .ed-more { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; text-decoration: none; color: #e63c2f; }
+    .ed-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2rem; }
+    .ed-card { border-bottom: 1px solid #ddd; padding-bottom: 1.5rem; }
+    .ed-swatch { aspect-ratio: 16/9; margin-bottom: 1rem; }
+    .es-a { background: linear-gradient(135deg, #ff6eb4, #ffb347); }
+    .es-b { background: linear-gradient(135deg, #667eea, #764ba2); }
+    .es-c { background: linear-gradient(135deg, #0d1f0d, #2d4a1e); }
+    .ed-cat { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: #e63c2f; margin-bottom: 0.5rem; }
+    .ed-card-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .ed-card-body { font-size: 0.8rem; line-height: 1.6; color: #555; }
+
+    /* Big Quote */
+    .big-quote { background: #111; color: #fff; padding: 5rem 6rem; text-align: center; }
+    .bq-text { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 3.5rem); font-style: italic; line-height: 1.3; max-width: 800px; margin: 0 auto 2rem; }
+    .bq-attr { font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: rgba(255,255,255,0.4); }
+
+    footer { background: #111; color: rgba(255,255,255,0.4); padding: 1.5rem 2rem; display: flex; justify-content: space-between; font-size: 0.7rem; letter-spacing: 0.1em; border-top: 3px solid #e63c2f; }
+    footer a { color: rgba(255,255,255,0.4); text-decoration: none; }
+    footer a:hover { color: #fff; }
+  </style>
+</head>
+<body>
+
+  <div class="masthead">
+    <span>Volume XII · Issue 04 · 2025</span>
+    <span>The AI Fashion Magazine</span>
+    <a href="index.html">← All Formats</a>
+  </div>
+
+  <nav>
+    <div class="nav-left">
+      <a href="#">Fashion</a>
+      <a href="#">Beauty</a>
+      <a href="#">Culture</a>
+    </div>
+    <div class="nav-logo">VOLT</div>
+    <div class="nav-right">
+      <a href="#">AI Lab</a>
+      <a href="#">Subscribe</a>
+      <a href="#">Shop</a>
+    </div>
+  </nav>
+
+  <section class="cover">
+    <div class="cover-main">
+      <div class="cover-bg"></div>
+      <div class="cover-overlay"></div>
+      <div class="cover-content">
+        <div class="cover-label">Cover Story</div>
+        <h1 class="cover-title">The Machine<br/>That Dresses<br/>The World</h1>
+        <p class="cover-deck">How artificial intelligence is quietly revolutionising every stitch, seam, and silhouette — and why the fashion industry will never be the same again.</p>
+        <div class="cover-byline">By Mia Fontaine · Photography by the VOLT AI Studio</div>
+      </div>
+    </div>
+    <div class="cover-sidebar">
+      <div class="sidebar-item">
+        <div class="sb-bg sb-bg-a"></div>
+        <div class="sb-cat">Trend Report</div>
+        <div class="sb-title">The 10 AI-Generated Looks You'll Actually Wear</div>
+        <div class="sb-teaser">Neural networks meet runway in this season's most surprising collection.</div>
+      </div>
+      <div class="sidebar-item">
+        <div class="sb-bg sb-bg-b"></div>
+        <div class="sb-cat">Sustainability</div>
+        <div class="sb-title">Dressing for Zero: AI's Role in Eliminating Fashion Waste</div>
+        <div class="sb-teaser">How predictive AI is building a fashion future with zero overproduction.</div>
+      </div>
+      <div class="sidebar-item">
+        <div class="sb-bg sb-bg-c"></div>
+        <div class="sb-cat">Interview</div>
+        <div class="sb-title">Inside the Algorithm: We Spoke to the AI Stylist</div>
+        <div class="sb-teaser">An exclusive conversation with the neural network changing how we shop.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="ticker">
+    <span class="ticker-inner">
+      AI STYLIST GOES MAINSTREAM &nbsp;<span class="tick-sep">◆</span>&nbsp; NEURAL NETWORKS ON THE RUNWAY &nbsp;<span class="tick-sep">◆</span>&nbsp; VOLT SPRING EDIT DROPS NOW &nbsp;<span class="tick-sep">◆</span>&nbsp; SUSTAINABLE FASHION POWERED BY AI &nbsp;<span class="tick-sep">◆</span>&nbsp; THE FUTURE OF PERSONALISED STYLE &nbsp;<span class="tick-sep">◆</span>&nbsp; AI STYLIST GOES MAINSTREAM &nbsp;<span class="tick-sep">◆</span>&nbsp; NEURAL NETWORKS ON THE RUNWAY &nbsp;<span class="tick-sep">◆</span>&nbsp; VOLT SPRING EDIT DROPS NOW &nbsp;<span class="tick-sep">◆</span>&nbsp; SUSTAINABLE FASHION POWERED BY AI &nbsp;<span class="tick-sep">◆</span>&nbsp; THE FUTURE OF PERSONALISED STYLE &nbsp;<span class="tick-sep">◆</span>&nbsp;
+    </span>
+  </div>
+
+  <div class="features">
+    <div class="feat">
+      <div class="feat-num">4M+</div>
+      <div class="feat-title">Outfits Analysed</div>
+      <div class="feat-body">Our AI has processed four million outfit combinations to understand what truly works for each body type.</div>
+    </div>
+    <div class="feat">
+      <div class="feat-num">98%</div>
+      <div class="feat-title">Fit Satisfaction</div>
+      <div class="feat-body">Members who follow VOLT AI recommendations report 98% satisfaction with how garments fit their bodies.</div>
+    </div>
+    <div class="feat">
+      <div class="feat-num">72h</div>
+      <div class="feat-title">Trend Prediction</div>
+      <div class="feat-body">VOLT AI predicts emerging micro-trends 72 hours before they surface on major fashion platforms.</div>
+    </div>
+    <div class="feat">
+      <div class="feat-num">0</div>
+      <div class="feat-title">Wasted Pieces</div>
+      <div class="feat-body">Our precision recommendation engine means you only buy what you'll actually wear — zero wardrobe regret.</div>
+    </div>
+  </div>
+
+  <section class="editorial">
+    <div class="ed-head">
+      <div class="ed-title">Latest Stories</div>
+      <a href="#" class="ed-more">All Stories →</a>
+    </div>
+    <div class="ed-grid">
+      <div class="ed-card">
+        <div class="ed-swatch es-a"></div>
+        <div class="ed-cat">AI Trends</div>
+        <div class="ed-card-title">The Colour Palettes AI Predicts Will Dominate 2026</div>
+        <div class="ed-card-body">Our neural colour engine has been crunching global trend data and the results are surprising — pastels are out, terracotta is eternal, and a new shade of blue is about to change everything.</div>
+      </div>
+      <div class="ed-card">
+        <div class="ed-swatch es-b"></div>
+        <div class="ed-cat">Interview</div>
+        <div class="ed-card-title">Meet the Designer Who Built Her Entire Collection with AI</div>
+        <div class="ed-card-body">Zara Okafor didn't sketch a single garment. Instead, she fed her emotional journal into a generative model and let the algorithm design the shapes her words created.</div>
+      </div>
+      <div class="ed-card">
+        <div class="ed-swatch es-c"></div>
+        <div class="ed-cat">Sustainability</div>
+        <div class="ed-card-title">How AI Is Teaching Fashion to Produce Only What Will Sell</div>
+        <div class="ed-card-body">Overproduction is fashion's dirty secret. But new demand-forecasting AI tools are promising to flip the industry's relationship with waste — for good.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="big-quote">
+    <div class="bq-text">"Fashion has always been about reading the future. Now the machine reads it faster."</div>
+    <div class="bq-attr">— VOLT Magazine, Issue 04</div>
+  </section>
+
+  <footer>
+    <span>© 2025 VOLT Magazine · AI Fashion Edition</span>
+    <span>VOLT · Fashion · Beauty · Culture · AI Lab</span>
+    <a href="index.html">← Back to Hub</a>
+  </footer>
+
+</body>
+</html>

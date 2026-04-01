@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TERRA — Eco & Sustainable AI Fashion</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --earth: #5c4a2a; --moss: #4a6741; --sage: #8aaa7a; --sand: #d4c4a0; --cream: #f5f0e8; --bark: #7a5c3a; --leaf: #6b8f5e; --sky: #a8c4d4; --border: rgba(92,74,42,0.15); }
+    body { background: var(--cream); color: var(--earth); font-family: 'Inter', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+    /* Texture overlay */
+    body::before { content: ''; position: fixed; inset: 0; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 0; }
+
+    nav { position: sticky; top: 0; z-index: 100; background: rgba(245,240,232,0.95); border-bottom: 1px solid var(--border); padding: 1.25rem 3rem; display: flex; align-items: center; justify-content: space-between; backdrop-filter: blur(10px); }
+    .logo { font-family: 'Lora', serif; font-size: 1.5rem; letter-spacing: 0.05em; color: var(--moss); }
+    .logo span { color: var(--earth); }
+    .nav-links { display: flex; gap: 2.5rem; }
+    .nav-links a { font-size: 0.8rem; letter-spacing: 0.1em; text-decoration: none; color: var(--earth); opacity: 0.6; transition: opacity 0.2s; }
+    .nav-links a:hover { opacity: 1; }
+    .nav-back { font-size: 0.75rem; text-decoration: none; color: var(--moss); }
+
+    /* Hero */
+    .hero { min-height: 90vh; display: grid; grid-template-columns: 1fr 1fr; align-items: center; padding: 5rem 4rem; gap: 5rem; position: relative; z-index: 1; }
+    .hero-left {}
+    .hero-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(74,103,65,0.12); border: 1px solid rgba(74,103,65,0.25); color: var(--moss); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.4rem 1rem; border-radius: 100px; margin-bottom: 2.5rem; }
+    .hero-badge::before { content: '🌿'; font-size: 0.9rem; }
+    .hero-title { font-family: 'Lora', serif; font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 1.15; color: var(--earth); margin-bottom: 1.5rem; }
+    .hero-title .italic { font-style: italic; color: var(--moss); }
+    .hero-body { font-size: 0.95rem; line-height: 1.9; color: rgba(92,74,42,0.65); max-width: 400px; margin-bottom: 3rem; }
+    .hero-actions { display: flex; gap: 1.5rem; align-items: center; }
+    .btn-earth { padding: 1rem 2.5rem; background: var(--moss); color: #fff; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; border-radius: 100px; transition: all 0.3s; display: inline-block; }
+    .btn-earth:hover { background: var(--earth); }
+    .btn-ghost { font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; color: var(--moss); border-bottom: 1px solid var(--moss); padding-bottom: 2px; }
+    .hero-right { display: grid; gap: 1.5rem; }
+    .score-card { background: var(--cream); border: 1px solid var(--border); border-radius: 20px; padding: 2rem; box-shadow: 0 4px 20px rgba(92,74,42,0.06); }
+    .sc-title { font-family: 'Lora', serif; font-size: 1rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem; }
+    .score-meter { display: flex; flex-direction: column; gap: 0.8rem; }
+    .meter-row { display: flex; align-items: center; gap: 1rem; }
+    .meter-label { font-size: 0.75rem; letter-spacing: 0.05em; width: 100px; flex-shrink: 0; color: var(--earth); opacity: 0.65; }
+    .meter-bar { flex: 1; height: 6px; background: rgba(92,74,42,0.1); border-radius: 100px; overflow: hidden; }
+    .meter-fill { height: 100%; border-radius: 100px; background: linear-gradient(90deg, var(--sage), var(--moss)); }
+    .meter-val { font-size: 0.75rem; font-weight: 500; width: 30px; text-align: right; color: var(--moss); }
+
+    /* Earth strip */
+    .earth-strip { background: var(--moss); color: rgba(255,255,255,0.7); padding: 1.2rem 4rem; display: flex; justify-content: space-around; align-items: center; position: relative; z-index: 1; }
+    .es-item { display: flex; align-items: center; gap: 0.75rem; font-size: 0.8rem; letter-spacing: 0.05em; }
+    .es-icon { font-size: 1.1rem; }
+
+    /* Impact Section */
+    .impact { padding: 6rem 4rem; position: relative; z-index: 1; }
+    .impact-label { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--sage); margin-bottom: 1rem; }
+    .impact-title { font-family: 'Lora', serif; font-size: clamp(2rem, 4vw, 3.5rem); color: var(--earth); margin-bottom: 1rem; }
+    .impact-title em { font-style: italic; color: var(--moss); }
+    .impact-sub { font-size: 0.95rem; color: rgba(92,74,42,0.6); max-width: 500px; margin-bottom: 4rem; line-height: 1.8; }
+    .impact-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+    .impact-card { background: linear-gradient(135deg, rgba(74,103,65,0.06), rgba(74,103,65,0.02)); border: 1px solid var(--border); border-radius: 20px; padding: 2rem; }
+    .ic-icon { font-size: 2rem; margin-bottom: 1rem; }
+    .ic-val { font-family: 'Lora', serif; font-size: 2.5rem; color: var(--moss); line-height: 1; margin-bottom: 0.5rem; }
+    .ic-label { font-size: 0.8rem; color: rgba(92,74,42,0.65); line-height: 1.5; }
+
+    /* Products */
+    .products { padding: 0 4rem 6rem; position: relative; z-index: 1; }
+    .prod-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 3rem; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem; }
+    .prod-title { font-family: 'Lora', serif; font-size: 2.5rem; }
+    .prod-more { font-size: 0.8rem; color: var(--moss); text-decoration: none; }
+    .prod-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+    .prod-card { background: #fff; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; transition: transform 0.3s, box-shadow 0.3s; }
+    .prod-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(92,74,42,0.1); }
+    .prod-swatch { aspect-ratio: 3/4; display: flex; align-items: center; justify-content: center; font-size: 3rem; position: relative; }
+    .ps-a { background: linear-gradient(160deg, #d4c4a0, #b0a080); }
+    .ps-b { background: linear-gradient(160deg, #c4d4b0, #90b080); }
+    .ps-c { background: linear-gradient(160deg, #c4b890, #a09060); }
+    .ps-d { background: linear-gradient(160deg, #b0c4c0, #80a0a0); }
+    .eco-badge { position: absolute; top: 1rem; left: 1rem; background: var(--moss); color: #fff; font-size: 0.6rem; font-weight: 500; padding: 0.2rem 0.6rem; border-radius: 100px; letter-spacing: 0.05em; }
+    .prod-info { padding: 1.25rem; }
+    .prod-material { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--sage); margin-bottom: 0.4rem; }
+    .prod-name { font-family: 'Lora', serif; font-size: 1rem; margin-bottom: 0.4rem; }
+    .prod-price-row { display: flex; align-items: center; justify-content: space-between; }
+    .prod-price { font-size: 0.9rem; color: var(--earth); font-weight: 500; }
+    .prod-co2 { font-size: 0.7rem; color: var(--sage); }
+
+    /* AI Section */
+    .ai { background: var(--earth); color: var(--cream); padding: 6rem 4rem; position: relative; z-index: 1; overflow: hidden; }
+    .ai::before { content: ''; position: absolute; inset: 0; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Ccircle cx='30' cy='30' r='1' fill='rgba(255,255,255,0.04)'/%3E%3C/svg%3E"); }
+    .ai-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; position: relative; z-index: 1; }
+    .ai-label { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--sage); margin-bottom: 1.5rem; }
+    .ai-title { font-family: 'Lora', serif; font-size: 3rem; font-weight: 400; line-height: 1.15; margin-bottom: 1.5rem; color: var(--cream); }
+    .ai-body { font-size: 0.95rem; line-height: 1.9; color: rgba(245,240,232,0.55); margin-bottom: 2.5rem; }
+    .btn-cream { padding: 1rem 2.5rem; border: 1px solid rgba(245,240,232,0.4); color: var(--cream); font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; border-radius: 100px; display: inline-block; transition: all 0.3s; }
+    .btn-cream:hover { background: var(--cream); color: var(--earth); }
+    .ai-features { display: grid; gap: 1.5rem; }
+    .ai-feat { border: 1px solid rgba(245,240,232,0.1); border-radius: 16px; padding: 1.5rem; display: flex; gap: 1rem; align-items: flex-start; }
+    .ai-feat-icon { font-size: 1.5rem; flex-shrink: 0; }
+    .ai-feat-title { font-family: 'Lora', serif; font-size: 1rem; margin-bottom: 0.3rem; }
+    .ai-feat-body { font-size: 0.8rem; color: rgba(245,240,232,0.45); line-height: 1.6; }
+
+    footer { background: var(--earth); border-top: 1px solid rgba(245,240,232,0.1); padding: 2rem 4rem; display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 1; }
+    .f-logo { font-family: 'Lora', serif; font-size: 1.3rem; color: var(--cream); letter-spacing: 0.05em; }
+    .f-copy { font-size: 0.75rem; color: rgba(245,240,232,0.4); }
+    footer a { color: rgba(245,240,232,0.4); text-decoration: none; font-size: 0.75rem; }
+    footer a:hover { color: var(--cream); }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="logo">TERRA<span>.</span></div>
+    <div class="nav-links">
+      <a href="#">Shop</a>
+      <a href="#">Our Materials</a>
+      <a href="#">AI Carbon Calc</a>
+      <a href="#">Community</a>
+    </div>
+    <a href="index.html" class="nav-back">← All Formats</a>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-left">
+      <div class="hero-badge">100% Sustainable AI Fashion</div>
+      <h1 class="hero-title">Fashion that<br/>loves the <span class="italic">planet</span><br/>as much as you</h1>
+      <p class="hero-body">AI-curated sustainable wardrobes. Every recommendation comes with a carbon footprint score, ethical sourcing data, and a fabric lifecycle report.</p>
+      <div class="hero-actions">
+        <a href="#" class="btn-earth">Start My Wardrobe</a>
+        <a href="#" class="btn-ghost">How it works</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="score-card">
+        <div class="sc-title">🌍 Your Wardrobe Eco Score</div>
+        <div class="score-meter">
+          <div class="meter-row">
+            <span class="meter-label">Carbon</span>
+            <div class="meter-bar"><div class="meter-fill" style="width:85%"></div></div>
+            <span class="meter-val">A</span>
+          </div>
+          <div class="meter-row">
+            <span class="meter-label">Water Use</span>
+            <div class="meter-bar"><div class="meter-fill" style="width:72%"></div></div>
+            <span class="meter-val">B+</span>
+          </div>
+          <div class="meter-row">
+            <span class="meter-label">Ethical Mfg</span>
+            <div class="meter-bar"><div class="meter-fill" style="width:95%"></div></div>
+            <span class="meter-val">A+</span>
+          </div>
+          <div class="meter-row">
+            <span class="meter-label">Longevity</span>
+            <div class="meter-bar"><div class="meter-fill" style="width:88%"></div></div>
+            <span class="meter-val">A</span>
+          </div>
+          <div class="meter-row">
+            <span class="meter-label">Recyclable</span>
+            <div class="meter-bar"><div class="meter-fill" style="width:100%"></div></div>
+            <span class="meter-val">A+</span>
+          </div>
+        </div>
+      </div>
+      <div class="score-card" style="text-align:center;">
+        <div style="font-size:2.5rem;margin-bottom:0.5rem;">🌱</div>
+        <div style="font-family:'Lora',serif;font-size:1.1rem;margin-bottom:0.5rem;">Your Impact This Year</div>
+        <div style="font-size:0.85rem;color:rgba(92,74,42,0.6);">Saved <strong style="color:var(--moss)">42kg CO₂</strong> vs. fast fashion average</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="earth-strip">
+    <div class="es-item"><span class="es-icon">🌱</span> Organic Materials Only</div>
+    <div class="es-item"><span class="es-icon">♻️</span> Zero Waste Packaging</div>
+    <div class="es-item"><span class="es-icon">💧</span> Low Water Footprint</div>
+    <div class="es-item"><span class="es-icon">🤝</span> Fair Trade Certified</div>
+    <div class="es-item"><span class="es-icon">🌍</span> Carbon Neutral Shipping</div>
+  </div>
+
+  <section class="impact">
+    <div class="impact-label">Our Impact</div>
+    <h2 class="impact-title">Fashion with <em>accountability</em></h2>
+    <p class="impact-sub">Every purchase on TERRA is tracked from raw material to your door. Real numbers. No greenwashing.</p>
+    <div class="impact-grid">
+      <div class="impact-card">
+        <div class="ic-icon">🌿</div>
+        <div class="ic-val">2.4M</div>
+        <div class="ic-label">kg of CO₂ saved compared to conventional fashion</div>
+      </div>
+      <div class="impact-card">
+        <div class="ic-icon">💧</div>
+        <div class="ic-val">840K</div>
+        <div class="ic-label">litres of water saved through AI-optimised production</div>
+      </div>
+      <div class="impact-card">
+        <div class="ic-icon">♻️</div>
+        <div class="ic-val">98%</div>
+        <div class="ic-label">of all packaging is compostable or recycled materials</div>
+      </div>
+      <div class="impact-card">
+        <div class="ic-icon">🤝</div>
+        <div class="ic-val">200+</div>
+        <div class="ic-label">Fair Trade certified artisan makers in our supply chain</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="products">
+    <div class="prod-header">
+      <div class="prod-title">Conscious Collection</div>
+      <a href="#" class="prod-more">View All Pieces →</a>
+    </div>
+    <div class="prod-grid">
+      <div class="prod-card">
+        <div class="prod-swatch ps-a">
+          <div class="eco-badge">A+ Eco</div>
+          🍂
+        </div>
+        <div class="prod-info">
+          <div class="prod-material">Organic Linen · Portugal</div>
+          <div class="prod-name">The Autumn Shirt</div>
+          <div class="prod-price-row">
+            <span class="prod-price">€120</span>
+            <span class="prod-co2">0.8kg CO₂</span>
+          </div>
+        </div>
+      </div>
+      <div class="prod-card">
+        <div class="prod-swatch ps-b">
+          <div class="eco-badge">A+ Eco</div>
+          🌿
+        </div>
+        <div class="prod-info">
+          <div class="prod-material">Hemp Canvas · Japan</div>
+          <div class="prod-name">The Forest Trouser</div>
+          <div class="prod-price-row">
+            <span class="prod-price">€145</span>
+            <span class="prod-co2">0.6kg CO₂</span>
+          </div>
+        </div>
+      </div>
+      <div class="prod-card">
+        <div class="prod-swatch ps-c">
+          <div class="eco-badge">A Eco</div>
+          🌾
+        </div>
+        <div class="prod-info">
+          <div class="prod-material">Deadstock Wool · Scotland</div>
+          <div class="prod-name">The Earth Cardigan</div>
+          <div class="prod-price-row">
+            <span class="prod-price">€185</span>
+            <span class="prod-co2">1.2kg CO₂</span>
+          </div>
+        </div>
+      </div>
+      <div class="prod-card">
+        <div class="prod-swatch ps-d">
+          <div class="eco-badge">A+ Eco</div>
+          🩵
+        </div>
+        <div class="prod-info">
+          <div class="prod-material">Tencel · Austria</div>
+          <div class="prod-name">The Sky Midi Dress</div>
+          <div class="prod-price-row">
+            <span class="prod-price">€160</span>
+            <span class="prod-co2">0.4kg CO₂</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ai">
+    <div class="ai-inner">
+      <div>
+        <div class="ai-label">AI Carbon Calculator</div>
+        <h2 class="ai-title">Know exactly what<br/>you're wearing</h2>
+        <p class="ai-body">Our AI doesn't just style you — it gives you the full environmental receipt for every outfit. From farm to fibre to your wardrobe, complete transparency.</p>
+        <a href="#" class="btn-cream">Calculate My Wardrobe</a>
+      </div>
+      <div class="ai-features">
+        <div class="ai-feat">
+          <div class="ai-feat-icon">🔬</div>
+          <div>
+            <div class="ai-feat-title">Material Science Analysis</div>
+            <div class="ai-feat-body">AI cross-references fabric certifications, dye processes, and origin data to generate a full lifecycle score for every piece.</div>
+          </div>
+        </div>
+        <div class="ai-feat">
+          <div class="ai-feat-icon">🗺️</div>
+          <div>
+            <div class="ai-feat-title">Supply Chain Mapping</div>
+            <div class="ai-feat-body">Every product is tracked from raw material origin through every manufacturing step — with GPS-verified audit data from our maker partners.</div>
+          </div>
+        </div>
+        <div class="ai-feat">
+          <div class="ai-feat-icon">📊</div>
+          <div>
+            <div class="ai-feat-title">Personal Impact Dashboard</div>
+            <div class="ai-feat-body">Your monthly environmental report compares your wardrobe footprint to fast-fashion averages and tracks your year-on-year improvement.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="f-logo">TERRA.</div>
+    <div class="f-copy">© 2025 TERRA · Sustainable AI Fashion · B Corp Certified</div>
+    <a href="index.html">← Back to Hub</a>
+  </footer>
+
+</body>
+</html>

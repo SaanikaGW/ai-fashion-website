@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>∅ — Avant-Garde</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&family=Space+Mono:ital@0;1&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --bg: #f0ece6; --black: #0d0d0d; --red: #c0392b; --grey: #999; --line: #0d0d0d; }
+    body { background: var(--bg); color: var(--black); font-family: 'Space Grotesk', sans-serif; overflow-x: hidden; }
+
+    /* Asymmetric Navigation */
+    nav { position: fixed; top: 0; z-index: 200; width: 100%; mix-blend-mode: multiply; }
+    .nav-top { padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid var(--black); background: var(--bg); }
+    .logo { font-size: 2rem; font-weight: 700; letter-spacing: -0.04em; }
+    .logo-sub { font-family: 'Space Mono', monospace; font-size: 0.55rem; letter-spacing: 0.1em; display: block; color: var(--grey); margin-top: -4px; }
+    .nav-right { display: flex; align-items: center; gap: 3rem; }
+    .nav-item { font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; color: var(--black); transition: color 0.15s; }
+    .nav-item:hover { color: var(--red); }
+    .nav-back { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--grey); text-decoration: none; }
+    .nav-back:hover { color: var(--black); }
+
+    /* Hero — asymmetric, deconstructed */
+    .hero { padding-top: 80px; min-height: 100vh; position: relative; overflow: hidden; }
+
+    /* Grid lines */
+    .hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent calc(33.33% - 1px), rgba(0,0,0,0.08) calc(33.33%), transparent calc(33.33% + 1px)), linear-gradient(90deg, transparent calc(66.66% - 1px), rgba(0,0,0,0.08) calc(66.66%), transparent calc(66.66% + 1px)); pointer-events: none; }
+
+    .hero-main { display: grid; grid-template-columns: 1fr 1fr 1fr; min-height: calc(100vh - 80px); }
+
+    /* Column 1 */
+    .col-1 { border-right: 2px solid var(--black); padding: 4rem 2rem; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
+    .col-1-num { font-family: 'Space Mono', monospace; font-size: 0.6rem; letter-spacing: 0.2em; color: var(--grey); writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg); position: absolute; left: 1rem; top: 4rem; }
+    .col-1-title { font-size: clamp(5rem, 9vw, 9rem); font-weight: 700; line-height: 0.85; letter-spacing: -0.04em; margin-left: 1.5rem; margin-top: auto; }
+    .col-1-title .strike { text-decoration: line-through; text-decoration-color: var(--red); text-decoration-thickness: 4px; }
+
+    /* Column 2 */
+    .col-2 { border-right: 2px solid var(--black); position: relative; overflow: hidden; display: flex; flex-direction: column; }
+    .col-2-visual { flex: 1; background: var(--black); position: relative; display: flex; align-items: center; justify-content: center; min-height: 400px; }
+    .col-2-circle { width: 200px; height: 200px; border-radius: 50%; background: var(--red); mix-blend-mode: multiply; }
+    .col-2-square { width: 150px; height: 150px; background: var(--bg); position: absolute; bottom: -40px; right: -20px; transform: rotate(12deg); }
+    .col-2-text { padding: 2rem; border-top: 2px solid var(--black); }
+    .col-2-label { font-family: 'Space Mono', monospace; font-size: 0.6rem; letter-spacing: 0.15em; color: var(--grey); margin-bottom: 0.75rem; }
+    .col-2-body { font-size: 0.85rem; line-height: 1.7; }
+
+    /* Column 3 */
+    .col-3 { padding: 2rem; display: flex; flex-direction: column; gap: 2px; }
+    .col-3-top { flex: 1; background: linear-gradient(135deg, #e8e0d0, #d4c8b0); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; margin-bottom: 2px; min-height: 250px; }
+    .col-3-quote { font-family: 'Space Mono', monospace; font-style: italic; font-size: 0.75rem; line-height: 1.8; padding: 2rem; text-align: center; color: var(--black); }
+    .col-3-mid { padding: 1.5rem 0; border-bottom: 1px solid rgba(0,0,0,0.1); }
+    .col-3-mid-label { font-family: 'Space Mono', monospace; font-size: 0.55rem; letter-spacing: 0.15em; color: var(--grey); margin-bottom: 0.4rem; }
+    .col-3-mid-val { font-size: 0.85rem; font-weight: 700; }
+    .col-3-items { display: flex; flex-direction: column; gap: 1px; flex: 1; }
+    .col-3-item { border: 1px solid rgba(0,0,0,0.12); padding: 1rem; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: background 0.15s; }
+    .col-3-item:hover { background: var(--black); color: var(--bg); }
+    .ci-name { font-size: 0.8rem; font-weight: 500; }
+    .ci-price { font-family: 'Space Mono', monospace; font-size: 0.75rem; color: var(--grey); }
+    .col-3-item:hover .ci-price { color: rgba(240,236,230,0.6); }
+
+    /* Deconstructed banner */
+    .banner { border-top: 2px solid var(--black); border-bottom: 2px solid var(--black); padding: 1rem 0; overflow: hidden; display: flex; }
+    .banner-text { display: inline-flex; gap: 0; animation: broll 12s linear infinite; white-space: nowrap; }
+    @keyframes broll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+    .bt { padding: 0 2rem; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; border-right: 2px solid var(--black); display: flex; align-items: center; }
+    .bt.inv { background: var(--black); color: var(--bg); }
+    .bt.red { background: var(--red); color: #fff; }
+
+    /* Essay Section */
+    .essay { display: grid; grid-template-columns: 1fr 2fr 1fr; border-bottom: 2px solid var(--black); }
+    .essay-margin { border-right: 2px solid var(--black); padding: 3rem 2rem; display: flex; flex-direction: column; gap: 2rem; }
+    .essay-margin:last-child { border-right: none; border-left: 2px solid var(--black); }
+    .em-num { font-family: 'Space Mono', monospace; font-size: 3rem; font-weight: 400; color: rgba(0,0,0,0.08); line-height: 1; }
+    .em-label { font-family: 'Space Mono', monospace; font-size: 0.6rem; letter-spacing: 0.15em; color: var(--grey); }
+    .em-val { font-size: 1.5rem; font-weight: 700; }
+    .essay-body { padding: 4rem 3rem; }
+    .essay-title { font-size: clamp(2rem, 3vw, 3rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 2rem; }
+    .essay-title .red { color: var(--red); }
+    .essay-text { font-size: 0.9rem; line-height: 1.9; color: rgba(13,13,13,0.65); columns: 2; column-gap: 3rem; }
+
+    /* Object Grid */
+    .objects { padding: 4rem 0; border-bottom: 2px solid var(--black); }
+    .obj-header { padding: 0 2rem 2rem; display: flex; justify-content: space-between; align-items: baseline; border-bottom: 2px solid var(--black); margin-bottom: 0; }
+    .obj-title { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; }
+    .obj-count { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--grey); }
+    .obj-grid { display: grid; grid-template-columns: repeat(5, 1fr); }
+    .obj-cell { border-right: 2px solid var(--black); border-top: 2px solid var(--black); padding: 0; aspect-ratio: 1; overflow: hidden; position: relative; cursor: pointer; }
+    .obj-cell:last-child { border-right: none; }
+    .obj-cell:hover .obj-overlay { opacity: 1; }
+    .obj-bg { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 3rem; transition: transform 0.4s; }
+    .obj-cell:hover .obj-bg { transform: scale(1.08); }
+    .oc-a { background: linear-gradient(135deg, #e8ddd0, #c8b8a0); }
+    .oc-b { background: var(--black); }
+    .oc-c { background: var(--red); }
+    .oc-d { background: linear-gradient(135deg, #d0dde8, #a0b8c8); }
+    .oc-e { background: linear-gradient(135deg, #e8e0c8, #c8c0a0); }
+    .obj-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.85); display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s; padding: 1rem; }
+    .ov-name { font-size: 0.75rem; font-weight: 700; color: #fff; text-align: center; margin-bottom: 0.3rem; }
+    .ov-price { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: rgba(255,255,255,0.5); }
+
+    /* CTA */
+    .cta { display: grid; grid-template-columns: 1fr 1fr; min-height: 50vh; }
+    .cta-left { background: var(--black); color: var(--bg); padding: 5rem 4rem; display: flex; flex-direction: column; justify-content: center; }
+    .cta-title { font-size: clamp(2rem, 4vw, 4rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1.05; margin-bottom: 2rem; }
+    .cta-body { font-size: 0.9rem; line-height: 1.8; color: rgba(240,236,230,0.5); max-width: 350px; margin-bottom: 3rem; }
+    .btn-void { display: inline-block; padding: 1rem 3rem; border: 1px solid rgba(240,236,230,0.3); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; color: var(--bg); transition: all 0.3s; }
+    .btn-void:hover { background: var(--bg); color: var(--black); }
+    .cta-right { background: var(--red); display: flex; align-items: center; justify-content: center; padding: 4rem; }
+    .cta-quote { font-family: 'Space Mono', monospace; font-style: italic; font-size: 1rem; line-height: 1.7; color: rgba(255,255,255,0.85); text-align: center; }
+
+    footer { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 2px solid var(--black); }
+    .f-cell { padding: 2rem; border-right: 2px solid var(--black); }
+    .f-cell:last-child { border-right: none; }
+    .f-title { font-family: 'Space Mono', monospace; font-size: 0.6rem; letter-spacing: 0.15em; color: var(--grey); margin-bottom: 0.75rem; }
+    .f-content { font-size: 0.8rem; line-height: 1.7; }
+    .f-content a { color: var(--black); text-decoration: none; display: block; }
+    .f-content a:hover { color: var(--red); }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-top">
+      <div class="logo">
+        ∅
+        <span class="logo-sub">VOID FASHION SYSTEM</span>
+      </div>
+      <div class="nav-right">
+        <a href="#" class="nav-item">Objects</a>
+        <a href="#" class="nav-item">Concepts</a>
+        <a href="#" class="nav-item">Neural</a>
+        <a href="#" class="nav-item">Archive</a>
+        <a href="index.html" class="nav-back">←_ALL</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-main">
+      <div class="col-1">
+        <div class="col-1-num">SS25 // VOID</div>
+        <div style="margin-bottom:3rem; margin-left:1.5rem; font-family:'Space Mono',monospace; font-size:0.65rem; color:var(--grey); line-height:1.8;">
+          ← Fashion<br/>as language.<br/>Silence speaks<br/>loudest.
+        </div>
+        <h1 class="col-1-title">
+          <span class="strike">VOID</span><br/>
+          WEAR
+        </h1>
+      </div>
+      <div class="col-2">
+        <div class="col-2-visual">
+          <div class="col-2-circle"></div>
+          <div class="col-2-square"></div>
+        </div>
+        <div class="col-2-text">
+          <div class="col-2-label">// ABOUT THE COLLECTION</div>
+          <div class="col-2-body">Twelve objects designed by neural network, critiqued by human, approved by neither. The result is something fashion has never dared to call itself: honest.</div>
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="col-3-top">
+          <div class="col-3-quote">
+            "The garment that<br/>doesn't want to be<br/>a garment is the only<br/>one worth wearing."<br/><br/>— ∅ AI, 2025
+          </div>
+        </div>
+        <div class="col-3-mid">
+          <div class="col-3-mid-label">// CURRENT DROP</div>
+          <div class="col-3-mid-val">SS25 — VOID SERIES</div>
+        </div>
+        <div class="col-3-items">
+          <div class="col-3-item"><span class="ci-name">Deconstructed Blazer</span><span class="ci-price">€680</span></div>
+          <div class="col-3-item"><span class="ci-name">Asymmetric Coat</span><span class="ci-price">€940</span></div>
+          <div class="col-3-item"><span class="ci-name">Fragmented Trouser</span><span class="ci-price">€380</span></div>
+          <div class="col-3-item"><span class="ci-name">The Shirt (Unnamed)</span><span class="ci-price">€220</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="banner">
+    <div class="banner-text">
+      <div class="bt">AI-Generated Design</div>
+      <div class="bt inv">Human Undone</div>
+      <div class="bt">Neural Couture</div>
+      <div class="bt red">SS25 VOID</div>
+      <div class="bt">Concept Over Commerce</div>
+      <div class="bt inv">The Object Is the Idea</div>
+      <div class="bt">AI-Generated Design</div>
+      <div class="bt inv">Human Undone</div>
+      <div class="bt">Neural Couture</div>
+      <div class="bt red">SS25 VOID</div>
+      <div class="bt">Concept Over Commerce</div>
+      <div class="bt inv">The Object Is the Idea</div>
+    </div>
+  </div>
+
+  <section class="essay">
+    <div class="essay-margin">
+      <div>
+        <div class="em-num">01</div>
+        <div class="em-label">// NEURAL PASSES</div>
+        <div class="em-val">8,400</div>
+      </div>
+      <div>
+        <div class="em-num">02</div>
+        <div class="em-label">// HUMAN REJECTIONS</div>
+        <div class="em-val">8,392</div>
+      </div>
+      <div>
+        <div class="em-num">03</div>
+        <div class="em-label">// FINAL OBJECTS</div>
+        <div class="em-val">8</div>
+      </div>
+    </div>
+    <div class="essay-body">
+      <h2 class="essay-title">What happens when<br/>AI designs without <span class="red">fear</span>?</h2>
+      <div class="essay-text">
+        <p>The conventional fashion designer operates under several constraints: commercial viability, seasonal trend adjacency, material availability, and the risk of the catastrophically unwearable. Our AI has none of these constraints. We gave it access to 140 years of fashion archives, the complete history of art from cave paintings to generative models, and one instruction: design what no human would dare to.</p>
+        <p>The results were, as expected, mostly unwearable. But in the 8 objects that survived human review — not because they were commercially acceptable, but because they were undeniably, uncomfortably true — something new exists. A fashion object designed without the need to be liked. The avant-garde, finally, without the performance of it.</p>
+      </div>
+    </div>
+    <div class="essay-margin">
+      <div>
+        <div class="em-label">// AI MODEL</div>
+        <div class="em-val" style="font-size:0.9rem;">VOID_NET 2.4</div>
+      </div>
+      <div>
+        <div class="em-label">// TRAINING DATA</div>
+        <div class="em-val" style="font-size:0.9rem;">140yr Archive</div>
+      </div>
+      <div>
+        <div class="em-label">// OUTPUT TYPE</div>
+        <div class="em-val" style="font-size:0.9rem;">Conceptual Objects</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="objects">
+    <div class="obj-header">
+      <div class="obj-title">The Objects</div>
+      <div class="obj-count">08 / SS25</div>
+    </div>
+    <div class="obj-grid">
+      <div class="obj-cell">
+        <div class="obj-bg oc-a">🧥</div>
+        <div class="obj-overlay"><div class="ov-name">Object 01 — The Coat</div><div class="ov-price">€940</div></div>
+      </div>
+      <div class="obj-cell">
+        <div class="obj-bg oc-b" style="color:#f0ece6;">▪</div>
+        <div class="obj-overlay"><div class="ov-name">Object 02 — Void Suit</div><div class="ov-price">€1,200</div></div>
+      </div>
+      <div class="obj-cell">
+        <div class="obj-bg oc-c" style="color:#fff;">✕</div>
+        <div class="obj-overlay"><div class="ov-name">Object 03 — The Wound</div><div class="ov-price">€680</div></div>
+      </div>
+      <div class="obj-cell">
+        <div class="obj-bg oc-d">👘</div>
+        <div class="obj-overlay"><div class="ov-name">Object 04 — Blue Study</div><div class="ov-price">€540</div></div>
+      </div>
+      <div class="obj-cell">
+        <div class="obj-bg oc-e">◯</div>
+        <div class="obj-overlay"><div class="ov-name">Object 05 — The Circle</div><div class="ov-price">€380</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="cta-left">
+      <h2 class="cta-title">Commission<br/>Your Object</h2>
+      <p class="cta-body">Give our AI a mood, a feeling, a fragment of language. It will return a garment. Whether it's wearable is not the point — but it will be yours.</p>
+      <a href="#" class="btn-void">Begin Commission</a>
+    </div>
+    <div class="cta-right">
+      <div class="cta-quote">
+        "The AI asked me what I feared.<br/>I told it. It made a coat.<br/>I have worn nothing else since."<br/><br/>— Commission client, 2025
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="f-cell">
+      <div class="f-title">// VOID FASHION</div>
+      <div class="f-content">∅ — The Avant-Garde AI Fashion System. Concept over commerce since 2024.</div>
+    </div>
+    <div class="f-cell">
+      <div class="f-title">// EXPLORE</div>
+      <div class="f-content">
+        <a href="#">Objects</a>
+        <a href="#">Concepts</a>
+        <a href="#">Archive</a>
+        <a href="#">Neural Process</a>
+      </div>
+    </div>
+    <div class="f-cell">
+      <div class="f-title">// COMMISSION</div>
+      <div class="f-content">
+        <a href="#">How It Works</a>
+        <a href="#">Past Commissions</a>
+        <a href="#">Contact the AI</a>
+      </div>
+    </div>
+    <div class="f-cell">
+      <div class="f-title">// NAVIGATE</div>
+      <div class="f-content">
+        <a href="index.html">← All Formats</a>
+        <a href="#">© 2025 ∅ VOID</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FRAME — Lookbook</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #000; color: #fff; font-family: 'Inter', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+    /* Fixed Nav */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; padding: 1.5rem 3rem; display: flex; align-items: center; justify-content: space-between; mix-blend-mode: normal; }
+    .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; letter-spacing: 0.2em; color: #fff; mix-blend-mode: difference; }
+    .nav-links { display: flex; gap: 2rem; }
+    .nav-links a { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; color: rgba(255,255,255,0.7); transition: color 0.2s; }
+    .nav-links a:hover { color: #fff; }
+    .nav-back { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; color: rgba(255,255,255,0.5); transition: color 0.2s; }
+    .nav-back:hover { color: #fff; }
+
+    /* Progress bar */
+    .progress { position: fixed; left: 0; bottom: 0; top: 0; width: 3px; z-index: 100; display: flex; flex-direction: column; }
+    .prog-item { flex: 1; background: rgba(255,255,255,0.1); transition: background 0.3s; cursor: pointer; }
+    .prog-item.active { background: #fff; }
+
+    /* Slide counter */
+    .counter { position: fixed; bottom: 2rem; right: 3rem; z-index: 100; font-size: 0.7rem; letter-spacing: 0.15em; color: rgba(255,255,255,0.5); }
+    .counter .cur { color: #fff; font-size: 1rem; }
+
+    /* Scroll container */
+    .slides { }
+
+    /* Individual slide */
+    .slide { min-height: 100vh; position: relative; display: flex; align-items: center; overflow: hidden; }
+
+    /* Slide 1 */
+    .s1 { background: linear-gradient(160deg, #0d0d0d 0%, #1a1a0a 50%, #0d0d0d 100%); }
+    .s1::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 80% at 70% 50%, rgba(200,160,60,0.12) 0%, transparent 70%); }
+    .s1-content { padding: 0 10rem; z-index: 1; }
+    .s1-issue { font-size: 0.65rem; letter-spacing: 0.35em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 3rem; }
+    .s1-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(5rem, 12vw, 11rem); font-weight: 300; line-height: 0.85; margin-bottom: 3rem; }
+    .s1-sub { font-size: 1rem; color: rgba(255,255,255,0.4); max-width: 380px; line-height: 1.8; font-family: 'Cormorant Garamond', serif; font-style: italic; }
+
+    /* Slide 2 — image + text split */
+    .s2 { display: grid; grid-template-columns: 1fr 1fr; }
+    .s2-visual { background: linear-gradient(160deg, #1a0f0a, #2d1f14, #1a1410); display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+    .s2-frame { width: 280px; aspect-ratio: 2/3; background: linear-gradient(160deg, #2d2015, #1a1005); display: flex; align-items: flex-end; padding: 2rem; border: 1px solid rgba(255,255,255,0.05); }
+    .s2-caption { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.3); }
+    .s2-text { padding: 8rem 6rem; display: flex; flex-direction: column; justify-content: center; background: #0d0a07; }
+    .s2-num { font-family: 'Cormorant Garamond', serif; font-size: 6rem; font-weight: 300; color: rgba(255,255,255,0.05); line-height: 1; margin-bottom: 2rem; }
+    .s2-title { font-family: 'Cormorant Garamond', serif; font-size: 3rem; font-weight: 300; line-height: 1.1; margin-bottom: 2rem; }
+    .s2-body { font-size: 0.9rem; line-height: 1.9; color: rgba(255,255,255,0.45); max-width: 340px; }
+
+    /* Slide 3 — full bleed dark with overlay text */
+    .s3 { background: linear-gradient(135deg, #0a0a0a, #1a1a1a, #0d0d1a); justify-content: center; }
+    .s3-bg { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: #000; opacity: 0.6; }
+    .s3-bg-cell { background: linear-gradient(160deg, #1a1a1a, #0d0d0d); }
+    .s3-content { position: relative; z-index: 1; text-align: center; padding: 4rem; }
+    .s3-label { font-size: 0.65rem; letter-spacing: 0.35em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 3rem; display: flex; align-items: center; justify-content: center; gap: 2rem; }
+    .s3-label::before, .s3-label::after { content: ''; height: 1px; width: 60px; background: rgba(255,255,255,0.15); }
+    .s3-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(3rem, 8vw, 7rem); font-weight: 300; font-style: italic; margin-bottom: 2rem; line-height: 1; }
+    .s3-body { font-size: 0.95rem; color: rgba(255,255,255,0.4); max-width: 500px; margin: 0 auto; line-height: 1.9; }
+
+    /* Slide 4 — 3-column editorial */
+    .s4 { display: grid; grid-template-columns: 1fr 1fr 1fr; }
+    .s4-col { min-height: 100vh; display: flex; flex-direction: column; justify-content: flex-end; padding: 4rem 3rem; border-right: 1px solid rgba(255,255,255,0.05); position: relative; overflow: hidden; }
+    .s4-col:last-child { border-right: none; }
+    .s4-bg-a { background: linear-gradient(160deg, #0a0f1a, #1a2040); }
+    .s4-bg-b { background: linear-gradient(160deg, #1a0a0a, #3d1515); }
+    .s4-bg-c { background: linear-gradient(160deg, #0a1a0a, #1a3d20); }
+    .s4-col-num { position: absolute; top: 3rem; left: 3rem; font-size: 0.6rem; letter-spacing: 0.3em; color: rgba(255,255,255,0.2); }
+    .s4-col-title { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; font-weight: 300; line-height: 1.1; margin-bottom: 1.5rem; }
+    .s4-col-body { font-size: 0.8rem; line-height: 1.8; color: rgba(255,255,255,0.4); max-width: 220px; }
+    .s4-col-price { margin-top: 2rem; font-size: 0.8rem; letter-spacing: 0.15em; color: rgba(255,255,255,0.3); }
+
+    /* Slide 5 — CTA */
+    .s5 { background: #fff; color: #000; justify-content: center; flex-direction: column; text-align: center; padding: 4rem; }
+    .s5-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(3rem, 8vw, 7rem); font-weight: 300; line-height: 1; margin-bottom: 2rem; }
+    .s5-body { font-size: 1rem; color: #777; max-width: 400px; margin: 0 auto 3rem; line-height: 1.8; font-family: 'Cormorant Garamond', serif; font-style: italic; }
+    .s5-btn { display: inline-block; border: 1px solid #000; padding: 1.2rem 4rem; font-size: 0.75rem; letter-spacing: 0.3em; text-transform: uppercase; text-decoration: none; color: #000; transition: all 0.3s; }
+    .s5-btn:hover { background: #000; color: #fff; }
+    .s5-back { display: block; margin-top: 2rem; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: #bbb; text-decoration: none; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-logo">FRAME</div>
+    <div class="nav-links">
+      <a href="#">Lookbook</a>
+      <a href="#">Collection</a>
+      <a href="#">AI Edit</a>
+    </div>
+    <a href="index.html" class="nav-back">← All Formats</a>
+  </nav>
+
+  <div class="progress">
+    <div class="prog-item active"></div>
+    <div class="prog-item"></div>
+    <div class="prog-item"></div>
+    <div class="prog-item"></div>
+    <div class="prog-item"></div>
+  </div>
+
+  <div class="counter"><span class="cur">01</span> / 05</div>
+
+  <div class="slides">
+
+    <section class="slide s1">
+      <div class="s1-content">
+        <div class="s1-issue">The FRAME Lookbook · AI Edition · 2025</div>
+        <h1 class="s1-title">The<br/>Quiet<br/>Season</h1>
+        <p class="s1-sub">Twelve looks. Four fabrics. One neural network that knows exactly which one is yours.</p>
+      </div>
+    </section>
+
+    <section class="slide s2">
+      <div class="s2-visual">
+        <div class="s2-frame">
+          <div class="s2-caption">Look 01 · "Dawn Linen" · €480</div>
+        </div>
+      </div>
+      <div class="s2-text">
+        <div class="s2-num">01</div>
+        <h2 class="s2-title">The<br/>Linen<br/>Column</h2>
+        <p class="s2-body">Cut straight from dawn-coloured linen. A silhouette that moves with the morning air and the quiet certainty of someone who has nothing left to prove. AI confidence: this piece was built for you.</p>
+      </div>
+    </section>
+
+    <section class="slide s3">
+      <div class="s3-bg">
+        <div class="s3-bg-cell"></div>
+        <div class="s3-bg-cell"></div>
+        <div class="s3-bg-cell"></div>
+      </div>
+      <div class="s3-content">
+        <div class="s3-label">The Neural Edit</div>
+        <h2 class="s3-title">Dressed<br/>by<br/>Algorithm</h2>
+        <p class="s3-body">Our AI doesn't follow trends. It studies the intersection of your life, your proportions, and your unarticulated desires — and builds a wardrobe from that geometry.</p>
+      </div>
+    </section>
+
+    <section class="slide s4">
+      <div class="s4-col s4-bg-a">
+        <div class="s4-col-num">Look 04</div>
+        <div class="s4-col-title">The<br/>Wool<br/>Structure</div>
+        <p class="s4-col-body">Architecture for the body. A coat that makes every room smaller by filling it with purpose.</p>
+        <div class="s4-col-price">From €1,200</div>
+      </div>
+      <div class="s4-col s4-bg-b">
+        <div class="s4-col-num">Look 07</div>
+        <div class="s4-col-title">The<br/>Silk<br/>Nothing</div>
+        <p class="s4-col-body">A dress so light it reads as an absence of clothing. The AI calls this "maximum impact, minimum weight."</p>
+        <div class="s4-col-price">From €890</div>
+      </div>
+      <div class="s4-col s4-bg-c">
+        <div class="s4-col-num">Look 11</div>
+        <div class="s4-col-title">The<br/>Earth<br/>Trouser</div>
+        <p class="s4-col-body">Responsible tailoring in organic cotton. The planet's approval rating for this pair: 99%.</p>
+        <div class="s4-col-price">From €340</div>
+      </div>
+    </section>
+
+    <section class="slide s5">
+      <h2 class="s5-title">Begin<br/>Your Edit</h2>
+      <p class="s5-body">Tell the AI your occasion. It will build the rest.</p>
+      <a href="#" class="s5-btn">Start with AI</a>
+      <a href="index.html" class="s5-back">← Back to All Formats</a>
+    </section>
+
+  </div>
+
+</body>
+</html>
