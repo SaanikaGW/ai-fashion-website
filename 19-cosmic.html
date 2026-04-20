@@ -96,27 +96,27 @@
   <nav>
     <div class="logo">NEBULA</div>
     <div class="nav-links">
-      <a href="#">Collections</a>
-      <a href="#">Star Map</a>
-      <a href="#">AI Oracle</a>
-      <a href="#">Universe</a>
+      <a href="#collections">Collections</a>
+      <a href="#collections">Star Map</a>
+      <a href="#oracle">AI Oracle</a>
+      <a href="#oracle">Universe</a>
     </div>
     <a href="index.html" class="nav-back">← All Formats</a>
   </nav>
 
-  <section class="hero">
+  <section class="hero" id="hero">
     <div class="hero-orbit">
       <div class="orbit-dot"></div>
     </div>
     <h1 class="hero-title">DRESS<br/>THE<br/>COSMOS</h1>
     <p class="hero-sub">Fashion distilled from the mathematics of starlight. Our AI maps the celestial coordinates of your style and returns a wardrobe from the furthest reaches of the aesthetic universe.</p>
     <div class="hero-btns">
-      <a href="#" class="btn-cosmic btn-nebula">Enter The Nebula</a>
-      <a href="#" class="btn-cosmic btn-outline-c">Explore Universe</a>
+      <a href="#collections" class="btn-cosmic btn-nebula">Enter The Nebula</a>
+      <a href="#oracle" class="btn-cosmic btn-outline-c">Explore Universe</a>
     </div>
   </section>
 
-  <section class="collection">
+  <section class="collection" id="collections">
     <div class="coll-title">Stellar Collection</div>
     <h2 class="coll-head">Objects From The Deep</h2>
     <p class="coll-sub">Three garments selected from across the fabric of the cosmos.</p>
@@ -154,13 +154,13 @@
     </div>
   </section>
 
-  <section class="ai-cosmic">
+  <section class="ai-cosmic" id="oracle">
     <div class="aic-inner">
       <div>
         <div class="aic-label">Stellar Intelligence</div>
         <h2 class="aic-title">The AI That<br/>Reads the <strong>Stars</strong></h2>
         <p class="aic-body">Our neural network was trained on the visual language of the universe — light spectra, orbital mechanics, the mathematics of cosmic structure — and applied it to the human form. The result is a style engine that sees your body as a cosmological event and dresses it accordingly.</p>
-        <a href="#" class="btn-cosmic btn-nebula">Map Your Style Universe</a>
+        <a href="#oracle" class="btn-cosmic btn-nebula">Map Your Style Universe</a>
         <div class="aic-stats" style="margin-top:2rem;">
           <div class="aic-stat"><div class="as-num">∞</div><div class="as-label">Style Combinations</div></div>
           <div class="aic-stat"><div class="as-num">4.6B</div><div class="as-label">Light Years of Data</div></div>
@@ -203,6 +203,18 @@
     }
     resize();
     window.addEventListener('resize', resize);
+  </script>
+
+  <script>
+  document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+    var href = a.getAttribute("href");
+    if (href.length > 1) {
+      a.addEventListener("click", function(e) {
+        var t = document.querySelector(href);
+        if (t) { e.preventDefault(); t.scrollIntoView({behavior:"smooth"}); }
+      });
+    }
+  });
   </script>
 </body>
 </html>

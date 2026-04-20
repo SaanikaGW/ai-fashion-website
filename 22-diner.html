@@ -93,15 +93,15 @@
   <nav>
     <div class="nav-logo">Style Diner</div>
     <div class="nav-links">
-      <a href="#">The Menu</a>
-      <a href="#">Today's Special</a>
-      <a href="#">AI Jukebox</a>
-      <a href="#">About Us</a>
+      <a href="#menu">The Menu</a>
+      <a href="#menu">Today's Special</a>
+      <a href="#jukebox">AI Jukebox</a>
+      <a href="#menu">About Us</a>
     </div>
     <a href="index.html" class="nav-back">← All Formats</a>
   </nav>
 
-  <section class="hero">
+  <section class="hero" id="hero">
     <div class="hero-left">
       <h1 class="h-neon-title">
         <span class="hnt-red">All Day</span>
@@ -110,8 +110,8 @@
       </h1>
       <p class="h-sub">Serving hot AI fashion picks since 2024. Open 24 hours. Never closed. Your style recommendation is always fresh, always made to order.</p>
       <div>
-        <a href="#" class="btn-diner btn-red">See Today's Special</a>
-        <a href="#" class="btn-diner btn-yellow">Full Menu</a>
+        <a href="#menu" class="btn-diner btn-red">See Today's Special</a>
+        <a href="#menu" class="btn-diner btn-yellow">Full Menu</a>
       </div>
     </div>
     <div class="hero-right">
@@ -132,7 +132,7 @@
     <div class="cs-item"><div class="csi-num">$0</div><div class="csi-label">Style Consultant Fee</div></div>
   </div>
 
-  <section class="menu-board">
+  <section class="menu-board" id="menu">
     <div class="mb-title">Today's Menu</div>
     <div class="mb-sub">AI Fresh Daily · Served with a Smile</div>
     <div class="menu-grid">
@@ -175,11 +175,11 @@
     </div>
   </section>
 
-  <section class="jukebox">
+  <section class="jukebox" id="jukebox">
     <div>
       <h2 class="juke-title">The AI Jukebox</h2>
       <p class="juke-body">Drop a coin. Tell us your vibe. Our AI spins through its entire catalogue and serves up the perfect outfit — hot, fresh, and totally yours. Just like the old days, but smarter.</p>
-      <a href="#" class="btn-diner btn-red">Play My Style</a>
+      <a href="#jukebox" class="btn-diner btn-red">Play My Style</a>
     </div>
     <div class="juke-visual">
       <div class="jv-title">Now Styling...</div>
@@ -196,5 +196,17 @@
     <a href="index.html">← All Formats</a>
   </footer>
 
+
+  <script>
+  document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+    var href = a.getAttribute("href");
+    if (href.length > 1) {
+      a.addEventListener("click", function(e) {
+        var t = document.querySelector(href);
+        if (t) { e.preventDefault(); t.scrollIntoView({behavior:"smooth"}); }
+      });
+    }
+  });
+  </script>
 </body>
 </html>

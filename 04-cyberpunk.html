@@ -108,15 +108,15 @@
   <nav>
     <div class="nav-logo">GLITCH_WEAR</div>
     <div class="nav-links">
-      <a href="#">Drops</a>
-      <a href="#">Neural Style</a>
-      <a href="#">Cyberfit</a>
-      <a href="#">Manifesto</a>
+      <a href="#drops">Drops</a>
+      <a href="#panels">Neural Style</a>
+      <a href="#panels">Cyberfit</a>
+      <a href="#manifesto">Manifesto</a>
     </div>
     <a href="index.html" class="nav-back">← HUB</a>
   </nav>
 
-  <section class="hero">
+  <section class="hero" id="hero">
     <div class="hero-grid-bg"></div>
     <div class="hero-glow-c"></div>
     <div class="hero-glow-m"></div>
@@ -128,8 +128,8 @@
     </h1>
     <p class="hero-deck">// Neural-net curated fashion for the post-digital human. Style computed at the speed of light.</p>
     <div class="hero-actions">
-      <a href="#" class="btn-c">Initialize Profile</a>
-      <a href="#" class="btn-m">View Drops</a>
+      <a href="#panels" class="btn-c">Initialize Profile</a>
+      <a href="#drops" class="btn-m">View Drops</a>
     </div>
   </section>
 
@@ -139,7 +139,7 @@
     </span>
   </div>
 
-  <section class="panels">
+  <section class="panels" id="panels">
     <div class="panels-title">// SYS.FEATURES</div>
     <h2 class="panels-head">Augmented <span class="cy">Style</span> Systems</h2>
     <div class="panels-grid">
@@ -147,24 +147,24 @@
         <div class="panel-icon">[MODULE_01] // NEURAL_SCAN</div>
         <div class="panel-title">Body Architecture Mapping</div>
         <div class="panel-body">Upload a photo and our AI maps 214 body data points to predict exactly how every garment will drape, fit, and move on your specific form.</div>
-        <a href="#" class="panel-cta">Run Scan</a>
+        <a href="#panels" class="panel-cta">Run Scan</a>
       </div>
       <div class="panel">
         <div class="panel-icon">[MODULE_02] // STYLE_MATRIX</div>
         <div class="panel-title">Aesthetic DNA Profiling</div>
         <div class="panel-body">Our style matrix cross-references your past selections, saved images, and preference signals to build a living model of your aesthetic identity.</div>
-        <a href="#" class="panel-cta">Build Profile</a>
+        <a href="#panels" class="panel-cta">Build Profile</a>
       </div>
       <div class="panel">
         <div class="panel-icon">[MODULE_03] // TREND_ENGINE</div>
         <div class="panel-title">Predictive Trend Surfing</div>
         <div class="panel-body">Real-time processing of 50K social signals per hour. Our engine predicts what's about to break into mainstream 6 weeks before it happens.</div>
-        <a href="#" class="panel-cta">View Signals</a>
+        <a href="#manifesto" class="panel-cta">View Signals</a>
       </div>
     </div>
   </section>
 
-  <section class="drops">
+  <section class="drops" id="drops">
     <div class="drops-header">
       <div class="drops-title">// LATEST_DROPS</div>
       <div class="drops-count">04 items loaded</div>
@@ -202,12 +202,12 @@
   </section>
 
   <div style="max-width:1400px;margin:0 auto;padding:0 2rem;">
-    <section class="terminal-section" style="padding:5rem 0;">
+    <section class="terminal-section" style="padding:5rem 0;" id="manifesto">
       <div class="term-info">
         <div class="t-label">[SYS.AI_CORE]</div>
         <h2>Style <span class="cy">Intelligence</span><br/>Online</h2>
         <p>// Run your style scan in real-time. Our AI processes your aesthetic signals and returns a personalized outfit matrix with 97.3% trend alignment.</p>
-        <a href="#" class="btn-c" style="font-size:0.75rem;">Run Style Scan →</a>
+        <a href="#panels" class="btn-c" style="font-size:0.75rem;">Run Style Scan →</a>
       </div>
       <div class="terminal">
         <div class="term-bar">
@@ -236,5 +236,17 @@
     <div class="f-right"><a href="index.html">← ALL_FORMATS</a></div>
   </footer>
 
+
+  <script>
+  document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+    var href = a.getAttribute("href");
+    if (href.length > 1) {
+      a.addEventListener("click", function(e) {
+        var t = document.querySelector(href);
+        if (t) { e.preventDefault(); t.scrollIntoView({behavior:"smooth"}); }
+      });
+    }
+  });
+  </script>
 </body>
 </html>

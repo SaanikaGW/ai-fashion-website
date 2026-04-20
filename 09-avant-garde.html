@@ -126,16 +126,16 @@
         <span class="logo-sub">VOID FASHION SYSTEM</span>
       </div>
       <div class="nav-right">
-        <a href="#" class="nav-item">Objects</a>
-        <a href="#" class="nav-item">Concepts</a>
-        <a href="#" class="nav-item">Neural</a>
-        <a href="#" class="nav-item">Archive</a>
+        <a href="#objects" class="nav-item">Objects</a>
+        <a href="#concepts" class="nav-item">Concepts</a>
+        <a href="#concepts" class="nav-item">Neural</a>
+        <a href="#archive" class="nav-item">Archive</a>
         <a href="index.html" class="nav-back">←_ALL</a>
       </div>
     </div>
   </nav>
 
-  <section class="hero">
+  <section class="hero" id="hero">
     <div class="hero-main">
       <div class="col-1">
         <div class="col-1-num">SS25 // VOID</div>
@@ -194,7 +194,7 @@
     </div>
   </div>
 
-  <section class="essay">
+  <section class="essay" id="concepts">
     <div class="essay-margin">
       <div>
         <div class="em-num">01</div>
@@ -235,7 +235,7 @@
     </div>
   </section>
 
-  <section class="objects">
+  <section class="objects" id="objects">
     <div class="obj-header">
       <div class="obj-title">The Objects</div>
       <div class="obj-count">08 / SS25</div>
@@ -264,11 +264,11 @@
     </div>
   </section>
 
-  <section class="cta">
+  <section class="cta" id="archive">
     <div class="cta-left">
       <h2 class="cta-title">Commission<br/>Your Object</h2>
       <p class="cta-body">Give our AI a mood, a feeling, a fragment of language. It will return a garment. Whether it's wearable is not the point — but it will be yours.</p>
-      <a href="#" class="btn-void">Begin Commission</a>
+      <a href="#archive" class="btn-void">Begin Commission</a>
     </div>
     <div class="cta-right">
       <div class="cta-quote">
@@ -285,28 +285,40 @@
     <div class="f-cell">
       <div class="f-title">// EXPLORE</div>
       <div class="f-content">
-        <a href="#">Objects</a>
-        <a href="#">Concepts</a>
-        <a href="#">Archive</a>
-        <a href="#">Neural Process</a>
+        <a href="#objects">Objects</a>
+        <a href="#concepts">Concepts</a>
+        <a href="#archive">Archive</a>
+        <a href="#concepts">Neural Process</a>
       </div>
     </div>
     <div class="f-cell">
       <div class="f-title">// COMMISSION</div>
       <div class="f-content">
-        <a href="#">How It Works</a>
-        <a href="#">Past Commissions</a>
-        <a href="#">Contact the AI</a>
+        <a href="#concepts">How It Works</a>
+        <a href="#archive">Past Commissions</a>
+        <a href="#archive">Contact the AI</a>
       </div>
     </div>
     <div class="f-cell">
       <div class="f-title">// NAVIGATE</div>
       <div class="f-content">
         <a href="index.html">← All Formats</a>
-        <a href="#">© 2025 ∅ VOID</a>
+        <a href="#hero">© 2025 ∅ VOID</a>
       </div>
     </div>
   </footer>
 
+
+  <script>
+  document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+    var href = a.getAttribute("href");
+    if (href.length > 1) {
+      a.addEventListener("click", function(e) {
+        var t = document.querySelector(href);
+        if (t) { e.preventDefault(); t.scrollIntoView({behavior:"smooth"}); }
+      });
+    }
+  });
+  </script>
 </body>
 </html>

@@ -87,9 +87,9 @@
   <nav>
     <div class="nav-logo">FRAME</div>
     <div class="nav-links">
-      <a href="#">Lookbook</a>
-      <a href="#">Collection</a>
-      <a href="#">AI Edit</a>
+      <a href="#slide-1">Lookbook</a>
+      <a href="#slide-3">Collection</a>
+      <a href="#slide-5">AI Edit</a>
     </div>
     <a href="index.html" class="nav-back">← All Formats</a>
   </nav>
@@ -106,7 +106,7 @@
 
   <div class="slides">
 
-    <section class="slide s1">
+    <section class="slide s1" id="slide-1">
       <div class="s1-content">
         <div class="s1-issue">The FRAME Lookbook · AI Edition · 2025</div>
         <h1 class="s1-title">The<br/>Quiet<br/>Season</h1>
@@ -114,7 +114,7 @@
       </div>
     </section>
 
-    <section class="slide s2">
+    <section class="slide s2" id="slide-2">
       <div class="s2-visual">
         <div class="s2-frame">
           <div class="s2-caption">Look 01 · "Dawn Linen" · €480</div>
@@ -127,7 +127,7 @@
       </div>
     </section>
 
-    <section class="slide s3">
+    <section class="slide s3" id="slide-3">
       <div class="s3-bg">
         <div class="s3-bg-cell"></div>
         <div class="s3-bg-cell"></div>
@@ -140,7 +140,7 @@
       </div>
     </section>
 
-    <section class="slide s4">
+    <section class="slide s4" id="slide-4">
       <div class="s4-col s4-bg-a">
         <div class="s4-col-num">Look 04</div>
         <div class="s4-col-title">The<br/>Wool<br/>Structure</div>
@@ -161,14 +161,26 @@
       </div>
     </section>
 
-    <section class="slide s5">
+    <section class="slide s5" id="slide-5">
       <h2 class="s5-title">Begin<br/>Your Edit</h2>
       <p class="s5-body">Tell the AI your occasion. It will build the rest.</p>
-      <a href="#" class="s5-btn">Start with AI</a>
+      <a href="#slide-5" class="s5-btn">Start with AI</a>
       <a href="index.html" class="s5-back">← Back to All Formats</a>
     </section>
 
   </div>
 
+
+  <script>
+  document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+    var href = a.getAttribute("href");
+    if (href.length > 1) {
+      a.addEventListener("click", function(e) {
+        var t = document.querySelector(href);
+        if (t) { e.preventDefault(); t.scrollIntoView({behavior:"smooth"}); }
+      });
+    }
+  });
+  </script>
 </body>
 </html>

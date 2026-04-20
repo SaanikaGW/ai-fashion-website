@@ -112,22 +112,22 @@
 
   <nav>
     <div class="nav-side">
-      <a href="#">Catalogue</a>
-      <a href="#">Register to Bid</a>
-      <a href="#">Results</a>
+      <a href="#catalogue">Catalogue</a>
+      <a href="#catalogue">Register to Bid</a>
+      <a href="#results">Results</a>
     </div>
     <div class="logo">
       <div class="logo-main">ATELIER SALE</div>
       <div class="logo-sub">AI Fashion Intelligence · Est. 2024</div>
     </div>
     <div class="nav-side">
-      <a href="#">AI Valuation</a>
-      <a href="#">Consign</a>
+      <a href="#ai-valuation">AI Valuation</a>
+      <a href="#ai-valuation">Consign</a>
       <a class="nav-back" href="index.html">← Hub</a>
     </div>
   </nav>
 
-  <section class="lot-hero">
+  <section class="lot-hero" id="catalogue">
     <div class="lh-image">
       <div class="lhi-lot">Lot 47</div>
       <div>
@@ -148,8 +148,8 @@
         </div>
       </div>
       <div class="lhd-btns">
-        <a href="#" class="btn-auction btn-a1">Place Bid</a>
-        <a href="#" class="btn-auction btn-a2">Full Catalogue Entry</a>
+        <a href="#catalogue" class="btn-auction btn-a1">Place Bid</a>
+        <a href="#catalogue" class="btn-auction btn-a2">Full Catalogue Entry</a>
       </div>
     </div>
   </section>
@@ -183,7 +183,7 @@
     </div>
   </div>
 
-  <section class="past-lots">
+  <section class="past-lots" id="results">
     <div class="pl-header">
       <div class="pl-title">Recent Results</div>
       <div class="pl-sub">All lots AI-authenticated</div>
@@ -240,7 +240,7 @@
     </div>
   </section>
 
-  <section class="process">
+  <section class="process" id="ai-valuation">
     <div class="proc-title">How Our AI Works</div>
     <p class="proc-sub">Four stages of authentication and valuation intelligence</p>
     <div class="proc-steps">
@@ -273,5 +273,17 @@
     <a href="index.html">← Back to Hub</a>
   </footer>
 
+
+  <script>
+  document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+    var href = a.getAttribute("href");
+    if (href.length > 1) {
+      a.addEventListener("click", function(e) {
+        var t = document.querySelector(href);
+        if (t) { e.preventDefault(); t.scrollIntoView({behavior:"smooth"}); }
+      });
+    }
+  });
+  </script>
 </body>
 </html>

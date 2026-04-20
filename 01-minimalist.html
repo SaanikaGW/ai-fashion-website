@@ -112,20 +112,20 @@
   <nav>
     <div class="nav-logo">AURA</div>
     <div class="nav-links">
-      <a href="#">Collection</a>
-      <a href="#">Editorial</a>
-      <a href="#">AI Stylist</a>
-      <a href="#">About</a>
+      <a href="#collection">Collection</a>
+      <a href="#features">Editorial</a>
+      <a href="#ai-stylist">AI Stylist</a>
+      <a href="#features">About</a>
     </div>
     <a href="index.html" class="back-link">← All Formats</a>
   </nav>
 
-  <section class="hero">
+  <section class="hero" id="hero">
     <div class="hero-left">
       <div class="hero-issue">Spring Collection — Issue 12</div>
       <h1 class="hero-title">The Art<br/>of <em>Stillness</em></h1>
       <p class="hero-body">AI-curated collections that speak in quiet confidence. Every piece selected with the precision of silence, the wisdom of restraint.</p>
-      <a href="#" class="hero-cta">Explore the Collection</a>
+      <a href="#collection" class="hero-cta">Explore the Collection</a>
     </div>
     <div class="hero-right">
       <div class="placeholder-img">
@@ -148,7 +148,7 @@
     <span class="strip-item">Style Intelligence</span>
   </div>
 
-  <section class="features">
+  <section class="features" id="features">
     <div class="features-header">
       <div class="features-label">How it works</div>
       <div class="features-title">Dressed by<br/>Intelligence</div>
@@ -172,7 +172,7 @@
     </div>
   </section>
 
-  <section class="collection">
+  <section class="collection" id="collection">
     <div class="collection-header">
       <div class="collection-title">New<br/>Arrivals</div>
       <div class="collection-sub">Pieces for those who understand that true luxury is the absence of unnecessary things. Each garment justified by its own existence.</div>
@@ -216,12 +216,12 @@
     </div>
   </section>
 
-  <section class="ai-section">
+  <section class="ai-section" id="ai-stylist">
     <div>
       <div class="ai-label">AI Stylist</div>
       <h2 class="ai-title">Style that<br/>learns you</h2>
       <p class="ai-body">Our neural style engine processes thousands of signals — seasonal color harmonics, fabric preferences, occasion mapping — to deliver something no human stylist can: objectivity without coldness.</p>
-      <a href="#" class="ai-cta">Start Your Profile</a>
+      <a href="#ai-stylist" class="ai-cta">Start Your Profile</a>
     </div>
     <div class="ai-visual">
       <div class="ai-v-item">
@@ -249,5 +249,17 @@
     <a href="index.html" style="font-size:0.75rem;color:#777;text-decoration:none;">← Back to Hub</a>
   </footer>
 
+
+  <script>
+  document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+    var href = a.getAttribute("href");
+    if (href.length > 1) {
+      a.addEventListener("click", function(e) {
+        var t = document.querySelector(href);
+        if (t) { e.preventDefault(); t.scrollIntoView({behavior:"smooth"}); }
+      });
+    }
+  });
+  </script>
 </body>
 </html>

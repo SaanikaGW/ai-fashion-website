@@ -166,12 +166,12 @@
   </div>
 
   <nav>
-    <a href="#" class="nav-tab active">⚡ Dashboard</a>
-    <a href="#" class="nav-tab">👗 Inventory <span class="badge">48</span></a>
-    <a href="#" class="nav-tab">🤖 AI Engine</a>
-    <a href="#" class="nav-tab">📊 Analytics</a>
-    <a href="#" class="nav-tab">🔬 Lab</a>
-    <a href="#" class="nav-tab">⚙️ Config</a>
+    <a href="#" class="nav-tab active" onclick="switchTab(this,event)">⚡ Dashboard</a>
+    <a href="#" class="nav-tab" onclick="switchTab(this,event)">👗 Inventory <span class="badge">48</span></a>
+    <a href="#" class="nav-tab" onclick="switchTab(this,event)">🤖 AI Engine</a>
+    <a href="#" class="nav-tab" onclick="switchTab(this,event)">📊 Analytics</a>
+    <a href="#" class="nav-tab" onclick="switchTab(this,event)">🔬 Lab</a>
+    <a href="#" class="nav-tab" onclick="switchTab(this,event)">⚙️ Config</a>
   </nav>
 
   <div class="layout">
@@ -478,5 +478,12 @@
     setInterval(updateClock, 1000);
   </script>
 
+<script>
+function switchTab(el, e) {
+  e.preventDefault();
+  document.querySelectorAll('.nav-tab').forEach(function(t) { t.classList.remove('active'); });
+  el.classList.add('active');
+}
+</script>
 </body>
 </html>

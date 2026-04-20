@@ -369,5 +369,86 @@
 
 </div>
 
+<script>
+// Sidebar nav active state
+document.querySelectorAll('.nav-item').forEach(function(item) {
+  item.addEventListener('click', function(e) {
+    e.preventDefault();
+    document.querySelectorAll('.nav-item').forEach(function(n) { n.classList.remove('active'); });
+    this.classList.add('active');
+  });
+});
+
+// Like / heart toggle
+document.querySelectorAll('.action-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var icon = this.textContent.trim();
+    // Heart toggle
+    if (icon === '🤍') {
+      this.textContent = '❤️';
+      var likesEl = this.closest('.post-actions').nextElementSibling;
+      if (likesEl && likesEl.classList.contains('post-likes')) {
+        var n = parseInt(likesEl.textContent.replace(/[^0-9]/g, ''), 10);
+        likesEl.textContent = (n + 1).toLocaleString() + ' likes';
+      }
+    } else if (icon === '❤️') {
+      this.textContent = '🤍';
+      var likesEl = this.closest('.post-actions').nextElementSibling;
+      if (likesEl && likesEl.classList.contains('post-likes')) {
+        var n = parseInt(likesEl.textContent.replace(/[^0-9]/g, ''), 10);
+        likesEl.textContent = Math.max(0, n - 1).toLocaleString() + ' likes';
+      }
+    }
+    // Save toggle
+    if (icon === '🔖') {
+      this.textContent = '🏷️';
+      this.style.color = '#764ba2';
+    } else if (icon === '🏷️') {
+      this.textContent = '🔖';
+      this.style.color = '';
+    }
+    // Comment — focus the input
+    if (icon === '💬') {
+      var box = this.closest('.post-actions').parentElement.querySelector('.comment-input');
+      if (box) box.focus();
+    }
+  });
+});
+
+// Follow button toggle
+document.querySelectorAll('.sug-follow').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    if (this.textContent === 'Follow') {
+      this.textContent = 'Following';
+      this.style.color = '#888';
+    } else {
+      this.textContent = 'Follow';
+      this.style.color = '';
+    }
+  });
+});
+
+// Comment post button
+document.querySelectorAll('.comment-post').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var input = this.previousElementSibling;
+    if (input && input.value.trim()) {
+      input.value = '';
+      this.textContent = '✓';
+      setTimeout(function(b) { b.textContent = 'Post'; }.bind(null, this), 800);
+    }
+  });
+});
+
+// AI Report button
+var aiBtn = document.querySelector('.ai-box-btn');
+if (aiBtn) {
+  aiBtn.addEventListener('click', function() {
+    this.textContent = '✓ Report Sent to Your Wardrobe';
+    this.style.background = 'linear-gradient(135deg,#43e97b,#38f9d7)';
+    this.disabled = true;
+  });
+}
+</script>
 </body>
 </html>

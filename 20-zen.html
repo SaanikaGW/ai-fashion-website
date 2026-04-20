@@ -100,20 +100,20 @@
       <div class="logo-jp">The Space Between</div>
     </div>
     <div class="nav-links">
-      <a href="#">Collection</a>
-      <a href="#">Philosophy</a>
-      <a href="#">AI Atelier</a>
-      <a href="#">Archive</a>
+      <a href="#collection">Collection</a>
+      <a href="#philosophy">Philosophy</a>
+      <a href="#ai-atelier">AI Atelier</a>
+      <a href="#philosophy">Archive</a>
     </div>
     <a href="index.html" class="nav-back">← All Formats</a>
   </nav>
 
-  <section class="hero">
+  <section class="hero" id="hero">
     <div class="hero-left">
       <div class="hero-jp">間 · 侘び寂び · 物の哀れ · AI</div>
       <h1 class="hero-title">The space<br/>between<br/>the garments<br/>is the garment</h1>
       <p class="hero-body">Wabi-sabi AI fashion. Imperfect, impermanent, incomplete — and therefore truthful. Our neural network has studied the Japanese concept of ma — the meaningful pause — and applies it to your wardrobe.</p>
-      <a href="#" class="hero-cta">Enter the Atelier</a>
+      <a href="#collection" class="hero-cta">Enter the Atelier</a>
     </div>
     <div class="hero-right">
       <div class="hero-artwork">
@@ -125,7 +125,7 @@
 
   <div class="rule"></div>
 
-  <section class="collection">
+  <section class="collection" id="collection">
     <div class="coll-header">
       <div class="ch-jp">着る</div>
       <div>
@@ -169,7 +169,7 @@
     </div>
   </section>
 
-  <section class="principles">
+  <section class="principles" id="philosophy">
     <div class="pr-header">
       <div class="pr-jp">美</div>
       <div class="pr-title">三つの美しさ — Three Beauties</div>
@@ -196,7 +196,7 @@
     </div>
   </section>
 
-  <section class="ai">
+  <section class="ai" id="ai-atelier">
     <div class="ai-inner">
       <div>
         <div style="display:flex;gap:2rem;align-items:flex-start;margin-bottom:2rem;">
@@ -204,7 +204,7 @@
           <div>
             <h2 class="ai-title">The AI That<br/>Learned to Be<br/>Still</h2>
             <p class="ai-body">We trained our AI not on maximising output, but on understanding restraint. It studied the masters of Japanese fashion — Issey Miyake, Yohji Yamamoto, Rei Kawakubo — and absorbed their fundamental teaching: that what you leave out is as important as what you put in.</p>
-            <a href="#" class="hero-cta">Begin Your Practice</a>
+            <a href="#ai-atelier" class="hero-cta">Begin Your Practice</a>
           </div>
         </div>
       </div>
@@ -226,5 +226,17 @@
     <a href="index.html">← Back to Hub</a>
   </footer>
 
+
+  <script>
+  document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+    var href = a.getAttribute("href");
+    if (href.length > 1) {
+      a.addEventListener("click", function(e) {
+        var t = document.querySelector(href);
+        if (t) { e.preventDefault(); t.scrollIntoView({behavior:"smooth"}); }
+      });
+    }
+  });
+  </script>
 </body>
 </html>

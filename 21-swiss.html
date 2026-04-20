@@ -96,15 +96,15 @@
   <nav>
     <div class="nav-logo">GRID</div>
     <div class="nav-center">
-      <a href="#" class="nav-link">Collection</a>
-      <a href="#" class="nav-link">Editorial</a>
-      <a href="#" class="nav-link">AI System</a>
-      <a href="#" class="nav-link">About</a>
+      <a href="#collection" class="nav-link">Collection</a>
+      <a href="#collection" class="nav-link">Editorial</a>
+      <a href="#hero" class="nav-link">AI System</a>
+      <a href="#collection" class="nav-link">About</a>
     </div>
     <a href="index.html" class="nav-back">← Hub</a>
   </nav>
 
-  <section class="hero">
+  <section class="hero" id="hero">
     <div class="hero-col1">
       <div class="hc1-label">AI Fashion Intelligence System</div>
       <div class="hc1-num">01</div>
@@ -125,8 +125,8 @@
       <div class="hero-row">
         <div class="hr-text">The Swiss International Typographic Style applied to fashion intelligence. Grids do not lie. Our AI does not lie. Together they produce the most systematically honest style recommendations in existence.</div>
         <div class="hr-cta">
-          <a href="#" class="btn-swiss btn-sw-red">Begin System</a>
-          <a href="#" class="btn-swiss btn-sw-outline">View Collection</a>
+          <a href="#collection" class="btn-swiss btn-sw-red">Begin System</a>
+          <a href="#collection" class="btn-swiss btn-sw-outline">View Collection</a>
         </div>
       </div>
     </div>
@@ -155,10 +155,10 @@
     </div>
   </div>
 
-  <section class="products">
+  <section class="products" id="collection">
     <div class="prod-title-bar">
       <span class="ptb-title">Current Collection — SS25</span>
-      <a href="#" class="ptb-view">View All →</a>
+      <a href="#collection" class="ptb-view">View All →</a>
     </div>
     <div class="prod-grid-sw">
       <div class="prod-item-sw">
@@ -234,5 +234,17 @@
     <div class="f-back"><a href="index.html">← All Formats</a></div>
   </footer>
 
+
+  <script>
+  document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+    var href = a.getAttribute("href");
+    if (href.length > 1) {
+      a.addEventListener("click", function(e) {
+        var t = document.querySelector(href);
+        if (t) { e.preventDefault(); t.scrollIntoView({behavior:"smooth"}); }
+      });
+    }
+  });
+  </script>
 </body>
 </html>

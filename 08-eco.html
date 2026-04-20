@@ -108,22 +108,22 @@
   <nav>
     <div class="logo">TERRA<span>.</span></div>
     <div class="nav-links">
-      <a href="#">Shop</a>
-      <a href="#">Our Materials</a>
-      <a href="#">AI Carbon Calc</a>
-      <a href="#">Community</a>
+      <a href="#shop">Shop</a>
+      <a href="#impact">Our Materials</a>
+      <a href="#ai-carbon">AI Carbon Calc</a>
+      <a href="#impact">Community</a>
     </div>
     <a href="index.html" class="nav-back">← All Formats</a>
   </nav>
 
-  <section class="hero">
+  <section class="hero" id="hero">
     <div class="hero-left">
       <div class="hero-badge">100% Sustainable AI Fashion</div>
       <h1 class="hero-title">Fashion that<br/>loves the <span class="italic">planet</span><br/>as much as you</h1>
       <p class="hero-body">AI-curated sustainable wardrobes. Every recommendation comes with a carbon footprint score, ethical sourcing data, and a fabric lifecycle report.</p>
       <div class="hero-actions">
-        <a href="#" class="btn-earth">Start My Wardrobe</a>
-        <a href="#" class="btn-ghost">How it works</a>
+        <a href="#shop" class="btn-earth">Start My Wardrobe</a>
+        <a href="#impact" class="btn-ghost">How it works</a>
       </div>
     </div>
     <div class="hero-right">
@@ -173,7 +173,7 @@
     <div class="es-item"><span class="es-icon">🌍</span> Carbon Neutral Shipping</div>
   </div>
 
-  <section class="impact">
+  <section class="impact" id="impact">
     <div class="impact-label">Our Impact</div>
     <h2 class="impact-title">Fashion with <em>accountability</em></h2>
     <p class="impact-sub">Every purchase on TERRA is tracked from raw material to your door. Real numbers. No greenwashing.</p>
@@ -201,10 +201,10 @@
     </div>
   </section>
 
-  <section class="products">
+  <section class="products" id="shop">
     <div class="prod-header">
       <div class="prod-title">Conscious Collection</div>
-      <a href="#" class="prod-more">View All Pieces →</a>
+      <a href="#shop" class="prod-more">View All Pieces →</a>
     </div>
     <div class="prod-grid">
       <div class="prod-card">
@@ -266,13 +266,13 @@
     </div>
   </section>
 
-  <section class="ai">
+  <section class="ai" id="ai-carbon">
     <div class="ai-inner">
       <div>
         <div class="ai-label">AI Carbon Calculator</div>
         <h2 class="ai-title">Know exactly what<br/>you're wearing</h2>
         <p class="ai-body">Our AI doesn't just style you — it gives you the full environmental receipt for every outfit. From farm to fibre to your wardrobe, complete transparency.</p>
-        <a href="#" class="btn-cream">Calculate My Wardrobe</a>
+        <a href="#ai-carbon" class="btn-cream">Calculate My Wardrobe</a>
       </div>
       <div class="ai-features">
         <div class="ai-feat">
@@ -306,5 +306,17 @@
     <a href="index.html">← Back to Hub</a>
   </footer>
 
+
+  <script>
+  document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+    var href = a.getAttribute("href");
+    if (href.length > 1) {
+      a.addEventListener("click", function(e) {
+        var t = document.querySelector(href);
+        if (t) { e.preventDefault(); t.scrollIntoView({behavior:"smooth"}); }
+      });
+    }
+  });
+  </script>
 </body>
 </html>

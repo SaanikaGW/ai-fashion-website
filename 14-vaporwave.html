@@ -117,14 +117,14 @@
   <nav>
     <div class="logo">Ａ Ｅ Ｓ Ｔ Ｈ Ｅ Ｔ Ｉ Ｃ</div>
     <div class="nav-links">
-      <a href="#">Ｓ Ｈ Ｏ Ｐ</a>
-      <a href="#">Ｔ Ｒ Ｅ Ｎ Ｄ</a>
-      <a href="#">Ａ Ｉ</a>
+      <a href="#shop">Ｓ Ｈ Ｏ Ｐ</a>
+      <a href="#shop">Ｔ Ｒ Ｅ Ｎ Ｄ</a>
+      <a href="#ai">Ａ Ｉ</a>
     </div>
     <a href="index.html" class="nav-back">← HUB</a>
   </nav>
 
-  <section class="hero">
+  <section class="hero" id="hero">
     <div class="hero-tag">A I — F A S H I O N — S Y S T E M</div>
     <h1 class="hero-title">
       <span class="ht-line1">ＤＲＥＳＳ</span>
@@ -133,8 +133,8 @@
     </h1>
     <p class="hero-sub">AI-CURATED FITS FROM THE DIGITAL BEYOND. YOUR AESTHETIC. YOUR WAVELENGTH.</p>
     <div class="hero-btns">
-      <a href="#" class="btn-vw btn-pink">ＥＮＴＥＲ　ＡＩ</a>
-      <a href="#" class="btn-vw btn-blue">ＳＨＯ Ｐ　ＮＯＷ</a>
+      <a href="#ai" class="btn-vw btn-pink">ＥＮＴＥＲ　ＡＩ</a>
+      <a href="#shop" class="btn-vw btn-blue">ＳＨＯ Ｐ　ＮＯＷ</a>
     </div>
   </section>
 
@@ -142,7 +142,7 @@
     <span class="mq-inner">Ａ Ｅ Ｓ Ｔ Ｈ Ｅ Ｔ Ｉ Ｃ<span class="mq-sep">♦</span>ＡＩ ＳＴＹＬＥ<span class="mq-sep">♦</span>ＲＥＴＲＯ ＦＵＴＵＲＥ<span class="mq-sep">♦</span>ＤＩＧＩＴＡＬ ＦＡＳＨＩＯＮ<span class="mq-sep">♦</span>Ｖ Ａ Ｐ Ｏ Ｒ<span class="mq-sep">♦</span>Ａ Ｅ Ｓ Ｔ Ｈ Ｅ Ｔ Ｉ Ｃ<span class="mq-sep">♦</span>ＡＩ ＳＴＹＬＥ<span class="mq-sep">♦</span>ＲＥＴＲＯ ＦＵＴＵＲＥ<span class="mq-sep">♦</span>ＤＩＧＩＴＡＬ ＦＡＳＨＩＯＮ<span class="mq-sep">♦</span>Ｖ Ａ Ｐ Ｏ Ｒ<span class="mq-sep">♦</span></span>
   </div>
 
-  <section class="items">
+  <section class="items" id="shop">
     <div class="items-title">Ｎ Ｅ Ｗ　Ｄ Ｒ Ｏ Ｐ</div>
     <div class="items-sub">SELECTED BY THE A.I. AESTHETIC ORACLE</div>
     <div class="items-grid">
@@ -177,7 +177,7 @@
     </div>
   </section>
 
-  <section class="windows">
+  <section class="windows" id="ai">
     <div class="windows-grid">
       <div class="win">
         <div class="win-titlebar">
@@ -231,5 +231,17 @@
     <div class="f-copy">© 2025 AESTHETIC AI FASHION SYSTEMS<br/><a href="index.html">← RETURN TO HUB</a></div>
   </footer>
 
+
+  <script>
+  document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+    var href = a.getAttribute("href");
+    if (href.length > 1) {
+      a.addEventListener("click", function(e) {
+        var t = document.querySelector(href);
+        if (t) { e.preventDefault(); t.scrollIntoView({behavior:"smooth"}); }
+      });
+    }
+  });
+  </script>
 </body>
 </html>

@@ -89,15 +89,15 @@
   <nav>
     <div class="nav-logo">BRUTAL</div>
     <div class="nav-links">
-      <a href="#">Shop</a>
-      <a href="#">AI Picks</a>
-      <a href="#">Manifesto</a>
-      <a href="#">Drop</a>
+      <a href="#shop">Shop</a>
+      <a href="#shop">AI Picks</a>
+      <a href="#manifesto">Manifesto</a>
+      <a href="#shop">Drop</a>
     </div>
     <a href="index.html" class="nav-back">← ALL</a>
   </nav>
 
-  <section class="hero">
+  <section class="hero" id="hero">
     <div class="hero-left">
       <div class="h-overline">AI Fashion System — No Apologies</div>
       <h1 class="h-title">
@@ -108,8 +108,8 @@
       </h1>
       <p class="h-body">We fed 10 years of fashion trends into an AI and told it to ignore all of them. What came out was better than everything that came before.</p>
       <div style="display:flex;gap:1rem;flex-wrap:wrap;">
-        <a href="#" class="btn-brutal">Shop Now</a>
-        <a href="#" class="btn-brutal yellow">AI Picks Me</a>
+        <a href="#shop" class="btn-brutal">Shop Now</a>
+        <a href="#shop" class="btn-brutal yellow">AI Picks Me</a>
       </div>
     </div>
     <div class="hero-right">
@@ -157,7 +157,7 @@
     </div>
   </div>
 
-  <section class="products">
+  <section class="products" id="shop">
     <div class="prod-header">
       <div class="ph-title">Current Drop</div>
       <div class="ph-count">48 Items Available</div>
@@ -210,7 +210,7 @@
     </div>
   </section>
 
-  <section class="statement">
+  <section class="statement" id="manifesto">
     <div class="st-left">
       <h2 class="st-title">The AI Doesn't Care About Your Feelings.</h2>
       <p class="st-body">It cares about what works. It tells you when the proportions are wrong. It refuses to recommend things just because they're popular. It will not flatter you into a bad purchase. That's not coldness. That's respect.</p>
@@ -228,5 +228,17 @@
     <a href="index.html">← ALL FORMATS</a>
   </footer>
 
+
+  <script>
+  document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+    var href = a.getAttribute("href");
+    if (href.length > 1) {
+      a.addEventListener("click", function(e) {
+        var t = document.querySelector(href);
+        if (t) { e.preventDefault(); t.scrollIntoView({behavior:"smooth"}); }
+      });
+    }
+  });
+  </script>
 </body>
 </html>

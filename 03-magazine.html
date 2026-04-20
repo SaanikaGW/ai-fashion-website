@@ -92,19 +92,19 @@
 
   <nav>
     <div class="nav-left">
-      <a href="#">Fashion</a>
-      <a href="#">Beauty</a>
-      <a href="#">Culture</a>
+      <a href="#cover">Fashion</a>
+      <a href="#editorial">Beauty</a>
+      <a href="#editorial">Culture</a>
     </div>
     <div class="nav-logo">VOLT</div>
     <div class="nav-right">
-      <a href="#">AI Lab</a>
-      <a href="#">Subscribe</a>
-      <a href="#">Shop</a>
+      <a href="#editorial">AI Lab</a>
+      <a href="#editorial">Subscribe</a>
+      <a href="#editorial">Shop</a>
     </div>
   </nav>
 
-  <section class="cover">
+  <section class="cover" id="cover">
     <div class="cover-main">
       <div class="cover-bg"></div>
       <div class="cover-overlay"></div>
@@ -166,10 +166,10 @@
     </div>
   </div>
 
-  <section class="editorial">
+  <section class="editorial" id="editorial">
     <div class="ed-head">
       <div class="ed-title">Latest Stories</div>
-      <a href="#" class="ed-more">All Stories →</a>
+      <a href="#editorial" class="ed-more">All Stories →</a>
     </div>
     <div class="ed-grid">
       <div class="ed-card">
@@ -193,7 +193,7 @@
     </div>
   </section>
 
-  <section class="big-quote">
+  <section class="big-quote" id="about">
     <div class="bq-text">"Fashion has always been about reading the future. Now the machine reads it faster."</div>
     <div class="bq-attr">— VOLT Magazine, Issue 04</div>
   </section>
@@ -204,5 +204,17 @@
     <a href="index.html">← Back to Hub</a>
   </footer>
 
+
+  <script>
+  document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+    var href = a.getAttribute("href");
+    if (href.length > 1) {
+      a.addEventListener("click", function(e) {
+        var t = document.querySelector(href);
+        if (t) { e.preventDefault(); t.scrollIntoView({behavior:"smooth"}); }
+      });
+    }
+  });
+  </script>
 </body>
 </html>

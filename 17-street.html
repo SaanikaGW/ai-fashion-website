@@ -95,15 +95,15 @@
   <nav>
     <div class="logo">BLOCK</div>
     <div class="nav-links">
-      <a href="#">Drops</a>
-      <a href="#">Street Style</a>
-      <a href="#">AI</a>
-      <a href="#">Community</a>
+      <a href="#drops">Drops</a>
+      <a href="#community">Street Style</a>
+      <a href="#drops">AI</a>
+      <a href="#community">Community</a>
     </div>
     <a href="index.html" class="nav-back">← HUB</a>
   </nav>
 
-  <section class="hero">
+  <section class="hero" id="hero">
     <div class="hero-bg-text">BLOCK</div>
     <div class="hero-content">
       <div class="hero-tag">AI Street Style — Limited Drops</div>
@@ -114,8 +114,8 @@
       </h1>
       <p class="hero-desc">AI-curated streetwear from the concrete up. The algorithm walks the block so you don't have to. Limited drops. Unlimited expression.</p>
       <div class="hero-btns">
-        <a href="#" class="btn-street btn-orange">See the Drop</a>
-        <a href="#" class="btn-street btn-outline">AI Style Me</a>
+        <a href="#drops" class="btn-street btn-orange">See the Drop</a>
+        <a href="#drops" class="btn-street btn-outline">AI Style Me</a>
       </div>
     </div>
   </section>
@@ -124,7 +124,7 @@
     <span class="ts-inner">STREET CERTIFIED<span class="ts-sep">★</span>AI CURATED<span class="ts-sep">★</span>LIMITED DROP<span class="ts-sep">★</span>NO FAKES<span class="ts-sep">★</span>BLOCK APPROVED<span class="ts-sep">★</span>STREET CERTIFIED<span class="ts-sep">★</span>AI CURATED<span class="ts-sep">★</span>LIMITED DROP<span class="ts-sep">★</span>NO FAKES<span class="ts-sep">★</span>BLOCK APPROVED<span class="ts-sep">★</span></span>
   </div>
 
-  <section class="drops">
+  <section class="drops" id="drops">
     <div class="drops-header">
       <div class="drops-title">Latest Drop</div>
       <div class="drops-new">● Live Now</div>
@@ -177,7 +177,7 @@
     </div>
   </section>
 
-  <section class="wall">
+  <section class="wall" id="community">
     <div class="wall-inner">
       <div class="wall-graffiti wg1">BLOCK</div>
       <div class="wall-graffiti wg2">REAL</div>
@@ -186,7 +186,7 @@
           <div class="wc-label">The AI That Grew Up On The Block</div>
           <h2 class="wc-title">Street Smart. Machine Precise.</h2>
           <p class="wc-body">Our AI was trained on decade of streetwear culture — not fashion week. It knows the difference between hype and heat. It's seen every colourway, every silhouette, every collaboration. And it knows which ones actually go.</p>
-          <a href="#" class="btn-street btn-orange" style="font-size:0.9rem;">Get My Fit</a>
+          <a href="#drops" class="btn-street btn-orange" style="font-size:0.9rem;">Get My Fit</a>
           <div class="wc-stats" style="margin-top:2rem;">
             <div class="ws"><div class="ws-num">10yr</div><div class="ws-label">Street Data Trained</div></div>
             <div class="ws"><div class="ws-num">500K</div><div class="ws-label">Fits Analysed</div></div>
@@ -210,5 +210,17 @@
     <a href="index.html">← All Formats</a>
   </footer>
 
+
+  <script>
+  document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+    var href = a.getAttribute("href");
+    if (href.length > 1) {
+      a.addEventListener("click", function(e) {
+        var t = document.querySelector(href);
+        if (t) { e.preventDefault(); t.scrollIntoView({behavior:"smooth"}); }
+      });
+    }
+  });
+  </script>
 </body>
 </html>

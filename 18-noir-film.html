@@ -93,14 +93,14 @@
   <nav>
     <div class="logo">The Wardrobe</div>
     <div class="nav-links">
-      <a href="#">Collection</a>
-      <a href="#">The Archive</a>
-      <a href="#">Consulting</a>
+      <a href="#archive">Collection</a>
+      <a href="#archive">The Archive</a>
+      <a href="#consulting">Consulting</a>
     </div>
     <a href="index.html" class="nav-back">← All Formats</a>
   </nav>
 
-  <section class="hero">
+  <section class="hero" id="hero">
     <div class="hero-bg"></div>
     <div class="hero-light"></div>
     <div class="hero-shadow-lines"></div>
@@ -114,7 +114,7 @@
         <span class="ht-white">Dressed</span>
       </h1>
       <p class="hero-tagline">Every outfit tells a story. Our AI reads between the lines — and writes the ending you didn't know you wanted.</p>
-      <a href="#" class="hero-cta">Enter The Wardrobe</a>
+      <a href="#archive" class="hero-cta">Enter The Wardrobe</a>
     </div>
   </section>
 
@@ -132,7 +132,7 @@
     <div class="fs-holes"></div>
   </div>
 
-  <section class="editorial">
+  <section class="editorial" id="archive">
     <div class="ed-header">
       <div class="eh-left">
         <div class="eh-label">The Autumn Edit — 2025</div>
@@ -179,12 +179,12 @@
     <div class="nq-attr">— The Wardrobe AI, on the subject of presence</div>
   </div>
 
-  <section class="ai-section">
+  <section class="ai-section" id="consulting">
     <div>
       <div class="ai-label">The Intelligence</div>
       <h2 class="ai-title">The Detective<br/>Of Style</h2>
       <p class="ai-body">Our AI approaches your wardrobe like a case. It studies the evidence — what you wear, what you save, what you avoid — and reconstructs the person you're trying to become. Then it dresses them.</p>
-      <a href="#" class="hero-cta" style="display:inline-block;">Consult The Intelligence</a>
+      <a href="#consulting" class="hero-cta" style="display:inline-block;">Consult The Intelligence</a>
     </div>
     <div class="ai-typewriter">
       <div class="atw-header">// Consultation Transcript — Case No. 4471</div>
@@ -202,5 +202,17 @@
     <a href="index.html">← All Formats</a>
   </footer>
 
+
+  <script>
+  document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+    var href = a.getAttribute("href");
+    if (href.length > 1) {
+      a.addEventListener("click", function(e) {
+        var t = document.querySelector(href);
+        if (t) { e.preventDefault(); t.scrollIntoView({behavior:"smooth"}); }
+      });
+    }
+  });
+  </script>
 </body>
 </html>

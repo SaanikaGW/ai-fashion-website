@@ -103,22 +103,22 @@
   <nav>
     <div class="logo">Bloom</div>
     <div class="nav-links">
-      <a href="#">Collection</a>
-      <a href="#">Studio</a>
-      <a href="#">AI Style</a>
-      <a href="#">Journal</a>
+      <a href="#collection">Collection</a>
+      <a href="#studio">Studio</a>
+      <a href="#studio">AI Style</a>
+      <a href="#journal">Journal</a>
     </div>
     <a href="index.html" class="nav-back">← All Formats</a>
   </nav>
 
-  <section class="hero">
+  <section class="hero" id="hero">
     <div class="hero-left">
       <div class="hero-blob-badge">🌸 Organic AI Fashion · Spring 2025</div>
       <h1 class="hero-title">Fashion that<br/>breathes<br/><span class="ht-italic">with you</span></h1>
       <p class="hero-body">A living wardrobe intelligence. Our AI evolves with your taste, your body, your seasons — like a garden that knows exactly what it needs to grow.</p>
       <div class="hero-btns">
-        <a href="#" class="btn-bloom btn-b1">Start Blooming</a>
-        <a href="#" class="btn-bloom btn-b2">Explore Looks</a>
+        <a href="#collection" class="btn-bloom btn-b1">Start Blooming</a>
+        <a href="#collection" class="btn-bloom btn-b2">Explore Looks</a>
       </div>
     </div>
     <div class="hero-right">
@@ -143,7 +143,7 @@
     </div>
   </section>
 
-  <section class="organic">
+  <section class="organic" id="collection">
     <div class="og-header">
       <div class="og-badge">Spring Collection · AI Curated</div>
       <h2 class="og-title">In Bloom Right Now</h2>
@@ -177,7 +177,7 @@
     </div>
   </section>
 
-  <section class="features">
+  <section class="features" id="studio">
     <div class="feat-header">
       <h2 class="fh-title">An AI that<br/>grows with <em>you</em></h2>
       <p class="fh-body">Our style engine is not a static algorithm. It breathes, adapts, evolves — learning from each season of your life and reflecting it back in fabric and form.</p>
@@ -201,7 +201,7 @@
     </div>
   </section>
 
-  <section class="testimonial">
+  <section class="testimonial" id="journal">
     <div class="test-text">"It felt less like a shopping app and more like a conversation with a friend who actually listens."</div>
     <div class="test-author">— Margot, Amsterdam</div>
   </section>
@@ -212,5 +212,17 @@
     <a href="index.html">← Back to Hub</a>
   </footer>
 
+
+  <script>
+  document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+    var href = a.getAttribute("href");
+    if (href.length > 1) {
+      a.addEventListener("click", function(e) {
+        var t = document.querySelector(href);
+        if (t) { e.preventDefault(); t.scrollIntoView({behavior:"smooth"}); }
+      });
+    }
+  });
+  </script>
 </body>
 </html>

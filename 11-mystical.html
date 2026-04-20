@@ -83,25 +83,25 @@
   <nav>
     <div class="logo">✦ ORACLE ✦</div>
     <div class="nav-links">
-      <a href="#">The Cards</a>
-      <a href="#">Read My Style</a>
-      <a href="#">The Archive</a>
+      <a href="#cards">The Cards</a>
+      <a href="#oracle">Read My Style</a>
+      <a href="#archive">The Archive</a>
     </div>
     <a href="index.html" class="back">← All Formats</a>
   </nav>
 
-  <section class="hero">
+  <section class="hero" id="hero">
     <div class="hero-glow"></div>
     <div class="hero-sigil">🔮</div>
     <div class="hero-eyebrow">The AI Fashion Oracle</div>
     <h1 class="hero-title">Your Style<br/>Is Written<br/>In The Stars</h1>
     <p class="hero-sub">The Oracle has studied the patterns of ten thousand wardrobes and read the fashion destiny encoded in your aesthetic soul. Step forward.</p>
-    <a href="#" class="hero-btn">✦ Consult The Oracle ✦</a>
+    <a href="#oracle" class="hero-btn">✦ Consult The Oracle ✦</a>
   </section>
 
   <div class="mystical-divider">✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧ ✦</div>
 
-  <section class="cards-section">
+  <section class="cards-section" id="cards">
     <div class="cs-eyebrow">The Sacred Five</div>
     <h2 class="cs-title">Draw Your Cards</h2>
     <p class="cs-sub">Each card reveals a dimension of your style destiny. The AI has laid them. Only you may turn them.</p>
@@ -144,7 +144,7 @@
     </div>
   </section>
 
-  <section class="oracle">
+  <section class="oracle" id="oracle">
     <h2 class="oracle-title">✦ The Oracle Speaks ✦</h2>
     <p class="oracle-sub">From deep within the neural constellation, a reading has emerged for you.</p>
     <div class="oracle-box">
@@ -156,7 +156,7 @@
     </div>
   </section>
 
-  <section class="testimonials">
+  <section class="testimonials" id="archive">
     <h2 class="test-title">Those Who Have Consulted</h2>
     <div class="test-grid">
       <div class="test-card">
@@ -193,6 +193,18 @@
       s.style.cssText = `width:${size}px;height:${size}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--d:${(Math.random()*4+2).toFixed(1)}s;--o:${(Math.random()*0.6+0.2).toFixed(2)};animation-delay:${(Math.random()*5).toFixed(1)}s`;
       container.appendChild(s);
     }
+  </script>
+
+  <script>
+  document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+    var href = a.getAttribute("href");
+    if (href.length > 1) {
+      a.addEventListener("click", function(e) {
+        var t = document.querySelector(href);
+        if (t) { e.preventDefault(); t.scrollIntoView({behavior:"smooth"}); }
+      });
+    }
+  });
   </script>
 </body>
 </html>

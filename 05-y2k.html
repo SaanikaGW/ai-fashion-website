@@ -95,10 +95,10 @@
     <div class="nav-inner">
       <div class="logo">xoSTYLE ✿</div>
       <div class="nav-links">
-        <a href="#">Shop</a>
-        <a href="#">Trends</a>
-        <a href="#">AI Stylist</a>
-        <a href="#">Lookbook</a>
+        <a href="#products">Shop</a>
+        <a href="#products">Trends</a>
+        <a href="#ai-stylist">AI Stylist</a>
+        <a href="#products">Lookbook</a>
       </div>
       <a href="index.html" class="nav-back">← All Formats</a>
     </div>
@@ -110,7 +110,7 @@
     </span>
   </div>
 
-  <section class="hero">
+  <section class="hero" id="hero">
     <div class="hero-left">
       <div class="hero-eyebrow">
         <span class="hero-chip">✨ New</span>
@@ -123,8 +123,8 @@
       </h1>
       <p class="hero-body">Our AI is literally obsessed with your style. Tell it your vibe and it'll build your entire wardrobe in seconds. No cap.</p>
       <div class="hero-buttons">
-        <a href="#" class="btn-y2k primary">Get My Looks ✨</a>
-        <a href="#" class="btn-y2k secondary">Shop Drops 💕</a>
+        <a href="#products" class="btn-y2k primary">Get My Looks ✨</a>
+        <a href="#products" class="btn-y2k secondary">Shop Drops 💕</a>
       </div>
     </div>
     <div class="hero-right">
@@ -146,7 +146,7 @@
     </div>
   </section>
 
-  <section class="products">
+  <section class="products" id="products">
     <div class="prod-title">Trending Now 🔥</div>
     <div class="prod-sub">AI-picked based on what's blowing up rn</div>
     <div class="prod-grid">
@@ -193,13 +193,13 @@
     </div>
   </section>
 
-  <section class="ai-y2k">
+  <section class="ai-y2k" id="ai-stylist">
     <div class="ai-y2k-inner">
       <div>
         <div class="ai-y2k-label">🤖 AI Fashion BFF</div>
         <h2 class="ai-y2k-title">It lowkey reads<br/>ur mind bestie 💭</h2>
         <p class="ai-y2k-body">Our AI has studied literally thousands of aesthetic categories — coquette, clean girl, dark academia, y2k, cottage core — and it knows exactly which one (or three) you are. No judgement, just vibes.</p>
-        <a href="#" class="btn-y2k primary" style="font-size:0.9rem;">Take the Style Quiz ✨</a>
+        <a href="#ai-stylist" class="btn-y2k primary" style="font-size:0.9rem;">Take the Style Quiz ✨</a>
       </div>
       <div class="stats-grid">
         <div class="stat-card">
@@ -228,5 +228,17 @@
     <a href="index.html">← All Formats</a>
   </footer>
 
+
+  <script>
+  document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+    var href = a.getAttribute("href");
+    if (href.length > 1) {
+      a.addEventListener("click", function(e) {
+        var t = document.querySelector(href);
+        if (t) { e.preventDefault(); t.scrollIntoView({behavior:"smooth"}); }
+      });
+    }
+  });
+  </script>
 </body>
 </html>

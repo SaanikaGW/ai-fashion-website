@@ -95,15 +95,15 @@
   <nav>
     <div class="logo">NOIR</div>
     <div class="nav-center">
-      <a href="#">Maison</a>
-      <a href="#">Couture</a>
-      <a href="#">Atelier AI</a>
-      <a href="#">Clientele</a>
+      <a href="#hero">Maison</a>
+      <a href="#collection">Couture</a>
+      <a href="#ai">Atelier AI</a>
+      <a href="#testimonial">Clientele</a>
     </div>
     <a href="index.html" class="back">← All Formats</a>
   </nav>
 
-  <section class="hero">
+  <section class="hero" id="hero">
     <div class="hero-bg"></div>
     <div class="hero-glow"></div>
     <div class="hero-content">
@@ -111,8 +111,8 @@
       <h1 class="hero-title">Where<br/>Night<br/><span class="accent">Wears</span><br/>Gold</h1>
       <p class="hero-body">Artificial intelligence refined by centuries of haute couture tradition. Each piece is not chosen — it is ordained by the intersection of your essence and our neural maison.</p>
       <div class="hero-actions">
-        <a href="#" class="btn-primary">Enter the Maison</a>
-        <a href="#" class="btn-secondary">Our Process</a>
+        <a href="#collection" class="btn-primary">Enter the Maison</a>
+        <a href="#ai" class="btn-secondary">Our Process</a>
       </div>
     </div>
     <div class="hero-right">
@@ -124,7 +124,7 @@
 
   <hr class="gold-rule"/>
 
-  <section class="collection">
+  <section class="collection" id="collection">
     <div class="col-header">
       <div class="col-eyebrow">La Collection</div>
       <h2 class="col-title">The <em>Nocturne</em> Edit</h2>
@@ -161,7 +161,7 @@
     </div>
   </section>
 
-  <section class="ai">
+  <section class="ai" id="ai">
     <div>
       <div class="ai-label">Intelligence Artificielle</div>
       <h2 class="ai-title">Your Taste,<br/>Decoded</h2>
@@ -196,7 +196,7 @@
     </div>
   </section>
 
-  <section class="testimonial">
+  <section class="testimonial" id="testimonial">
     <div class="quote">"NOIR found the coat I had been imagining for eleven years but could never describe. The AI simply knew."</div>
     <div class="quote-author">— Valentina K., Paris</div>
   </section>
@@ -207,5 +207,17 @@
     <a href="index.html" style="font-size:0.7rem;color:#7a7060;text-decoration:none;letter-spacing:0.1em;">← HUB</a>
   </footer>
 
+
+  <script>
+  document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+    var href = a.getAttribute("href");
+    if (href.length > 1) {
+      a.addEventListener("click", function(e) {
+        var t = document.querySelector(href);
+        if (t) { e.preventDefault(); t.scrollIntoView({behavior:"smooth"}); }
+      });
+    }
+  });
+  </script>
 </body>
 </html>
