@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>THE WARDROBE — Film Noir Fashion</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IM+Fell+DW+Pica:ital@0;1&family=Special+Elite&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #0a0a0a; color: #e8e0d0; font-family: 'IM Fell DW Pica', serif; overflow-x: hidden; }
+
+    /* Film grain */
+    body::after { content: ''; position: fixed; inset: 0; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+
+    /* Vignette */
+    body::before { content: ''; position: fixed; inset: 0; background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.7) 100%); pointer-events: none; z-index: 9998; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 1.5rem 3rem; display: flex; align-items: center; justify-content: space-between; background: rgba(10,10,10,0.9); border-bottom: 1px solid rgba(232,224,208,0.1); }
+    .logo { font-family: 'Bebas Neue', cursive; font-size: 1.8rem; letter-spacing: 0.2em; color: #e8e0d0; }
+    .nav-links { display: flex; gap: 2.5rem; }
+    .nav-links a { font-family: 'Special Elite', cursive; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; color: rgba(232,224,208,0.5); transition: color 0.3s; }
+    .nav-links a:hover { color: #e8e0d0; }
+    .nav-back { font-family: 'Special Elite', cursive; font-size: 0.75rem; letter-spacing: 0.08em; text-decoration: none; color: rgba(232,224,208,0.4); }
+    .nav-back:hover { color: #e8e0d0; }
+
+    /* Hero — cinematic */
+    .hero { min-height: 100vh; display: flex; align-items: flex-end; padding: 4rem 5rem 5rem; position: relative; overflow: hidden; }
+    .hero-bg { position: absolute; inset: 0; background: linear-gradient(160deg, #111 0%, #000 30%, #0a0a0a 100%); }
+    .hero-light { position: absolute; top: 0; right: 0; width: 60%; height: 100%; background: linear-gradient(225deg, rgba(232,224,208,0.05) 0%, transparent 60%); }
+    .hero-shadow-lines { position: absolute; inset: 0; background: repeating-linear-gradient(85deg, transparent 0px, transparent 18px, rgba(0,0,0,0.3) 18px, rgba(0,0,0,0.3) 20px); opacity: 0.4; }
+    .hero-content { position: relative; z-index: 1; max-width: 700px; }
+    .hero-year { font-family: 'Special Elite', cursive; font-size: 0.65rem; letter-spacing: 0.35em; text-transform: uppercase; color: rgba(232,224,208,0.35); margin-bottom: 2rem; }
+    .hero-title { font-family: 'Bebas Neue', cursive; font-size: clamp(4rem, 12vw, 11rem); line-height: 0.85; letter-spacing: 0.05em; margin-bottom: 2rem; }
+    .ht-white { color: #e8e0d0; display: block; }
+    .ht-dim { color: rgba(232,224,208,0.3); display: block; }
+    .hero-tagline { font-size: 1.1rem; font-style: italic; color: rgba(232,224,208,0.6); max-width: 420px; line-height: 1.7; margin-bottom: 3rem; }
+    .hero-cta { display: inline-block; border: 1px solid rgba(232,224,208,0.4); padding: 1rem 3rem; font-family: 'Special Elite', cursive; font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; color: #e8e0d0; transition: all 0.3s; }
+    .hero-cta:hover { background: #e8e0d0; color: #0a0a0a; }
+
+    /* Film strip */
+    .film-strip { border-top: 2px solid rgba(232,224,208,0.1); border-bottom: 2px solid rgba(232,224,208,0.1); background: #000; display: flex; overflow: hidden; }
+    .fs-holes { width: 30px; background: repeating-linear-gradient(to bottom, transparent 0px, transparent 8px, rgba(232,224,208,0.15) 8px, rgba(232,224,208,0.15) 14px, transparent 14px, transparent 20px); flex-shrink: 0; }
+    .fs-content { flex: 1; display: flex; overflow: hidden; }
+    .fs-frame { width: 200px; flex-shrink: 0; height: 80px; border-right: 1px solid rgba(232,224,208,0.1); display: flex; align-items: center; justify-content: center; font-family: 'Special Elite', cursive; font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(232,224,208,0.3); animation: filmroll 20s linear infinite; }
+    @keyframes filmroll { from{transform:translateX(0)} to{transform:translateX(-400px)} }
+
+    /* Editorial */
+    .editorial { padding: 5rem 5rem; }
+    .ed-header { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: end; margin-bottom: 4rem; }
+    .eh-left {}
+    .eh-label { font-family: 'Special Elite', cursive; font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(232,224,208,0.35); margin-bottom: 1.5rem; }
+    .eh-title { font-family: 'Bebas Neue', cursive; font-size: clamp(3rem, 6vw, 6rem); letter-spacing: 0.05em; line-height: 0.9; }
+    .eh-right { font-size: 0.95rem; line-height: 1.9; color: rgba(232,224,208,0.55); font-style: italic; }
+    .ed-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2rem; }
+    .ed-card { position: relative; overflow: hidden; cursor: pointer; }
+    .ed-card:hover .ec-overlay { opacity: 1; }
+    .ec-visual { aspect-ratio: 2/3; position: relative; }
+    .ecv-a { background: linear-gradient(160deg, #1a1a1a, #0d0d0d); }
+    .ecv-b { background: linear-gradient(160deg, #111108, #0d0d00); }
+    .ecv-c { background: linear-gradient(160deg, #080d11, #050a0d); }
+    .ec-visual::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 50%); }
+    .ec-overlay { position: absolute; inset: 0; background: rgba(232,224,208,0.05); opacity: 0; transition: opacity 0.3s; }
+    .ec-info { padding: 1.5rem 0; }
+    .eci-scene { font-family: 'Special Elite', cursive; font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(232,224,208,0.3); margin-bottom: 0.5rem; }
+    .eci-title { font-family: 'Bebas Neue', cursive; font-size: 1.5rem; letter-spacing: 0.08em; margin-bottom: 0.5rem; }
+    .eci-desc { font-size: 0.85rem; font-style: italic; color: rgba(232,224,208,0.5); line-height: 1.6; }
+    .eci-price { font-family: 'Special Elite', cursive; margin-top: 0.75rem; font-size: 0.8rem; color: rgba(232,224,208,0.4); }
+
+    /* Noir Quote */
+    .noir-quote { background: #000; padding: 5rem; text-align: center; border-top: 1px solid rgba(232,224,208,0.08); border-bottom: 1px solid rgba(232,224,208,0.08); }
+    .nq-text { font-size: clamp(1.3rem, 3vw, 2.2rem); font-style: italic; max-width: 700px; margin: 0 auto 2rem; line-height: 1.5; color: rgba(232,224,208,0.8); }
+    .nq-attr { font-family: 'Special Elite', cursive; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(232,224,208,0.25); }
+
+    /* AI Section */
+    .ai-section { padding: 5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; }
+    .ai-label { font-family: 'Special Elite', cursive; font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(232,224,208,0.3); margin-bottom: 1.5rem; }
+    .ai-title { font-family: 'Bebas Neue', cursive; font-size: clamp(3rem, 5vw, 5rem); letter-spacing: 0.05em; line-height: 0.9; margin-bottom: 2rem; }
+    .ai-body { font-size: 0.95rem; line-height: 1.9; color: rgba(232,224,208,0.5); margin-bottom: 2.5rem; font-style: italic; }
+    .ai-typewriter { background: #000; border: 1px solid rgba(232,224,208,0.15); padding: 2rem; font-family: 'Special Elite', cursive; font-size: 0.75rem; line-height: 2; color: rgba(232,224,208,0.6); }
+    .atw-header { color: rgba(232,224,208,0.3); letter-spacing: 0.2em; text-transform: uppercase; font-size: 0.6rem; margin-bottom: 1rem; border-bottom: 1px solid rgba(232,224,208,0.1); padding-bottom: 0.5rem; }
+    .atw-line .q { color: rgba(232,224,208,0.4); }
+    .atw-line .a { color: rgba(232,224,208,0.7); }
+
+    footer { border-top: 1px solid rgba(232,224,208,0.1); padding: 2rem 5rem; display: flex; justify-content: space-between; align-items: center; }
+    .f-logo { font-family: 'Bebas Neue', cursive; font-size: 1.3rem; letter-spacing: 0.2em; color: rgba(232,224,208,0.5); }
+    .f-copy { font-family: 'Special Elite', cursive; font-size: 0.7rem; color: rgba(232,224,208,0.25); letter-spacing: 0.1em; }
+    footer a { color: rgba(232,224,208,0.3); text-decoration: none; font-family: 'Special Elite', cursive; font-size: 0.7rem; letter-spacing: 0.08em; }
+    footer a:hover { color: rgba(232,224,208,0.7); }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="logo">The Wardrobe</div>
+    <div class="nav-links">
+      <a href="#">Collection</a>
+      <a href="#">The Archive</a>
+      <a href="#">Consulting</a>
+    </div>
+    <a href="index.html" class="nav-back">← All Formats</a>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-light"></div>
+    <div class="hero-shadow-lines"></div>
+    <div class="hero-content">
+      <div class="hero-year">Established 2024 · AI Fashion Intelligence</div>
+      <h1 class="hero-title">
+        <span class="ht-white">The</span>
+        <span class="ht-dim">Perfect</span>
+        <span class="ht-white">Crime</span>
+        <span class="ht-dim">Is Getting</span>
+        <span class="ht-white">Dressed</span>
+      </h1>
+      <p class="hero-tagline">Every outfit tells a story. Our AI reads between the lines — and writes the ending you didn't know you wanted.</p>
+      <a href="#" class="hero-cta">Enter The Wardrobe</a>
+    </div>
+  </section>
+
+  <div class="film-strip">
+    <div class="fs-holes"></div>
+    <div class="fs-content">
+      <div class="fs-frame">Scene I · The Overcoat</div>
+      <div class="fs-frame">Scene II · The Interview</div>
+      <div class="fs-frame">Scene III · Midnight</div>
+      <div class="fs-frame">Scene IV · The Return</div>
+      <div class="fs-frame">Scene V · The Last Look</div>
+      <div class="fs-frame">Scene I · The Overcoat</div>
+      <div class="fs-frame">Scene II · The Interview</div>
+    </div>
+    <div class="fs-holes"></div>
+  </div>
+
+  <section class="editorial">
+    <div class="ed-header">
+      <div class="eh-left">
+        <div class="eh-label">The Autumn Edit — 2025</div>
+        <h2 class="eh-title">Dressed<br/>To<br/>Disappear</h2>
+      </div>
+      <div class="eh-right">Three pieces. Zero compromises. The AI selected each one for its ability to let you move through the world at exactly the volume you choose — loud when you want it, invisible when you need it.</div>
+    </div>
+    <div class="ed-grid">
+      <div class="ed-card">
+        <div class="ec-visual ecv-a"></div>
+        <div class="ec-overlay"></div>
+        <div class="ec-info">
+          <div class="eci-scene">Scene I</div>
+          <div class="eci-title">The Trench</div>
+          <div class="eci-desc">An overcoat that has seen every kind of weather and shows none of it. The AI calls this "presence through restraint."</div>
+          <div class="eci-price">From £680</div>
+        </div>
+      </div>
+      <div class="ed-card">
+        <div class="ec-visual ecv-b"></div>
+        <div class="ec-overlay"></div>
+        <div class="ec-info">
+          <div class="eci-scene">Scene II</div>
+          <div class="eci-title">The Dark Suit</div>
+          <div class="eci-desc">The kind of suit that makes rooms go quiet. Not with power — with certainty. Wool. Black. Unlined.</div>
+          <div class="eci-price">From £1,200</div>
+        </div>
+      </div>
+      <div class="ed-card">
+        <div class="ec-visual ecv-c"></div>
+        <div class="ec-overlay"></div>
+        <div class="ec-info">
+          <div class="eci-scene">Scene III</div>
+          <div class="eci-title">The Silk Shirt</div>
+          <div class="eci-desc">For after midnight. For the version of you that exists when the lights are low and the story could still go anywhere.</div>
+          <div class="eci-price">From £320</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="noir-quote">
+    <div class="nq-text">"The best dressed person in the room is the one you don't notice until you can't stop noticing them."</div>
+    <div class="nq-attr">— The Wardrobe AI, on the subject of presence</div>
+  </div>
+
+  <section class="ai-section">
+    <div>
+      <div class="ai-label">The Intelligence</div>
+      <h2 class="ai-title">The Detective<br/>Of Style</h2>
+      <p class="ai-body">Our AI approaches your wardrobe like a case. It studies the evidence — what you wear, what you save, what you avoid — and reconstructs the person you're trying to become. Then it dresses them.</p>
+      <a href="#" class="hero-cta" style="display:inline-block;">Consult The Intelligence</a>
+    </div>
+    <div class="ai-typewriter">
+      <div class="atw-header">// Consultation Transcript — Case No. 4471</div>
+      <div class="atw-line"><span class="q">Q: What are you dressing for?</span></div>
+      <div class="atw-line"><span class="a">A: Something important. A meeting that could change everything.</span></div>
+      <div class="atw-line"><span class="q">Q: How do you want them to feel when they see you?</span></div>
+      <div class="atw-line"><span class="a">A: Like they already made the right decision.</span></div>
+      <div class="atw-line" style="margin-top:1rem;"><span style="color:rgba(232,224,208,0.4);">Processing... The AI has a recommendation.</span></div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="f-logo">The Wardrobe</div>
+    <div class="f-copy">© 2025 · AI Fashion Intelligence · Private Consulting</div>
+    <a href="index.html">← All Formats</a>
+  </footer>
+
+</body>
+</html>

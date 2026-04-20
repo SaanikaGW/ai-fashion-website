@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>STYLE DINER — Americana AI Fashion</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Oswald:wght@400;700&family=Special+Elite&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --red: #d42b2b; --cream: #fff9f0; --chrome: #c8c8c8; --black: #1a1a1a; --teal: #1a7f7f; --yellow: #f5c842; --checker: #f0ebe0; }
+    body { background: var(--cream); color: var(--black); font-family: 'Oswald', sans-serif; overflow-x: hidden; }
+
+    /* Checkerboard floor */
+    .checker-bg { background: repeating-conic-gradient(var(--checker) 0% 25%, #fff 0% 50%) 0 0 / 40px 40px; position: fixed; bottom: 0; left: 0; right: 0; height: 120px; z-index: 0; opacity: 0.3; }
+
+    nav { background: var(--red); border-bottom: 4px solid var(--black); padding: 0; display: flex; align-items: center; position: sticky; top: 0; z-index: 100; }
+    .nav-logo { font-family: 'Pacifico', cursive; font-size: 1.8rem; color: var(--yellow); text-shadow: 2px 2px 0 rgba(0,0,0,0.3); padding: 0.75rem 2rem; border-right: 3px solid rgba(0,0,0,0.2); }
+    .nav-links { display: flex; flex: 1; }
+    .nav-links a { padding: 0 1.5rem; height: 100%; display: flex; align-items: center; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.08em; text-decoration: none; color: rgba(255,249,240,0.9); border-right: 1px solid rgba(0,0,0,0.15); transition: background 0.15s; }
+    .nav-links a:hover { background: rgba(0,0,0,0.15); }
+    .nav-back { margin-left: auto; padding: 0 1.5rem; height: 100%; display: flex; align-items: center; font-size: 0.8rem; font-weight: 700; text-decoration: none; color: var(--yellow); border-left: 3px solid rgba(0,0,0,0.2); }
+
+    /* Hero */
+    .hero { background: var(--black); min-height: 85vh; display: grid; grid-template-columns: 1fr 1fr; overflow: hidden; }
+    .hero-left { padding: 6rem 4rem; display: flex; flex-direction: column; justify-content: center; position: relative; }
+    .hero-left::after { content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 60px; background: linear-gradient(to right, transparent, var(--black)); }
+    .h-neon-title { font-family: 'Pacifico', cursive; font-size: clamp(3rem, 7vw, 6.5rem); line-height: 1.1; margin-bottom: 2rem; }
+    .hnt-red { color: var(--red); text-shadow: 0 0 20px rgba(212,43,43,0.6), 0 0 40px rgba(212,43,43,0.3); display: block; }
+    .hnt-yellow { color: var(--yellow); text-shadow: 0 0 20px rgba(245,200,66,0.6), 0 0 40px rgba(245,200,66,0.3); display: block; }
+    .hnt-teal { color: #2ec4c4; text-shadow: 0 0 20px rgba(46,196,196,0.6); display: block; }
+    .h-sub { font-family: 'Special Elite', cursive; font-size: 1rem; color: rgba(255,249,240,0.6); max-width: 380px; line-height: 1.7; margin-bottom: 3rem; }
+    .btn-diner { font-family: 'Pacifico', cursive; font-size: 1.1rem; padding: 0.9rem 2.5rem; border: 3px solid; text-decoration: none; display: inline-block; transition: all 0.15s; margin-right: 1rem; }
+    .btn-red { background: var(--red); color: var(--cream); border-color: var(--red); box-shadow: 4px 4px 0 rgba(212,43,43,0.3); }
+    .btn-red:hover { background: transparent; color: var(--red); box-shadow: none; }
+    .btn-yellow { background: var(--yellow); color: var(--black); border-color: var(--yellow); }
+    .btn-yellow:hover { background: transparent; color: var(--yellow); }
+    .hero-right { background: linear-gradient(160deg, #1a1a1a, #111); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+    .hero-right::before { content: ''; position: absolute; inset: 0; background: repeating-conic-gradient(rgba(255,255,255,0.02) 0% 25%, transparent 0% 50%) 0 0 / 30px 30px; }
+    .neon-sign { text-align: center; position: relative; z-index: 1; }
+    .ns-main { font-family: 'Pacifico', cursive; font-size: 4rem; color: var(--yellow); text-shadow: 0 0 10px var(--yellow), 0 0 30px rgba(245,200,66,0.5); line-height: 1.2; }
+    .ns-sub { font-family: 'Special Elite', cursive; font-size: 0.9rem; color: rgba(46,196,196,0.8); text-shadow: 0 0 10px rgba(46,196,196,0.4); letter-spacing: 0.2em; margin-top: 0.5rem; }
+    .ns-border { border: 3px solid rgba(245,200,66,0.3); border-radius: 12px; padding: 2.5rem 3rem; box-shadow: 0 0 30px rgba(245,200,66,0.1), inset 0 0 30px rgba(245,200,66,0.05); }
+    .ns-open { font-size: 0.7rem; color: rgba(212,43,43,0.9); text-shadow: 0 0 8px rgba(212,43,43,0.5); font-family: 'Oswald', sans-serif; letter-spacing: 0.3em; margin-top: 1rem; animation: blink-red 1.5s ease-in-out infinite; }
+    @keyframes blink-red { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+
+    /* Menu board */
+    .menu-board { background: var(--black); padding: 4rem 3rem; border-top: 4px solid var(--yellow); border-bottom: 4px solid var(--yellow); }
+    .mb-title { font-family: 'Pacifico', cursive; font-size: 2.5rem; color: var(--yellow); text-align: center; margin-bottom: 0.5rem; text-shadow: 0 0 20px rgba(245,200,66,0.3); }
+    .mb-sub { font-family: 'Special Elite', cursive; text-align: center; color: rgba(255,249,240,0.4); margin-bottom: 3rem; font-size: 0.85rem; letter-spacing: 0.2em; text-transform: uppercase; }
+    .menu-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; }
+    .menu-item { background: rgba(255,255,255,0.04); border: 2px solid rgba(245,200,66,0.2); padding: 0; overflow: hidden; transition: all 0.3s; }
+    .menu-item:hover { border-color: var(--yellow); background: rgba(245,200,66,0.05); }
+    .mi-visual { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 4rem; border-bottom: 2px solid rgba(245,200,66,0.15); }
+    .mv-a { background: linear-gradient(135deg, #1a0800, #331500); }
+    .mv-b { background: linear-gradient(135deg, #001a1a, #002d2d); }
+    .mv-c { background: linear-gradient(135deg, #1a0000, #2d0000); }
+    .mv-d { background: linear-gradient(135deg, #0d0d00, #1a1a00); }
+    .mi-info { padding: 1rem; }
+    .mii-special { font-family: 'Special Elite', cursive; font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--red); margin-bottom: 0.3rem; }
+    .mii-name { font-size: 0.95rem; color: var(--cream); margin-bottom: 0.3rem; letter-spacing: 0.03em; }
+    .mii-price { font-family: 'Pacifico', cursive; font-size: 1rem; color: var(--yellow); }
+    .mii-desc { font-family: 'Special Elite', cursive; font-size: 0.72rem; color: rgba(255,249,240,0.4); line-height: 1.5; margin-top: 0.3rem; }
+
+    /* Counter strip */
+    .counter-strip { background: var(--red); color: var(--cream); padding: 1rem 3rem; display: flex; justify-content: space-around; align-items: center; }
+    .cs-item { text-align: center; }
+    .csi-num { font-family: 'Pacifico', cursive; font-size: 2rem; color: var(--yellow); }
+    .csi-label { font-family: 'Special Elite', cursive; font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; opacity: 0.7; }
+
+    /* Jukebox AI */
+    .jukebox { background: var(--cream); padding: 4rem 3rem; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; border-bottom: 4px solid var(--black); }
+    .juke-title { font-family: 'Pacifico', cursive; font-size: 3rem; color: var(--red); line-height: 1.1; margin-bottom: 1.5rem; }
+    .juke-body { font-family: 'Special Elite', cursive; font-size: 0.92rem; line-height: 1.8; color: rgba(26,26,26,0.6); margin-bottom: 2rem; }
+    .juke-visual { background: var(--black); border-radius: 20px; padding: 2rem; text-align: center; border: 4px solid var(--yellow); box-shadow: 8px 8px 0 var(--red); }
+    .jv-title { font-family: 'Pacifico', cursive; font-size: 1.2rem; color: var(--yellow); margin-bottom: 1rem; }
+    .jv-playing { font-family: 'Special Elite', cursive; font-size: 0.8rem; color: rgba(255,249,240,0.7); margin-bottom: 0.5rem; }
+    .jv-song { font-family: 'Pacifico', cursive; font-size: 1.4rem; color: #2ec4c4; text-shadow: 0 0 10px rgba(46,196,196,0.4); }
+    .jv-note { font-size: 1.5rem; animation: spin 3s linear infinite; display: inline-block; margin-top: 0.5rem; }
+    @keyframes spin { from{transform:rotate(0)} to{transform:rotate(360deg)} }
+    .jv-bar { height: 4px; background: rgba(255,255,255,0.1); margin-top: 1.5rem; border-radius: 2px; overflow: hidden; }
+    .jv-progress { height: 100%; background: var(--yellow); width: 60%; }
+
+    footer { background: var(--black); border-top: 4px solid var(--yellow); padding: 1.5rem 3rem; display: flex; justify-content: space-between; align-items: center; }
+    .f-logo { font-family: 'Pacifico', cursive; font-size: 1.5rem; color: var(--yellow); text-shadow: 0 0 10px rgba(245,200,66,0.3); }
+    .f-copy { font-family: 'Special Elite', cursive; font-size: 0.75rem; color: rgba(255,249,240,0.4); letter-spacing: 0.1em; }
+    footer a { color: var(--red); text-decoration: none; font-family: 'Special Elite', cursive; font-size: 0.8rem; }
+  </style>
+</head>
+<body>
+
+  <div class="checker-bg"></div>
+
+  <nav>
+    <div class="nav-logo">Style Diner</div>
+    <div class="nav-links">
+      <a href="#">The Menu</a>
+      <a href="#">Today's Special</a>
+      <a href="#">AI Jukebox</a>
+      <a href="#">About Us</a>
+    </div>
+    <a href="index.html" class="nav-back">← All Formats</a>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-left">
+      <h1 class="h-neon-title">
+        <span class="hnt-red">All Day</span>
+        <span class="hnt-yellow">Style</span>
+        <span class="hnt-teal">Diner</span>
+      </h1>
+      <p class="h-sub">Serving hot AI fashion picks since 2024. Open 24 hours. Never closed. Your style recommendation is always fresh, always made to order.</p>
+      <div>
+        <a href="#" class="btn-diner btn-red">See Today's Special</a>
+        <a href="#" class="btn-diner btn-yellow">Full Menu</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="neon-sign">
+        <div class="ns-border">
+          <div class="ns-main">Style<br/>Diner</div>
+          <div class="ns-sub">Est. 2024 · AI Powered</div>
+        </div>
+        <div class="ns-open">● OPEN 24/7 ●</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="counter-strip">
+    <div class="cs-item"><div class="csi-num">2M+</div><div class="csi-label">Outfits Served</div></div>
+    <div class="cs-item"><div class="csi-num">98%</div><div class="csi-label">Left Satisfied</div></div>
+    <div class="cs-item"><div class="csi-num">24/7</div><div class="csi-label">Always Open</div></div>
+    <div class="cs-item"><div class="csi-num">$0</div><div class="csi-label">Style Consultant Fee</div></div>
+  </div>
+
+  <section class="menu-board">
+    <div class="mb-title">Today's Menu</div>
+    <div class="mb-sub">AI Fresh Daily · Served with a Smile</div>
+    <div class="menu-grid">
+      <div class="menu-item">
+        <div class="mi-visual mv-a">🧥</div>
+        <div class="mi-info">
+          <div class="mii-special">★ Daily Special</div>
+          <div class="mii-name">The Classic Overcoat</div>
+          <div class="mii-price">$380</div>
+          <div class="mii-desc">Timeless. Never out of season. Pairs well with everything.</div>
+        </div>
+      </div>
+      <div class="menu-item">
+        <div class="mi-visual mv-b">👗</div>
+        <div class="mi-info">
+          <div class="mii-special">Chef's Pick</div>
+          <div class="mii-name">Teal Swing Dress</div>
+          <div class="mii-price">$148</div>
+          <div class="mii-desc">A 50s silhouette updated for today. AI-approved.</div>
+        </div>
+      </div>
+      <div class="menu-item">
+        <div class="mi-visual mv-c">👟</div>
+        <div class="mi-info">
+          <div class="mii-special">Hot Item</div>
+          <div class="mii-name">Cherry Red Loafer</div>
+          <div class="mii-price">$195</div>
+          <div class="mii-desc">The shoes that make any outfit a main character moment.</div>
+        </div>
+      </div>
+      <div class="menu-item">
+        <div class="mi-visual mv-d">🧣</div>
+        <div class="mi-info">
+          <div class="mii-special">Fan Favourite</div>
+          <div class="mii-name">Mustard Knit Scarf</div>
+          <div class="mii-price">$68</div>
+          <div class="mii-desc">Ordered by 40% of our regulars. There's a reason.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="jukebox">
+    <div>
+      <h2 class="juke-title">The AI Jukebox</h2>
+      <p class="juke-body">Drop a coin. Tell us your vibe. Our AI spins through its entire catalogue and serves up the perfect outfit — hot, fresh, and totally yours. Just like the old days, but smarter.</p>
+      <a href="#" class="btn-diner btn-red">Play My Style</a>
+    </div>
+    <div class="juke-visual">
+      <div class="jv-title">Now Styling...</div>
+      <div class="jv-playing">Currently playing for you:</div>
+      <div class="jv-song">"The Classic<br/>Look"</div>
+      <div class="jv-note">🎵</div>
+      <div class="jv-bar"><div class="jv-progress"></div></div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="f-logo">Style Diner</div>
+    <div class="f-copy">© 2025 Style Diner · AI Fashion · Open 24/7 · Good Food, Good Fits</div>
+    <a href="index.html">← All Formats</a>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>StyleOS 95 — AI Fashion Desktop</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #008080; font-family: 'MS Sans Serif', 'Segoe UI', sans-serif; font-size: 11px; color: #000; overflow-x: hidden; min-height: 100vh; }
+
+    /* Desktop */
+    .desktop { min-height: calc(100vh - 30px); padding: 8px; display: grid; grid-template-columns: repeat(8, 80px); grid-auto-rows: 80px; gap: 0; align-content: start; }
+
+    /* Desktop Icons */
+    .icon { display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; padding: 4px; width: 80px; }
+    .icon:hover .icon-label { background: #000080; color: #fff; }
+    .icon-img { font-size: 2.5rem; text-align: center; }
+    .icon-label { font-size: 11px; text-align: center; color: #fff; text-shadow: 1px 1px #000; padding: 1px 4px; word-break: break-word; }
+    .icon:focus .icon-label, .icon.selected .icon-label { background: #000080; color: #fff; outline: 1px dotted #fff; }
+
+    /* Windows */
+    .window { position: fixed; background: #c0c0c0; border: 2px solid; border-color: #fff #808080 #808080 #fff; box-shadow: 2px 2px 0 #000; user-select: none; min-width: 200px; }
+    .titlebar { background: linear-gradient(90deg, #000080, #1084d0); color: #fff; padding: 3px 4px; display: flex; align-items: center; justify-content: space-between; font-weight: 700; font-size: 11px; cursor: default; }
+    .titlebar-left { display: flex; align-items: center; gap: 4px; }
+    .titlebar-icon { font-size: 0.9rem; }
+    .win-btns { display: flex; gap: 2px; }
+    .win-btn { width: 16px; height: 14px; background: #c0c0c0; border: 2px solid; border-color: #fff #808080 #808080 #fff; font-size: 9px; font-weight: 700; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+    .win-btn:active { border-color: #808080 #fff #fff #808080; }
+    .menubar { background: #c0c0c0; border-bottom: 1px solid #808080; display: flex; }
+    .menu-item { padding: 2px 8px; font-size: 11px; cursor: default; }
+    .menu-item:hover { background: #000080; color: #fff; }
+    .win-content { background: #fff; border: 2px solid; border-color: #808080 #fff #fff #808080; margin: 4px; padding: 0; overflow: hidden; }
+
+    /* Main Window */
+    .main-window { top: 20px; left: 20px; width: calc(100vw - 40px); max-width: 900px; }
+    .main-content { background: #fff; display: grid; grid-template-columns: 160px 1fr; min-height: 400px; }
+    .sidebar-tree { background: #fff; border-right: 2px solid; border-color: #808080 #fff #fff #808080; padding: 4px; overflow-y: auto; }
+    .tree-item { display: flex; align-items: center; gap: 4px; padding: 2px 4px; cursor: pointer; }
+    .tree-item:hover { background: #000080; color: #fff; }
+    .tree-item.selected { background: #000080; color: #fff; }
+    .tree-arrow { width: 8px; font-size: 8px; }
+    .main-panel { padding: 8px; }
+    .panel-header { border-bottom: 1px solid #808080; padding-bottom: 4px; margin-bottom: 8px; font-weight: 700; }
+    .items-grid-os { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .item-os { background: #fff; border: 2px solid; border-color: #fff #808080 #808080 #fff; padding: 4px; text-align: center; cursor: pointer; }
+    .item-os:hover { border-color: #808080 #fff #fff #808080; background: #f0f0f0; }
+    .item-os-img { font-size: 2.5rem; margin-bottom: 4px; }
+    .item-os-name { font-size: 10px; word-break: break-word; margin-bottom: 2px; }
+    .item-os-price { font-weight: 700; color: #000080; font-size: 10px; }
+
+    /* Secondary Windows */
+    .ai-window { top: 440px; left: 20px; width: 380px; }
+    .chat-content { background: #fff; border: 2px solid; border-color: #808080 #fff #fff #808080; margin: 4px; }
+    .chat-messages { padding: 4px; min-height: 120px; max-height: 160px; overflow-y: auto; background: #fff; }
+    .msg { margin-bottom: 6px; }
+    .msg-user { text-align: right; }
+    .msg-bubble { display: inline-block; padding: 2px 6px; max-width: 80%; font-size: 11px; }
+    .msg-bubble.ai { background: #e0e0ff; border: 1px solid #8080c0; }
+    .msg-bubble.user { background: #e0ffe0; border: 1px solid #80c080; }
+    .msg-name { font-size: 9px; color: #808080; margin-bottom: 1px; }
+    .chat-input { border-top: 2px solid; border-color: #808080 #fff #fff #808080; display: flex; margin: 0 4px 4px; }
+    .chat-input input { flex: 1; border: 2px solid; border-color: #808080 #fff #fff #808080; padding: 2px 4px; font-family: inherit; font-size: 11px; background: #fff; }
+    .chat-input button { background: #c0c0c0; border: 2px solid; border-color: #fff #808080 #808080 #fff; padding: 2px 8px; font-size: 11px; cursor: pointer; font-family: inherit; }
+    .chat-input button:active { border-color: #808080 #fff #fff #808080; }
+
+    .stats-window { top: 440px; left: 420px; width: 300px; }
+    .stats-os { padding: 6px 8px; background: #fff; border: 2px solid; border-color: #808080 #fff #fff #808080; margin: 4px; }
+    .stat-row-os { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
+    .stat-label-os { font-size: 10px; width: 100px; }
+    .stat-bar-os { flex: 1; height: 14px; background: #fff; border: 2px solid; border-color: #808080 #fff #fff #808080; overflow: hidden; }
+    .stat-fill-os { height: 100%; background: #000080; }
+
+    /* Taskbar */
+    .taskbar { position: fixed; bottom: 0; left: 0; right: 0; height: 30px; background: #c0c0c0; border-top: 2px solid #fff; display: flex; align-items: center; gap: 2px; padding: 0 4px; z-index: 1000; }
+    .start-btn { background: #c0c0c0; border: 2px solid; border-color: #fff #808080 #808080 #fff; padding: 0 8px; height: 22px; font-weight: 700; font-size: 11px; display: flex; align-items: center; gap: 4px; cursor: pointer; }
+    .start-btn:active { border-color: #808080 #fff #fff #808080; }
+    .taskbar-sep { width: 2px; height: 22px; background: linear-gradient(to right, #808080 1px, #fff 1px); margin: 0 2px; }
+    .task-item { background: #c0c0c0; border: 2px solid; border-color: #808080 #fff #fff #808080; padding: 0 8px; height: 22px; font-size: 10px; display: flex; align-items: center; gap: 4px; cursor: pointer; }
+    .taskbar-clock { margin-left: auto; border: 2px solid; border-color: #808080 #fff #fff #808080; padding: 0 8px; height: 22px; display: flex; align-items: center; font-size: 11px; background: #c0c0c0; }
+    .sys-tray { display: flex; align-items: center; gap: 4px; padding: 0 4px; }
+
+    /* Back button positioned as icon */
+    .back-icon { position: fixed; top: 10px; right: 10px; z-index: 500; }
+    .back-icon a { background: #c0c0c0; border: 2px solid; border-color: #fff #808080 #808080 #fff; padding: 4px 10px; font-size: 11px; font-weight: 700; text-decoration: none; color: #000; display: inline-block; }
+    .back-icon a:active { border-color: #808080 #fff #fff #808080; }
+
+    /* Status bar */
+    .status-bar { display: flex; gap: 2px; border-top: 2px solid #808080; margin-top: 2px; }
+    .sb-item { border: 2px solid; border-color: #808080 #fff #fff #808080; padding: 1px 6px; font-size: 10px; flex: 1; }
+  </style>
+</head>
+<body>
+
+  <div class="desktop">
+    <div class="icon">
+      <div class="icon-img">👗</div>
+      <div class="icon-label">My Wardrobe</div>
+    </div>
+    <div class="icon">
+      <div class="icon-img">🤖</div>
+      <div class="icon-label">AI Stylist</div>
+    </div>
+    <div class="icon">
+      <div class="icon-img">🛍️</div>
+      <div class="icon-label">Shop</div>
+    </div>
+    <div class="icon">
+      <div class="icon-img">📊</div>
+      <div class="icon-label">Trend Radar</div>
+    </div>
+    <div class="icon">
+      <div class="icon-img">♻️</div>
+      <div class="icon-label">Eco Score</div>
+    </div>
+    <div class="icon">
+      <div class="icon-img">📁</div>
+      <div class="icon-label">Lookbook</div>
+    </div>
+    <div class="icon">
+      <div class="icon-img">🗑️</div>
+      <div class="icon-label">Recycle Bin</div>
+    </div>
+    <div class="icon">
+      <div class="icon-img">🌐</div>
+      <div class="icon-label">Fashion Web</div>
+    </div>
+  </div>
+
+  <!-- Main Window -->
+  <div class="window main-window">
+    <div class="titlebar">
+      <div class="titlebar-left">
+        <span class="titlebar-icon">👗</span>
+        StyleOS 95 — AI Fashion Browser
+      </div>
+      <div class="win-btns">
+        <div class="win-btn">_</div>
+        <div class="win-btn">□</div>
+        <div class="win-btn">✕</div>
+      </div>
+    </div>
+    <div class="menubar">
+      <div class="menu-item">File</div>
+      <div class="menu-item">Edit</div>
+      <div class="menu-item">View</div>
+      <div class="menu-item">Favourites</div>
+      <div class="menu-item">AI</div>
+      <div class="menu-item">Help</div>
+    </div>
+    <div class="win-content" style="border:none;margin:0;">
+      <div class="main-content">
+        <div class="sidebar-tree">
+          <div class="tree-item selected">
+            <span class="tree-arrow">▼</span>👗 Collection
+          </div>
+          <div class="tree-item" style="padding-left:16px;">
+            <span class="tree-arrow">▶</span>🧥 Outerwear
+          </div>
+          <div class="tree-item" style="padding-left:16px;">
+            <span class="tree-arrow">▶</span>👕 Tops
+          </div>
+          <div class="tree-item" style="padding-left:16px;">
+            <span class="tree-arrow">▶</span>👖 Bottoms
+          </div>
+          <div class="tree-item" style="padding-left:16px;">
+            <span class="tree-arrow">▶</span>👟 Footwear
+          </div>
+          <div class="tree-item" style="margin-top:4px;">
+            <span class="tree-arrow">▼</span>🤖 AI Picks
+          </div>
+          <div class="tree-item" style="padding-left:16px;">
+            <span class="tree-arrow">▶</span>⭐ For You
+          </div>
+          <div class="tree-item" style="padding-left:16px;">
+            <span class="tree-arrow">▶</span>🔥 Trending
+          </div>
+          <div class="tree-item" style="margin-top:4px;">
+            <span class="tree-arrow">▶</span>📊 Analytics
+          </div>
+        </div>
+        <div class="main-panel">
+          <div class="panel-header">AI Fashion Browser — Collection (4 objects)</div>
+          <div class="items-grid-os">
+            <div class="item-os">
+              <div class="item-os-img">🧥</div>
+              <div class="item-os-name">Wool Overcoat</div>
+              <div class="item-os-price">$480</div>
+            </div>
+            <div class="item-os">
+              <div class="item-os-img">👕</div>
+              <div class="item-os-name">Linen Shirt</div>
+              <div class="item-os-price">$95</div>
+            </div>
+            <div class="item-os">
+              <div class="item-os-img">👖</div>
+              <div class="item-os-name">Slim Trousers</div>
+              <div class="item-os-price">$140</div>
+            </div>
+            <div class="item-os">
+              <div class="item-os-img">👟</div>
+              <div class="item-os-name">Leather Derby</div>
+              <div class="item-os-price">$220</div>
+            </div>
+            <div class="item-os">
+              <div class="item-os-img">🧣</div>
+              <div class="item-os-name">Cashmere Scarf</div>
+              <div class="item-os-price">$180</div>
+            </div>
+            <div class="item-os">
+              <div class="item-os-img">👜</div>
+              <div class="item-os-name">Canvas Tote</div>
+              <div class="item-os-price">$68</div>
+            </div>
+            <div class="item-os">
+              <div class="item-os-img">🧤</div>
+              <div class="item-os-name">Leather Gloves</div>
+              <div class="item-os-price">$75</div>
+            </div>
+            <div class="item-os">
+              <div class="item-os-img">🎩</div>
+              <div class="item-os-name">Felt Hat</div>
+              <div class="item-os-price">$110</div>
+            </div>
+          </div>
+          <div class="status-bar" style="margin-top:8px;">
+            <div class="sb-item">8 objects — AI Match: 94%</div>
+            <div class="sb-item">Total: $1,368</div>
+            <div class="sb-item">Eco: A+</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI Chat Window -->
+  <div class="window ai-window">
+    <div class="titlebar">
+      <div class="titlebar-left">
+        <span class="titlebar-icon">🤖</span>
+        AI Stylist Chat v1.0
+      </div>
+      <div class="win-btns">
+        <div class="win-btn">_</div>
+        <div class="win-btn">□</div>
+        <div class="win-btn">✕</div>
+      </div>
+    </div>
+    <div class="menubar">
+      <div class="menu-item">Chat</div>
+      <div class="menu-item">History</div>
+      <div class="menu-item">Help</div>
+    </div>
+    <div class="chat-messages">
+      <div class="msg">
+        <div class="msg-name">🤖 AI Stylist</div>
+        <div class="msg-bubble ai">Hello! I am your AI Fashion Stylist. What are you dressing for today?</div>
+      </div>
+      <div class="msg msg-user">
+        <div class="msg-name" style="text-align:right">You</div>
+        <div class="msg-bubble user">A job interview at a creative agency</div>
+      </div>
+      <div class="msg">
+        <div class="msg-name">🤖 AI Stylist</div>
+        <div class="msg-bubble ai">Perfect! I recommend: Slim navy trousers + white linen shirt + unstructured blazer. Confidence: 96%. Shall I add these to your cart?</div>
+      </div>
+    </div>
+    <div class="chat-input">
+      <input type="text" placeholder="Type your message..." value="What shoes go with this?"/>
+      <button>Send</button>
+    </div>
+  </div>
+
+  <!-- Stats Window -->
+  <div class="window stats-window">
+    <div class="titlebar">
+      <div class="titlebar-left">
+        <span class="titlebar-icon">📊</span>
+        Style Statistics
+      </div>
+      <div class="win-btns">
+        <div class="win-btn">_</div>
+        <div class="win-btn">✕</div>
+      </div>
+    </div>
+    <div class="stats-os">
+      <div class="stat-row-os">
+        <span class="stat-label-os">Style Score</span>
+        <div class="stat-bar-os"><div class="stat-fill-os" style="width:94%"></div></div>
+        <span style="font-size:10px;width:30px;text-align:right">94%</span>
+      </div>
+      <div class="stat-row-os">
+        <span class="stat-label-os">Eco Rating</span>
+        <div class="stat-bar-os"><div class="stat-fill-os" style="width:88%;background:#006400"></div></div>
+        <span style="font-size:10px;width:30px;text-align:right">88%</span>
+      </div>
+      <div class="stat-row-os">
+        <span class="stat-label-os">Fit Accuracy</span>
+        <div class="stat-bar-os"><div class="stat-fill-os" style="width:97%"></div></div>
+        <span style="font-size:10px;width:30px;text-align:right">97%</span>
+      </div>
+      <div class="stat-row-os">
+        <span class="stat-label-os">Trend Align</span>
+        <div class="stat-bar-os"><div class="stat-fill-os" style="width:82%;background:#8b0000"></div></div>
+        <span style="font-size:10px;width:30px;text-align:right">82%</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="back-icon">
+    <a href="index.html">← All Formats</a>
+  </div>
+
+  <!-- Taskbar -->
+  <div class="taskbar">
+    <div class="start-btn">🪟 Start</div>
+    <div class="taskbar-sep"></div>
+    <div class="task-item">👗 AI Fashion Browser</div>
+    <div class="task-item">🤖 AI Stylist Chat</div>
+    <div class="task-item">📊 Style Stats</div>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:4px;">
+      <div class="sys-tray">🔊 🌐 🤖</div>
+      <div class="taskbar-clock" id="os-clock">12:00 PM</div>
+    </div>
+  </div>
+
+  <script>
+    function tick() {
+      const now = new Date();
+      let h = now.getHours(), m = now.getMinutes();
+      const ampm = h >= 12 ? 'PM' : 'AM';
+      h = h % 12 || 12;
+      document.getElementById('os-clock').textContent = `${h}:${m.toString().padStart(2,'0')} ${ampm}`;
+    }
+    tick();
+    setInterval(tick, 1000);
+  </script>
+</body>
+</html>

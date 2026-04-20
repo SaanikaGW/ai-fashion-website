@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>間 — Japanese Zen AI Fashion</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400&family=Inter:wght@300;400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --washi: #f7f4ee; --ink: #1a1a1a; --stone: #8a8070; --rust: #8b3a2a; --moss: #4a5c3a; --border: rgba(26,26,26,0.1); }
+    html { scroll-behavior: smooth; }
+    body { background: var(--washi); color: var(--ink); font-family: 'Inter', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+    /* Subtle paper texture */
+    body::before { content: ''; position: fixed; inset: 0; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E"); pointer-events: none; z-index: 0; }
+
+    nav { position: sticky; top: 0; z-index: 100; background: rgba(247,244,238,0.96); border-bottom: 1px solid var(--border); padding: 1.25rem 4rem; display: flex; align-items: center; justify-content: space-between; backdrop-filter: blur(10px); }
+    .logo { font-family: 'Noto Serif JP', serif; font-size: 1.5rem; font-weight: 300; letter-spacing: 0.1em; color: var(--ink); }
+    .logo-jp { font-size: 0.65rem; letter-spacing: 0.3em; color: var(--stone); margin-top: 1px; }
+    .nav-links { display: flex; gap: 3rem; }
+    .nav-links a { font-size: 0.75rem; letter-spacing: 0.12em; text-decoration: none; color: var(--stone); transition: color 0.2s; }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-back { font-size: 0.72rem; text-decoration: none; color: var(--stone); }
+
+    /* Hero */
+    .hero { min-height: 85vh; display: grid; grid-template-columns: 1fr 1fr; align-items: center; }
+    .hero-left { padding: 6rem 5rem 6rem 6rem; position: relative; }
+    .hero-left::after { content: '間'; position: absolute; font-family: 'Noto Serif JP', serif; font-size: 16rem; color: rgba(26,26,26,0.04); right: 0; top: 50%; transform: translateY(-50%); pointer-events: none; font-weight: 300; }
+    .hero-jp { font-family: 'Noto Serif JP', serif; font-size: 0.7rem; letter-spacing: 0.3em; color: var(--stone); margin-bottom: 3rem; writing-mode: horizontal-tb; }
+    .hero-title { font-family: 'Noto Serif JP', serif; font-size: clamp(2.5rem, 5vw, 4.5rem); font-weight: 300; line-height: 1.3; margin-bottom: 2rem; color: var(--ink); }
+    .hero-body { font-size: 0.92rem; line-height: 2; color: var(--stone); max-width: 380px; margin-bottom: 3rem; }
+    .hero-cta { display: inline-block; border-bottom: 1px solid var(--ink); padding-bottom: 2px; font-size: 0.75rem; letter-spacing: 0.15em; text-decoration: none; color: var(--ink); transition: opacity 0.3s; }
+    .hero-cta:hover { opacity: 0.4; }
+    .hero-right { height: 100vh; background: linear-gradient(160deg, #e8e4dc, #d8d4cc); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+    .hero-right::before { content: ''; position: absolute; width: 400px; height: 400px; border-radius: 50%; background: rgba(247,244,238,0.3); top: -100px; right: -100px; }
+    .hero-artwork { text-align: center; position: relative; z-index: 1; }
+    .ha-kanji { font-family: 'Noto Serif JP', serif; font-size: 8rem; font-weight: 300; color: rgba(26,26,26,0.15); display: block; line-height: 1; }
+    .ha-caption { font-size: 0.65rem; letter-spacing: 0.3em; color: var(--stone); margin-top: 1rem; }
+
+    /* Rule */
+    .rule { height: 1px; background: var(--border); margin: 0 4rem; }
+
+    /* Products — meditative */
+    .collection { padding: 7rem 4rem; }
+    .coll-header { display: grid; grid-template-columns: 1fr 2fr; gap: 4rem; align-items: end; margin-bottom: 5rem; }
+    .ch-jp { font-family: 'Noto Serif JP', serif; font-size: 3rem; font-weight: 300; color: rgba(26,26,26,0.1); line-height: 1; }
+    .ch-title { font-family: 'Noto Serif JP', serif; font-size: 2rem; font-weight: 300; margin-bottom: 1rem; }
+    .ch-body { font-size: 0.85rem; line-height: 2; color: var(--stone); }
+    .coll-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border-top: 1px solid var(--border); border-left: 1px solid var(--border); }
+    .coll-item { border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 0; overflow: hidden; transition: background 0.4s; }
+    .coll-item:hover { background: rgba(26,26,26,0.02); }
+    .ci-swatch { aspect-ratio: 3/4; display: flex; align-items: flex-end; padding: 1.5rem; }
+    .cis-a { background: linear-gradient(160deg, #e0dcd4, #c8c4bc); }
+    .cis-b { background: linear-gradient(160deg, #2a2420, #1a1410); }
+    .cis-c { background: linear-gradient(160deg, #d4c8a8, #c0b090); }
+    .cis-d { background: linear-gradient(160deg, #a0b090, #809070); }
+    .ci-swatch-label { font-size: 0.6rem; letter-spacing: 0.25em; color: rgba(26,26,26,0.4); }
+    .cis-b .ci-swatch-label { color: rgba(247,244,238,0.4); }
+    .ci-info { padding: 1.5rem; border-top: 1px solid var(--border); }
+    .cii-jp { font-family: 'Noto Serif JP', serif; font-size: 1.1rem; font-weight: 300; color: var(--stone); margin-bottom: 0.5rem; }
+    .cii-name { font-size: 0.85rem; margin-bottom: 0.3rem; letter-spacing: 0.05em; }
+    .cii-price { font-size: 0.8rem; color: var(--stone); }
+
+    /* Principles */
+    .principles { padding: 7rem 4rem; background: var(--ink); color: var(--washi); }
+    .pr-header { text-align: center; margin-bottom: 5rem; }
+    .pr-jp { font-family: 'Noto Serif JP', serif; font-size: 4rem; font-weight: 300; opacity: 0.2; margin-bottom: 1rem; }
+    .pr-title { font-family: 'Noto Serif JP', serif; font-size: 2rem; font-weight: 300; }
+    .pr-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-top: 1px solid rgba(247,244,238,0.1); }
+    .pr-item { padding: 3rem; border-right: 1px solid rgba(247,244,238,0.1); }
+    .pr-item:last-child { border-right: none; }
+    .pri-kanji { font-family: 'Noto Serif JP', serif; font-size: 3rem; font-weight: 300; color: rgba(247,244,238,0.2); margin-bottom: 1.5rem; }
+    .pri-concept { font-family: 'Noto Serif JP', serif; font-size: 0.7rem; letter-spacing: 0.25em; color: rgba(247,244,238,0.4); margin-bottom: 1rem; }
+    .pri-title { font-size: 1.1rem; font-weight: 400; margin-bottom: 1rem; letter-spacing: 0.05em; }
+    .pri-body { font-size: 0.85rem; line-height: 2; color: rgba(247,244,238,0.5); }
+
+    /* AI */
+    .ai { padding: 7rem 4rem; }
+    .ai-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; }
+    .ai-jp-quote { font-family: 'Noto Serif JP', serif; font-size: 0.7rem; letter-spacing: 0.3em; color: var(--stone); writing-mode: vertical-rl; text-orientation: mixed; border-left: 1px solid var(--border); padding-left: 1rem; height: 200px; display: flex; align-items: center; justify-content: center; margin-bottom: 2rem; }
+    .ai-title { font-family: 'Noto Serif JP', serif; font-size: 2rem; font-weight: 300; line-height: 1.4; margin-bottom: 1.5rem; }
+    .ai-body { font-size: 0.88rem; line-height: 2.1; color: var(--stone); margin-bottom: 2.5rem; }
+    .ai-visual { background: var(--ink); padding: 3rem; }
+    .aiv-title { font-family: 'Noto Serif JP', serif; font-size: 0.65rem; letter-spacing: 0.3em; color: rgba(247,244,238,0.3); margin-bottom: 2rem; }
+    .aiv-line { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid rgba(247,244,238,0.08); font-size: 0.8rem; color: rgba(247,244,238,0.6); }
+    .aiv-line:last-child { border-bottom: none; }
+    .aiv-val { color: rgba(247,244,238,0.9); font-family: 'Noto Serif JP', serif; }
+
+    footer { padding: 3rem 4rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .f-logo { font-family: 'Noto Serif JP', serif; font-size: 1.2rem; font-weight: 300; }
+    .f-copy { font-size: 0.75rem; color: var(--stone); }
+    footer a { color: var(--stone); text-decoration: none; font-size: 0.75rem; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div>
+      <div class="logo">間 — MA</div>
+      <div class="logo-jp">The Space Between</div>
+    </div>
+    <div class="nav-links">
+      <a href="#">Collection</a>
+      <a href="#">Philosophy</a>
+      <a href="#">AI Atelier</a>
+      <a href="#">Archive</a>
+    </div>
+    <a href="index.html" class="nav-back">← All Formats</a>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-left">
+      <div class="hero-jp">間 · 侘び寂び · 物の哀れ · AI</div>
+      <h1 class="hero-title">The space<br/>between<br/>the garments<br/>is the garment</h1>
+      <p class="hero-body">Wabi-sabi AI fashion. Imperfect, impermanent, incomplete — and therefore truthful. Our neural network has studied the Japanese concept of ma — the meaningful pause — and applies it to your wardrobe.</p>
+      <a href="#" class="hero-cta">Enter the Atelier</a>
+    </div>
+    <div class="hero-right">
+      <div class="hero-artwork">
+        <span class="ha-kanji">間</span>
+        <div class="ha-caption">ま — ma — the interval</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="rule"></div>
+
+  <section class="collection">
+    <div class="coll-header">
+      <div class="ch-jp">着る</div>
+      <div>
+        <div class="ch-title">To Wear is to Choose</div>
+        <div class="ch-body">Each piece in the collection has been selected for its quietness. Not for what it announces, but for what it allows to remain unsaid. The AI finds the ma — the perfect interval of garment and self.</div>
+      </div>
+    </div>
+    <div class="coll-grid">
+      <div class="coll-item">
+        <div class="ci-swatch cis-a"><div class="ci-swatch-label">麻 · Linen</div></div>
+        <div class="ci-info">
+          <div class="cii-jp">白麻の着物</div>
+          <div class="cii-name">White Linen Robe</div>
+          <div class="cii-price">¥48,000 / €290</div>
+        </div>
+      </div>
+      <div class="coll-item">
+        <div class="ci-swatch cis-b"><div class="ci-swatch-label">絹 · Silk</div></div>
+        <div class="ci-info">
+          <div class="cii-jp">黒絹の上衣</div>
+          <div class="cii-name">Black Silk Jacket</div>
+          <div class="cii-price">¥96,000 / €580</div>
+        </div>
+      </div>
+      <div class="coll-item">
+        <div class="ci-swatch cis-c"><div class="ci-swatch-label">綿 · Cotton</div></div>
+        <div class="ci-info">
+          <div class="cii-jp">砂色の袴</div>
+          <div class="cii-name">Sand Linen Trousers</div>
+          <div class="cii-price">¥38,000 / €230</div>
+        </div>
+      </div>
+      <div class="coll-item">
+        <div class="ci-swatch cis-d"><div class="ci-swatch-label">苔 · Moss</div></div>
+        <div class="ci-info">
+          <div class="cii-jp">抹茶色のスカーフ</div>
+          <div class="cii-name">Matcha Wool Scarf</div>
+          <div class="cii-price">¥22,000 / €135</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="principles">
+    <div class="pr-header">
+      <div class="pr-jp">美</div>
+      <div class="pr-title">三つの美しさ — Three Beauties</div>
+    </div>
+    <div class="pr-grid">
+      <div class="pr-item">
+        <div class="pri-kanji">侘</div>
+        <div class="pri-concept">わび · Wabi</div>
+        <div class="pri-title">The Beauty of Imperfection</div>
+        <div class="pri-body">Our AI selects pieces that have been allowed to breathe — that carry the marks of their making, the texture of natural dye, the slight irregularity of handcraft. Nothing here is flawless. Everything is true.</div>
+      </div>
+      <div class="pr-item">
+        <div class="pri-kanji">寂</div>
+        <div class="pri-concept">さび · Sabi</div>
+        <div class="pri-title">The Beauty of Time</div>
+        <div class="pri-body">Each garment is chosen for how it will age — how it will take your shape over months and years, how the fabric will soften, how the colour will deepen. We are dressing you for the long relationship, not the first impression.</div>
+      </div>
+      <div class="pr-item">
+        <div class="pri-kanji">間</div>
+        <div class="pri-concept">ま · Ma</div>
+        <div class="pri-title">The Beauty of Space</div>
+        <div class="pri-body">The AI's most important recommendation is often what to leave out. Three pieces worn with intention create more presence than thirty worn without it. The interval is the intelligence.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ai">
+    <div class="ai-inner">
+      <div>
+        <div style="display:flex;gap:2rem;align-items:flex-start;margin-bottom:2rem;">
+          <div class="ai-jp-quote">人工知能 · 美学</div>
+          <div>
+            <h2 class="ai-title">The AI That<br/>Learned to Be<br/>Still</h2>
+            <p class="ai-body">We trained our AI not on maximising output, but on understanding restraint. It studied the masters of Japanese fashion — Issey Miyake, Yohji Yamamoto, Rei Kawakubo — and absorbed their fundamental teaching: that what you leave out is as important as what you put in.</p>
+            <a href="#" class="hero-cta">Begin Your Practice</a>
+          </div>
+        </div>
+      </div>
+      <div class="ai-visual">
+        <div class="aiv-title">AIの所見 · AI OBSERVATIONS</div>
+        <div class="aiv-line"><span>間 — Ma Score</span><span class="aiv-val">Excellent</span></div>
+        <div class="aiv-line"><span>侘び寂び Alignment</span><span class="aiv-val">94.2%</span></div>
+        <div class="aiv-line"><span>Wardrobe Silence</span><span class="aiv-val">High</span></div>
+        <div class="aiv-line"><span>Recommended Items</span><span class="aiv-val">Four</span></div>
+        <div class="aiv-line"><span>Items to Remove</span><span class="aiv-val">Twelve</span></div>
+        <div class="aiv-line"><span>Overall Philosophy</span><span class="aiv-val">物の哀れ</span></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="f-logo">間</div>
+    <div class="f-copy">© 2025 MA · Japanese AI Fashion Philosophy · Tokyo</div>
+    <a href="index.html">← Back to Hub</a>
+  </footer>
+
+</body>
+</html>

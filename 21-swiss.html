@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GRID — Swiss International Style</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --red: #e63c2f; --black: #111; --white: #fff; --grid: 8px; }
+    body { background: var(--white); color: var(--black); font-family: Helvetica, Arial, sans-serif; overflow-x: hidden; }
+
+    /* Visible grid (optional overlay) */
+    nav { border-bottom: 2px solid var(--black); display: grid; grid-template-columns: 240px 1fr auto; align-items: stretch; }
+    .nav-logo { padding: 1.5rem 2rem; font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; border-right: 2px solid var(--black); display: flex; align-items: center; }
+    .nav-center { display: flex; align-items: center; padding: 0 2rem; gap: 0; }
+    .nav-link { padding: 0 1.5rem; font-size: 0.75rem; font-weight: 400; letter-spacing: 0.05em; text-transform: uppercase; text-decoration: none; color: var(--black); border-right: 1px solid rgba(0,0,0,0.12); height: 100%; display: flex; align-items: center; }
+    .nav-link:first-child { border-left: 1px solid rgba(0,0,0,0.12); }
+    .nav-link:hover { background: var(--red); color: var(--white); }
+    .nav-back { padding: 0 2rem; font-size: 0.75rem; font-weight: 700; text-decoration: none; color: var(--black); border-left: 2px solid var(--black); display: flex; align-items: center; }
+    .nav-back:hover { background: var(--black); color: var(--white); }
+
+    /* Typographic Hero */
+    .hero { display: grid; grid-template-columns: 240px 1fr; min-height: 80vh; border-bottom: 2px solid var(--black); }
+    .hero-col1 { border-right: 2px solid var(--black); padding: 3rem 2rem; display: flex; flex-direction: column; justify-content: space-between; }
+    .hc1-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--red); writing-mode: vertical-rl; transform: rotate(180deg); }
+    .hc1-num { font-size: 6rem; font-weight: 700; line-height: 1; color: rgba(0,0,0,0.06); }
+    .hc1-info { font-size: 0.7rem; line-height: 1.8; color: rgba(0,0,0,0.4); }
+    .hero-col2 { padding: 4rem 4rem 4rem; display: flex; flex-direction: column; justify-content: center; }
+    .hero-issue { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; color: rgba(0,0,0,0.3); margin-bottom: 3rem; display: flex; align-items: center; gap: 1rem; }
+    .hero-issue::after { content: ''; flex: 1; height: 1px; background: rgba(0,0,0,0.15); }
+    .hero-title { font-size: clamp(4rem, 9vw, 9rem); font-weight: 700; line-height: 0.9; letter-spacing: -0.03em; margin-bottom: 3rem; }
+    .ht-black { color: var(--black); display: block; }
+    .ht-red { color: var(--red); display: block; }
+    .ht-outline { color: transparent; -webkit-text-stroke: 2px var(--black); display: block; }
+    .hero-row { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-top: 2rem; }
+    .hr-text { font-size: 0.85rem; line-height: 1.8; color: rgba(0,0,0,0.55); border-top: 2px solid var(--black); padding-top: 1.5rem; }
+    .hr-cta { display: flex; flex-direction: column; justify-content: flex-end; gap: 1rem; }
+    .btn-swiss { display: inline-block; padding: 0.85rem 2.5rem; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; transition: all 0.15s; }
+    .btn-sw-red { background: var(--red); color: var(--white); }
+    .btn-sw-red:hover { background: var(--black); }
+    .btn-sw-outline { border: 2px solid var(--black); color: var(--black); }
+    .btn-sw-outline:hover { background: var(--black); color: var(--white); }
+
+    /* Typographic rule */
+    .type-rule { border: none; border-top: 2px solid var(--black); margin: 0; }
+
+    /* Feature Bar */
+    .feature-bar { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 2px solid var(--black); }
+    .fb-item { padding: 2.5rem 2rem; border-right: 1px solid rgba(0,0,0,0.12); }
+    .fb-item:last-child { border-right: none; }
+    .fbi-num { font-size: 3rem; font-weight: 700; line-height: 1; color: var(--red); margin-bottom: 0.5rem; }
+    .fbi-unit { font-size: 1rem; }
+    .fbi-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.5rem; }
+    .fbi-body { font-size: 0.78rem; line-height: 1.7; color: rgba(0,0,0,0.5); }
+
+    /* Grid Products */
+    .products { border-bottom: 2px solid var(--black); }
+    .prod-title-bar { border-bottom: 2px solid var(--black); padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; }
+    .ptb-title { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; }
+    .ptb-view { font-size: 0.7rem; font-weight: 400; color: rgba(0,0,0,0.4); letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; }
+    .ptb-view:hover { color: var(--red); }
+    .prod-grid-sw { display: grid; grid-template-columns: repeat(5, 1fr); }
+    .prod-item-sw { border-right: 1px solid rgba(0,0,0,0.12); padding: 0; overflow: hidden; }
+    .prod-item-sw:last-child { border-right: none; }
+    .pisw-swatch { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid rgba(0,0,0,0.12); font-size: 3rem; }
+    .sw-w { background: #f5f5f5; }
+    .sw-b { background: #111; }
+    .sw-g { background: #888; }
+    .sw-r { background: var(--red); }
+    .sw-k { background: #e8e0d0; }
+    .pisw-info { padding: 1rem; }
+    .pisw-cat { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(0,0,0,0.3); margin-bottom: 0.3rem; }
+    .pisw-name { font-size: 0.85rem; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 0.3rem; }
+    .pisw-price { font-size: 0.8rem; color: rgba(0,0,0,0.5); }
+
+    /* Text block */
+    .text-block { display: grid; grid-template-columns: 240px 1fr; border-bottom: 2px solid var(--black); }
+    .tb-left { border-right: 2px solid var(--black); padding: 4rem 2rem; }
+    .tb-left-title { font-size: 2.5rem; font-weight: 700; line-height: 1; letter-spacing: -0.03em; }
+    .tb-left-title span { display: block; color: var(--red); }
+    .tb-right { padding: 4rem; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
+    .tbr-section {}
+    .tbrs-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--red); margin-bottom: 1rem; border-bottom: 1px solid rgba(0,0,0,0.12); padding-bottom: 0.5rem; }
+    .tbrs-body { font-size: 0.85rem; line-height: 1.9; color: rgba(0,0,0,0.6); }
+
+    footer { display: grid; grid-template-columns: 240px 1fr auto; border-top: 2px solid var(--black); }
+    .f-logo { padding: 1.5rem 2rem; font-size: 1.2rem; font-weight: 700; letter-spacing: -0.02em; border-right: 2px solid var(--black); display: flex; align-items: center; }
+    .f-copy { padding: 1.5rem 2rem; font-size: 0.7rem; color: rgba(0,0,0,0.4); display: flex; align-items: center; letter-spacing: 0.05em; font-weight: 700; text-transform: uppercase; }
+    .f-back { padding: 1.5rem 2rem; border-left: 2px solid var(--black); display: flex; align-items: center; }
+    .f-back a { font-size: 0.75rem; font-weight: 700; text-decoration: none; color: var(--black); letter-spacing: 0.08em; text-transform: uppercase; }
+    .f-back a:hover { color: var(--red); }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-logo">GRID</div>
+    <div class="nav-center">
+      <a href="#" class="nav-link">Collection</a>
+      <a href="#" class="nav-link">Editorial</a>
+      <a href="#" class="nav-link">AI System</a>
+      <a href="#" class="nav-link">About</a>
+    </div>
+    <a href="index.html" class="nav-back">← Hub</a>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-col1">
+      <div class="hc1-label">AI Fashion Intelligence System</div>
+      <div class="hc1-num">01</div>
+      <div class="hc1-info">
+        GRID / SWISS TYPE<br/>
+        AI FASHION<br/>
+        SS 2025<br/>
+        ZÜRICH — BASEL
+      </div>
+    </div>
+    <div class="hero-col2">
+      <div class="hero-issue">Issue 01 · 2025 · AI Fashion</div>
+      <h1 class="hero-title">
+        <span class="ht-black">ORDER</span>
+        <span class="ht-red">FROM</span>
+        <span class="ht-outline">CHAOS</span>
+      </h1>
+      <div class="hero-row">
+        <div class="hr-text">The Swiss International Typographic Style applied to fashion intelligence. Grids do not lie. Our AI does not lie. Together they produce the most systematically honest style recommendations in existence.</div>
+        <div class="hr-cta">
+          <a href="#" class="btn-swiss btn-sw-red">Begin System</a>
+          <a href="#" class="btn-swiss btn-sw-outline">View Collection</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="feature-bar">
+    <div class="fb-item">
+      <div class="fbi-num">12<span class="fbi-unit">px</span></div>
+      <div class="fbi-label">Grid Unit</div>
+      <div class="fbi-body">Every recommendation is built on a 12-pixel grid. Order is not imposed. It emerges.</div>
+    </div>
+    <div class="fb-item">
+      <div class="fbi-num">4M+</div>
+      <div class="fbi-label">Garments Indexed</div>
+      <div class="fbi-body">Four million garments. One system. Zero exceptions to the grid.</div>
+    </div>
+    <div class="fb-item">
+      <div class="fbi-num">98<span class="fbi-unit">%</span></div>
+      <div class="fbi-label">Accuracy Rate</div>
+      <div class="fbi-body">Systematic precision. The AI's recommendations achieve 98% satisfaction across all body types.</div>
+    </div>
+    <div class="fb-item">
+      <div class="fbi-num">0</div>
+      <div class="fbi-label">Wasted Space</div>
+      <div class="fbi-body">Nothing ornamental. Nothing decorative. Every element functional. The grid demands it.</div>
+    </div>
+  </div>
+
+  <section class="products">
+    <div class="prod-title-bar">
+      <span class="ptb-title">Current Collection — SS25</span>
+      <a href="#" class="ptb-view">View All →</a>
+    </div>
+    <div class="prod-grid-sw">
+      <div class="prod-item-sw">
+        <div class="pisw-swatch sw-w"><span style="opacity:0.2;font-size:3rem;">T</span></div>
+        <div class="pisw-info">
+          <div class="pisw-cat">01 / Upper</div>
+          <div class="pisw-name">White Oxford Shirt</div>
+          <div class="pisw-price">CHF 95 / €88</div>
+        </div>
+      </div>
+      <div class="prod-item-sw">
+        <div class="pisw-swatch sw-b"><span style="opacity:0.2;font-size:3rem;color:#fff;">J</span></div>
+        <div class="pisw-info">
+          <div class="pisw-cat">02 / Outer</div>
+          <div class="pisw-name">Black Wool Blazer</div>
+          <div class="pisw-price">CHF 380 / €355</div>
+        </div>
+      </div>
+      <div class="prod-item-sw">
+        <div class="pisw-swatch sw-g"><span style="opacity:0.2;font-size:3rem;">P</span></div>
+        <div class="pisw-info">
+          <div class="pisw-cat">03 / Lower</div>
+          <div class="pisw-name">Grey Slim Trouser</div>
+          <div class="pisw-price">CHF 155 / €145</div>
+        </div>
+      </div>
+      <div class="prod-item-sw">
+        <div class="pisw-swatch sw-r"><span style="opacity:0.3;font-size:3rem;color:#fff;">A</span></div>
+        <div class="pisw-info">
+          <div class="pisw-cat">04 / Access.</div>
+          <div class="pisw-name">Red Canvas Tote</div>
+          <div class="pisw-price">CHF 68 / €63</div>
+        </div>
+      </div>
+      <div class="prod-item-sw">
+        <div class="pisw-swatch sw-k"><span style="opacity:0.2;font-size:3rem;">C</span></div>
+        <div class="pisw-info">
+          <div class="pisw-cat">05 / Layer</div>
+          <div class="pisw-name">Ecru Knit Cardigan</div>
+          <div class="pisw-price">CHF 190 / €178</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="text-block">
+    <div class="tb-left">
+      <div class="tb-left-title">The<br/><span>System</span><br/>Rules</div>
+    </div>
+    <div class="tb-right">
+      <div class="tbr-section">
+        <div class="tbrs-label">01 — Objectivity</div>
+        <div class="tbrs-body">The AI applies the same systematic rigour to fashion that Swiss designers applied to typography: every decision justified by function, every recommendation anchored in measurable proportion and proven aesthetic law.</div>
+      </div>
+      <div class="tbr-section">
+        <div class="tbrs-label">02 — The Grid</div>
+        <div class="tbrs-body">Fashion, like typography, has an underlying grid. Body proportions. Visual weight. Colour relationships. The AI reads this grid in your body and selects pieces that sit correctly within it.</div>
+      </div>
+      <div class="tbr-section">
+        <div class="tbrs-label">03 — Clarity</div>
+        <div class="tbrs-body">No mood boards. No vague language. The AI speaks in specifics: this silhouette, this fabric weight, this colourway — with measurable reasons for each. Helvetica doesn't apologise for being readable. Neither do we.</div>
+      </div>
+      <div class="tbr-section">
+        <div class="tbrs-label">04 — Permanence</div>
+        <div class="tbrs-body">The Swiss style was designed to be universal and timeless. Our AI selects for the same quality: garments that will not embarrass you in five years. Trends are ephemeral. The grid is forever.</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="f-logo">GRID</div>
+    <div class="f-copy">© 2025 Grid AI Fashion · Swiss International Style</div>
+    <div class="f-back"><a href="index.html">← All Formats</a></div>
+  </footer>
+
+</body>
+</html>

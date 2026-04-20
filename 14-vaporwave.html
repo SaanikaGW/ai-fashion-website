@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ＡＥＳＴＨＥＴＩＣ — Vaporwave Fashion</title>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --pink: #ff71ce; --blue: #01cdfe; --green: #05ffa1; --yellow: #fffb96; --purple: #b967ff; --bg: #0d0221; --mid: #1a0438; }
+    body { background: var(--bg); color: #fff; font-family: 'VT323', monospace; overflow-x: hidden; }
+
+    /* Grid background */
+    .grid-bg { position: fixed; inset: 0; z-index: 0; overflow: hidden; }
+    .grid-bg::before { content: ''; position: absolute; bottom: 0; left: -50%; right: -50%; height: 60%; background: linear-gradient(180deg, transparent 0%, rgba(1,205,254,0.03) 100%); background-image: repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(1,205,254,0.08) 40px, rgba(1,205,254,0.08) 41px), repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(1,205,254,0.08) 40px, rgba(1,205,254,0.08) 41px); }
+    .grid-bg::after { content: ''; position: absolute; bottom: 0; left: -50%; right: -50%; height: 50%; background: radial-gradient(ellipse 80% 40% at 50% 100%, rgba(185,103,255,0.3) 0%, transparent 70%); }
+    .sun { position: fixed; bottom: 30%; left: 50%; transform: translateX(-50%); width: 200px; height: 200px; border-radius: 50%; background: linear-gradient(180deg, var(--yellow) 0%, var(--pink) 100%); z-index: 0; opacity: 0.4; }
+    .sun-lines { position: absolute; inset: 0; }
+    .sun-line { position: absolute; left: 0; right: 0; height: 8px; background: var(--bg); }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,113,206,0.3); background: rgba(13,2,33,0.9); backdrop-filter: blur(10px); }
+    .logo { font-family: 'VT323', monospace; font-size: 1.8rem; letter-spacing: 0.1em; background: linear-gradient(90deg, var(--pink), var(--blue), var(--green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .nav-links { display: flex; gap: 2rem; }
+    .nav-links a { font-size: 0.85rem; letter-spacing: 0.15em; text-decoration: none; color: rgba(255,255,255,0.6); transition: color 0.2s; }
+    .nav-links a:hover { color: var(--pink); }
+    .nav-back { font-size: 0.8rem; text-decoration: none; color: var(--green); }
+
+    /* Hero */
+    .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 6rem 2rem 4rem; position: relative; z-index: 1; }
+    .hero-tag { font-family: 'Press Start 2P', cursive; font-size: 0.5rem; letter-spacing: 0.1em; color: var(--green); border: 1px solid var(--green); padding: 0.4rem 1rem; margin-bottom: 2.5rem; display: inline-block; text-shadow: 0 0 10px var(--green); }
+    .hero-title { font-size: clamp(3rem, 10vw, 9rem); line-height: 1; letter-spacing: 0.15em; margin-bottom: 1rem; }
+    .ht-line1 { color: var(--pink); text-shadow: 3px 3px 0 rgba(255,113,206,0.3), 0 0 30px rgba(255,113,206,0.4); display: block; }
+    .ht-line2 { color: var(--blue); text-shadow: 3px 3px 0 rgba(1,205,254,0.3), 0 0 30px rgba(1,205,254,0.4); display: block; }
+    .ht-line3 { color: var(--green); text-shadow: 3px 3px 0 rgba(5,255,161,0.3), 0 0 30px rgba(5,255,161,0.4); display: block; font-size: 0.5em; letter-spacing: 0.4em; }
+    .hero-sub { font-family: 'Press Start 2P', cursive; font-size: 0.55rem; line-height: 2; color: rgba(255,255,255,0.6); max-width: 400px; margin-bottom: 3rem; }
+    .hero-btns { display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center; }
+    .btn-vw { font-family: 'Press Start 2P', cursive; font-size: 0.55rem; padding: 1rem 2rem; border: 2px solid; text-decoration: none; letter-spacing: 0.08em; transition: all 0.2s; display: inline-block; }
+    .btn-pink { border-color: var(--pink); color: var(--pink); text-shadow: 0 0 10px var(--pink); box-shadow: 0 0 15px rgba(255,113,206,0.2); }
+    .btn-pink:hover { background: var(--pink); color: var(--bg); text-shadow: none; }
+    .btn-blue { border-color: var(--blue); color: var(--blue); text-shadow: 0 0 10px var(--blue); }
+    .btn-blue:hover { background: var(--blue); color: var(--bg); text-shadow: none; }
+
+    /* Marquee */
+    .marquee { border-top: 1px solid rgba(255,113,206,0.3); border-bottom: 1px solid rgba(255,113,206,0.3); padding: 0.6rem 0; overflow: hidden; background: rgba(185,103,255,0.08); position: relative; z-index: 1; }
+    .mq-inner { display: inline-block; white-space: nowrap; animation: mq 15s linear infinite; font-size: 0.9rem; letter-spacing: 0.1em; }
+    @keyframes mq { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+    .mq-sep { margin: 0 2rem; color: var(--purple); }
+
+    /* Items grid */
+    .items { padding: 4rem 2rem; max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
+    .items-title { font-size: 2rem; text-align: center; margin-bottom: 0.5rem; background: linear-gradient(90deg, var(--pink), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: 0.2em; }
+    .items-sub { font-family: 'Press Start 2P', cursive; font-size: 0.5rem; text-align: center; color: rgba(255,255,255,0.4); margin-bottom: 3rem; letter-spacing: 0.1em; }
+    .items-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+    .item-card { background: rgba(26,4,56,0.8); border: 1px solid; padding: 0; overflow: hidden; transition: all 0.3s; cursor: pointer; }
+    .ic-pink { border-color: rgba(255,113,206,0.4); }
+    .ic-blue { border-color: rgba(1,205,254,0.4); }
+    .ic-green { border-color: rgba(5,255,161,0.4); }
+    .ic-purple { border-color: rgba(185,103,255,0.4); }
+    .item-card:hover { transform: translateY(-4px); }
+    .ic-pink:hover { box-shadow: 0 0 30px rgba(255,113,206,0.3); border-color: var(--pink); }
+    .ic-blue:hover { box-shadow: 0 0 30px rgba(1,205,254,0.3); border-color: var(--blue); }
+    .ic-green:hover { box-shadow: 0 0 30px rgba(5,255,161,0.3); border-color: var(--green); }
+    .ic-purple:hover { box-shadow: 0 0 30px rgba(185,103,255,0.3); border-color: var(--purple); }
+    .item-visual { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; position: relative; font-size: 4rem; }
+    .iv-a { background: linear-gradient(135deg, #1a0438, #3d0875); }
+    .iv-b { background: linear-gradient(135deg, #001a2e, #003d5c); }
+    .iv-c { background: linear-gradient(135deg, #001a0e, #003d20); }
+    .iv-d { background: linear-gradient(135deg, #1a001a, #3d003d); }
+    .item-info { padding: 1rem; }
+    .ii-name { font-size: 0.9rem; letter-spacing: 0.05em; margin-bottom: 0.3rem; }
+    .ii-price { font-family: 'Press Start 2P', cursive; font-size: 0.55rem; color: var(--yellow); }
+
+    /* Windows */
+    .windows { padding: 4rem 2rem; max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
+    .windows-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .win { border: 1px solid rgba(255,113,206,0.4); background: rgba(13,2,33,0.9); }
+    .win-titlebar { background: linear-gradient(90deg, var(--pink), var(--purple)); padding: 0.4rem 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+    .win-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .win-title { font-family: 'Press Start 2P', cursive; font-size: 0.5rem; flex: 1; text-align: center; color: #fff; }
+    .win-body { padding: 1.5rem; }
+    .win-label { font-family: 'Press Start 2P', cursive; font-size: 0.5rem; color: var(--green); margin-bottom: 0.75rem; letter-spacing: 0.05em; }
+    .win-text { font-size: 0.9rem; line-height: 1.8; color: rgba(255,255,255,0.6); }
+    .win-stat { font-size: 2.5rem; color: var(--pink); text-shadow: 0 0 20px rgba(255,113,206,0.5); letter-spacing: 0.05em; margin: 0.5rem 0; }
+
+    /* Terminal */
+    .terminal { max-width: 700px; margin: 0 auto 4rem; padding: 0 2rem; position: relative; z-index: 1; }
+    .term-win { border: 1px solid rgba(5,255,161,0.4); background: rgba(0,10,0,0.9); }
+    .term-bar { background: rgba(5,255,161,0.2); padding: 0.4rem 0.75rem; display: flex; align-items: center; gap: 0.5rem; border-bottom: 1px solid rgba(5,255,161,0.2); }
+    .term-title { font-family: 'Press Start 2P', cursive; font-size: 0.45rem; color: var(--green); flex: 1; text-align: center; }
+    .term-body { padding: 1.5rem; font-size: 0.85rem; line-height: 2; }
+    .t-p { color: var(--green); }
+    .t-o { color: rgba(255,255,255,0.5); padding-left: 1rem; }
+    .t-ok { color: var(--pink); padding-left: 1rem; }
+    .t-cur { display: inline-block; width: 8px; height: 14px; background: var(--green); animation: blink 1s step-end infinite; vertical-align: middle; }
+    @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0;} }
+
+    footer { border-top: 1px solid rgba(255,113,206,0.3); padding: 2rem; text-align: center; position: relative; z-index: 1; background: rgba(13,2,33,0.9); }
+    .f-logo { font-size: 1.5rem; letter-spacing: 0.3em; background: linear-gradient(90deg, var(--pink), var(--blue), var(--green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 0.5rem; }
+    .f-copy { font-family: 'Press Start 2P', cursive; font-size: 0.45rem; color: rgba(255,255,255,0.3); line-height: 2; }
+    footer a { color: var(--green); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+  <div class="grid-bg"></div>
+  <div class="sun">
+    <div class="sun-lines">
+      <div class="sun-line" style="top:30%"></div>
+      <div class="sun-line" style="top:45%"></div>
+      <div class="sun-line" style="top:57%"></div>
+      <div class="sun-line" style="top:67%"></div>
+      <div class="sun-line" style="top:75%"></div>
+      <div class="sun-line" style="top:82%"></div>
+    </div>
+  </div>
+
+  <nav>
+    <div class="logo">Ａ Ｅ Ｓ Ｔ Ｈ Ｅ Ｔ Ｉ Ｃ</div>
+    <div class="nav-links">
+      <a href="#">Ｓ Ｈ Ｏ Ｐ</a>
+      <a href="#">Ｔ Ｒ Ｅ Ｎ Ｄ</a>
+      <a href="#">Ａ Ｉ</a>
+    </div>
+    <a href="index.html" class="nav-back">← HUB</a>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-tag">A I — F A S H I O N — S Y S T E M</div>
+    <h1 class="hero-title">
+      <span class="ht-line1">ＤＲＥＳＳ</span>
+      <span class="ht-line2">ＲＥＴＲＯ</span>
+      <span class="ht-line3">Ｆ Ｕ Ｔ Ｕ Ｒ Ｅ</span>
+    </h1>
+    <p class="hero-sub">AI-CURATED FITS FROM THE DIGITAL BEYOND. YOUR AESTHETIC. YOUR WAVELENGTH.</p>
+    <div class="hero-btns">
+      <a href="#" class="btn-vw btn-pink">ＥＮＴＥＲ　ＡＩ</a>
+      <a href="#" class="btn-vw btn-blue">ＳＨＯ Ｐ　ＮＯＷ</a>
+    </div>
+  </section>
+
+  <div class="marquee">
+    <span class="mq-inner">Ａ Ｅ Ｓ Ｔ Ｈ Ｅ Ｔ Ｉ Ｃ<span class="mq-sep">♦</span>ＡＩ ＳＴＹＬＥ<span class="mq-sep">♦</span>ＲＥＴＲＯ ＦＵＴＵＲＥ<span class="mq-sep">♦</span>ＤＩＧＩＴＡＬ ＦＡＳＨＩＯＮ<span class="mq-sep">♦</span>Ｖ Ａ Ｐ Ｏ Ｒ<span class="mq-sep">♦</span>Ａ Ｅ Ｓ Ｔ Ｈ Ｅ Ｔ Ｉ Ｃ<span class="mq-sep">♦</span>ＡＩ ＳＴＹＬＥ<span class="mq-sep">♦</span>ＲＥＴＲＯ ＦＵＴＵＲＥ<span class="mq-sep">♦</span>ＤＩＧＩＴＡＬ ＦＡＳＨＩＯＮ<span class="mq-sep">♦</span>Ｖ Ａ Ｐ Ｏ Ｒ<span class="mq-sep">♦</span></span>
+  </div>
+
+  <section class="items">
+    <div class="items-title">Ｎ Ｅ Ｗ　Ｄ Ｒ Ｏ Ｐ</div>
+    <div class="items-sub">SELECTED BY THE A.I. AESTHETIC ORACLE</div>
+    <div class="items-grid">
+      <div class="item-card ic-pink">
+        <div class="item-visual iv-a">🌸</div>
+        <div class="item-info">
+          <div class="ii-name">Ｐ Ｉ Ｎ Ｋ　Ｂ Ｌ Ａ Ｚ Ｅ Ｒ</div>
+          <div class="ii-price">$88</div>
+        </div>
+      </div>
+      <div class="item-card ic-blue">
+        <div class="item-visual iv-b">💎</div>
+        <div class="item-info">
+          <div class="ii-name">Ｃ Ｙ Ａ Ｎ　Ｊ Ａ Ｃ Ｋ Ｅ Ｔ</div>
+          <div class="ii-price">$124</div>
+        </div>
+      </div>
+      <div class="item-card ic-green">
+        <div class="item-visual iv-c">✨</div>
+        <div class="item-info">
+          <div class="ii-name">Ｍ Ｉ Ｎ Ｔ　Ｄ Ｒ Ｅ Ｓ Ｓ</div>
+          <div class="ii-price">$96</div>
+        </div>
+      </div>
+      <div class="item-card ic-purple">
+        <div class="item-visual iv-d">🔮</div>
+        <div class="item-info">
+          <div class="ii-name">Ｖ Ｉ Ｏ Ｌ Ｅ Ｔ　Ｓ Ｋ Ｉ Ｒ Ｔ</div>
+          <div class="ii-price">$72</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="windows">
+    <div class="windows-grid">
+      <div class="win">
+        <div class="win-titlebar">
+          <div class="win-dot" style="background:#ff5f57"></div>
+          <div class="win-dot" style="background:#ffbd2e"></div>
+          <div class="win-dot" style="background:#28ca41"></div>
+          <div class="win-title">AI_STYLE.exe</div>
+        </div>
+        <div class="win-body">
+          <div class="win-label">STYLE_SCORE.dat</div>
+          <div class="win-stat">9 7 . 3</div>
+          <div class="win-text">Your aesthetic alignment score. The AI has determined that your vibe is: RETRO-DIGITAL-SOFT. Coordinates unlocked.</div>
+        </div>
+      </div>
+      <div class="win">
+        <div class="win-titlebar" style="background:linear-gradient(90deg,var(--blue),var(--green))">
+          <div class="win-dot" style="background:#ff5f57"></div>
+          <div class="win-dot" style="background:#ffbd2e"></div>
+          <div class="win-dot" style="background:#28ca41"></div>
+          <div class="win-title">TREND_ORACLE.exe</div>
+        </div>
+        <div class="win-body">
+          <div class="win-label">INCOMING_AESTHETIC.dat</div>
+          <div class="win-text">The oracle has spoken: CHROMATIC MINIMALISM is incoming. Pink-on-white with chrome accents. Loading recommendations...</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="terminal">
+    <div class="term-win">
+      <div class="term-bar">
+        <div class="win-dot" style="background:#ff5f57;width:8px;height:8px;border-radius:50%"></div>
+        <div class="win-dot" style="background:#ffbd2e;width:8px;height:8px;border-radius:50%"></div>
+        <div class="win-dot" style="background:#28ca41;width:8px;height:8px;border-radius:50%"></div>
+        <div class="term-title">AESTHETIC_AI — STYLE_TERMINAL v2.0</div>
+      </div>
+      <div class="term-body">
+        <div><span class="t-p">▶ </span><span>initialize.aesthetic_scan()</span></div>
+        <div class="t-o">Loading vaporwave.css...</div>
+        <div class="t-o">Scanning trend_matrix...</div>
+        <div class="t-ok">✓ AESTHETIC UNLOCKED: ＣＹＢＥＲ＿ＳＯＦＴ</div>
+        <div><span class="t-p">▶ </span><span>generate.outfit(vibe="dreamy_future")</span></div>
+        <div class="t-ok">✓ 4 pieces loaded. Confidence: 96% <span class="t-cur"></span></div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="f-logo">Ａ Ｅ Ｓ Ｔ Ｈ Ｅ Ｔ Ｉ Ｃ</div>
+    <div class="f-copy">© 2025 AESTHETIC AI FASHION SYSTEMS<br/><a href="index.html">← RETURN TO HUB</a></div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FASHION.SH — Terminal Fashion</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --bg: #0c0c0c; --green: #00ff41; --green-dim: rgba(0,255,65,0.5); --green-faint: rgba(0,255,65,0.08); --amber: #ff9800; --cyan: #00e5ff; --red: #ff1744; --text: #00ff41; }
+    body { background: var(--bg); color: var(--green); font-family: 'Courier New', Courier, monospace; font-size: 14px; line-height: 1.6; overflow-x: hidden; min-height: 100vh; }
+
+    /* CRT scanlines */
+    body::after { content: ''; position: fixed; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.05) 2px, rgba(0,0,0,0.05) 4px); pointer-events: none; z-index: 9999; }
+    /* CRT vignette */
+    body::before { content: ''; position: fixed; inset: 0; background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.7) 100%); pointer-events: none; z-index: 9998; }
+
+    .terminal { max-width: 1000px; margin: 0 auto; padding: 1rem; min-height: 100vh; }
+
+    /* System header */
+    .sys-header { border-bottom: 1px solid var(--green-dim); padding-bottom: 1rem; margin-bottom: 1.5rem; }
+    .sh-line { color: var(--green-dim); font-size: 0.8rem; }
+    .sh-title { color: var(--green); font-size: 1.8rem; font-weight: bold; letter-spacing: 0.05em; margin: 0.5rem 0; text-shadow: 0 0 10px var(--green); }
+    .sh-subtitle { color: var(--amber); font-size: 0.8rem; }
+
+    /* ASCII art */
+    .ascii { color: var(--green-dim); font-size: 0.75rem; line-height: 1.3; white-space: pre; margin: 1rem 0; }
+
+    /* Section headers */
+    .section-header { color: var(--cyan); font-weight: bold; margin: 2rem 0 1rem; font-size: 0.95rem; }
+    .section-header::before { content: '── '; color: var(--green-dim); }
+    .section-header::after { content: ' ' + repeat('─', 40); color: var(--green-dim); }
+
+    /* Commands and output */
+    .prompt { color: var(--amber); }
+    .cmd { color: var(--green); }
+    .output { color: var(--green-dim); padding-left: 2ch; }
+    .output.success { color: var(--green); }
+    .output.warn { color: var(--amber); }
+    .output.error { color: var(--red); }
+    .output.cyan { color: var(--cyan); }
+    .output.highlight { color: #fff; }
+
+    .cmd-block { margin: 0.5rem 0; }
+
+    /* Table */
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.85rem; }
+    th { color: var(--amber); text-align: left; padding: 0.3rem 1rem; border-bottom: 1px solid var(--green-dim); font-weight: bold; }
+    td { padding: 0.3rem 1rem; border-bottom: 1px solid rgba(0,255,65,0.05); }
+    tr:hover td { background: var(--green-faint); }
+    .td-id { color: var(--green-dim); }
+    .td-name { color: var(--green); }
+    .td-match { color: var(--cyan); }
+    .td-price { color: var(--amber); }
+    .td-status { color: var(--green); }
+    .td-status.warn { color: var(--amber); }
+    .td-status.error { color: var(--red); }
+
+    /* Progress bars */
+    .progress-line { display: flex; align-items: center; gap: 1rem; margin: 0.25rem 0; padding-left: 2ch; }
+    .pl-label { width: 180px; color: var(--green-dim); flex-shrink: 0; }
+    .pl-bar { flex: 1; }
+    .pl-bar-track { height: 8px; background: rgba(0,255,65,0.08); border: 1px solid rgba(0,255,65,0.2); display: inline-block; width: 200px; }
+    .pl-bar-fill { height: 100%; background: var(--green); display: block; box-shadow: 0 0 6px var(--green); }
+    .pl-val { width: 40px; text-align: right; color: var(--green); }
+
+    /* Input line */
+    .input-line { display: flex; align-items: center; gap: 0.5rem; margin: 2rem 0 1rem; border-top: 1px solid var(--green-dim); padding-top: 1rem; }
+    .il-prompt { color: var(--amber); white-space: nowrap; }
+    .il-input { flex: 1; background: transparent; border: none; outline: none; color: var(--green); font-family: inherit; font-size: inherit; caret-color: var(--green); }
+    .cursor { display: inline-block; width: 8px; height: 14px; background: var(--green); animation: blink 1s step-end infinite; vertical-align: middle; box-shadow: 0 0 6px var(--green); }
+    @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0;} }
+
+    /* Divider */
+    .divider { border: none; border-top: 1px solid rgba(0,255,65,0.15); margin: 1.5rem 0; }
+
+    /* Back link */
+    .back-link { color: var(--cyan); text-decoration: none; }
+    .back-link:hover { text-decoration: underline; color: #fff; }
+
+    /* Flicker animation on title */
+    .flicker { animation: flicker 5s ease-in-out infinite; }
+    @keyframes flicker { 0%,90%,100%{opacity:1;} 91%,93%{opacity:0.3;} 92%,94%{opacity:0.8;} }
+  </style>
+</head>
+<body>
+<div class="terminal">
+
+  <div class="sys-header">
+    <div class="sh-line">FASHION.SH v4.2.1 — STYLE INTELLIGENCE SYSTEM</div>
+    <div class="sh-line">Copyright (c) 2024-2025 NeuralFashion Labs. All rights reserved.</div>
+    <div class="sh-line">Type 'help' for available commands. Type 'style --me' to begin.</div>
+  </div>
+
+  <div class="ascii">
+    ███████╗ █████╗ ███████╗██╗  ██╗██╗ ██████╗ ███╗   ██╗
+    ██╔════╝██╔══██╗██╔════╝██║  ██║██║██╔═══██╗████╗  ██║
+    █████╗  ███████║███████╗███████║██║██║   ██║██╔██╗ ██║
+    ██╔══╝  ██╔══██║╚════██║██╔══██║██║██║   ██║██║╚██╗██║
+    ██║     ██║  ██║███████║██║  ██║██║╚██████╔╝██║ ╚████║
+    ╚═╝     ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═╝ ╚═════╝ ╚═╝  ╚═══╝
+                          A I   S T Y L E   S Y S T E M
+  </div>
+
+  <hr class="divider"/>
+
+  <div class="cmd-block">
+    <span class="prompt">user@fashion.sh:~$ </span><span class="cmd">./style --scan --user=current --verbose</span>
+  </div>
+  <div class="output">Initializing FASHION.SH Style Engine v4.2.1...</div>
+  <div class="output success">✓ Neural style model loaded (3.2GB)</div>
+  <div class="output success">✓ Trend database synced (47,382 signals)</div>
+  <div class="output success">✓ Body profile initialized</div>
+  <div class="output cyan">→ Running full style scan...</div>
+
+  <hr class="divider"/>
+
+  <div class="section-header">STYLE PROFILE ANALYSIS</div>
+  <div class="output highlight">User: anonymous — Session: 0x4F2A1B</div>
+  <br/>
+  <div class="progress-line">
+    <span class="pl-label">Style Score</span>
+    <span class="pl-bar"><span class="pl-bar-track"><span class="pl-bar-fill" style="width:97%"></span></span></span>
+    <span class="pl-val">97%</span>
+  </div>
+  <div class="progress-line">
+    <span class="pl-label">Trend Alignment</span>
+    <span class="pl-bar"><span class="pl-bar-track"><span class="pl-bar-fill" style="width:89%"></span></span></span>
+    <span class="pl-val">89%</span>
+  </div>
+  <div class="progress-line">
+    <span class="pl-label">Eco Rating</span>
+    <span class="pl-bar"><span class="pl-bar-track"><span class="pl-bar-fill" style="width:92%"></span></span></span>
+    <span class="pl-val">92%</span>
+  </div>
+  <div class="progress-line">
+    <span class="pl-label">Wardrobe Coherence</span>
+    <span class="pl-bar"><span class="pl-bar-track"><span class="pl-bar-fill" style="width:84%"></span></span></span>
+    <span class="pl-val">84%</span>
+  </div>
+  <div class="progress-line">
+    <span class="pl-label">Fit Accuracy</span>
+    <span class="pl-bar"><span class="pl-bar-track"><span class="pl-bar-fill" style="width:98%"></span></span></span>
+    <span class="pl-val">98%</span>
+  </div>
+
+  <hr class="divider"/>
+
+  <div class="section-header">RECOMMENDED ITEMS — CURRENT DROP</div>
+  <div class="cmd-block">
+    <span class="prompt">user@fashion.sh:~$ </span><span class="cmd">fashion list --recommended --sort=match --limit=6</span>
+  </div>
+  <br/>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>ITEM</th>
+        <th>CATEGORY</th>
+        <th>MATCH</th>
+        <th>PRICE</th>
+        <th>STATUS</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="td-id">WRN-0042</td>
+        <td class="td-name">Technical Field Jacket [Graphite]</td>
+        <td>OUTER</td>
+        <td class="td-match">97.3%</td>
+        <td class="td-price">$380</td>
+        <td class="td-status">IN_STOCK</td>
+      </tr>
+      <tr>
+        <td class="td-id">WRN-0078</td>
+        <td class="td-name">Utility Cargo — Slate</td>
+        <td>LOWER</td>
+        <td class="td-match">94.1%</td>
+        <td class="td-price">$165</td>
+        <td class="td-status">IN_STOCK</td>
+      </tr>
+      <tr>
+        <td class="td-id">WRN-0031</td>
+        <td class="td-name">Merino Midlayer [Charcoal]</td>
+        <td>UPPER</td>
+        <td class="td-match">91.8%</td>
+        <td class="td-price">$120</td>
+        <td class="td-status warn">LOW_STOCK(3)</td>
+      </tr>
+      <tr>
+        <td class="td-id">WRN-0055</td>
+        <td class="td-name">Tactical Sneaker — Black/Gum</td>
+        <td>FOOT</td>
+        <td class="td-match">89.4%</td>
+        <td class="td-price">$240</td>
+        <td class="td-status">IN_STOCK</td>
+      </tr>
+      <tr>
+        <td class="td-id">WRN-0091</td>
+        <td class="td-name">Waterproof Shell Pants</td>
+        <td>LOWER</td>
+        <td class="td-match">86.7%</td>
+        <td class="td-price">$290</td>
+        <td class="td-status warn">REVIEW</td>
+      </tr>
+      <tr>
+        <td class="td-id">WRN-0103</td>
+        <td class="td-name">Ripstop Work Shirt</td>
+        <td>UPPER</td>
+        <td class="td-match">83.2%</td>
+        <td class="td-price">$88</td>
+        <td class="td-status error">OUT_OF_STOCK</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="output success">✓ 6 items returned (2 flagged for review)</div>
+  <div class="output">→ Run 'fashion add WRN-0042 --cart' to add to cart</div>
+
+  <hr class="divider"/>
+
+  <div class="section-header">TREND SIGNALS — LIVE FEED</div>
+  <div class="cmd-block">
+    <span class="prompt">user@fashion.sh:~$ </span><span class="cmd">trend watch --live --top=8</span>
+  </div>
+  <br/>
+  <div class="output cyan">[2025-04-01 09:42:18] SIGNAL: Utility Techwear +34% momentum (HIGH)</div>
+  <div class="output cyan">[2025-04-01 09:41:55] SIGNAL: Quiet Luxury +28% momentum (HIGH)</div>
+  <div class="output success">[2025-04-01 09:38:22] SIGNAL: Neo-Minimalism +19% momentum (MED)</div>
+  <div class="output warn">[2025-04-01 09:35:10] SIGNAL: Y2K Revival +12% momentum (LOW)</div>
+  <div class="output warn">[2025-04-01 09:30:44] ALERT: Maximalism -8% declining (WATCH)</div>
+  <div class="output cyan">[2025-04-01 09:28:17] SIGNAL: Organic/Natural Materials +22% momentum (HIGH)</div>
+  <div class="output success">[2025-04-01 09:25:03] SIGNAL: Dark Academia stable +5% (LOW)</div>
+  <div class="output error">[2025-04-01 09:20:55] ALERT: Fast Fashion index -15% consumer trust (SYSTEM)</div>
+  <br/>
+  <div class="output">→ Monitoring 47,382 real-time trend signals across 200 markets</div>
+  <div class="output success">✓ Your wardrobe alignment to top trends: 89.4%</div>
+
+  <hr class="divider"/>
+
+  <div class="section-header">AI OUTFIT GENERATOR</div>
+  <div class="cmd-block">
+    <span class="prompt">user@fashion.sh:~$ </span><span class="cmd">outfit generate --occasion="job interview" --weather=12c --confidence=high</span>
+  </div>
+  <div class="output">Loading occasion matrix: JOB_INTERVIEW...</div>
+  <div class="output">Fetching weather data: 12°C, overcast, 40% rain...</div>
+  <div class="output">Scanning wardrobe inventory...</div>
+  <div class="output">Cross-referencing with style profile...</div>
+  <div class="output success">✓ Outfit generated — confidence: 96.2%</div>
+  <br/>
+  <div class="output highlight">┌─ OUTFIT: PROFESSIONAL_EDGE_001 ─────────────────────────────┐</div>
+  <div class="output highlight">│  [OUTER]  Navy Unstructured Blazer       — WRN-0011  $320    │</div>
+  <div class="output highlight">│  [UPPER]  White Oxford Shirt              — WRN-0028  $95     │</div>
+  <div class="output highlight">│  [LOWER]  Slim Charcoal Trousers          — WRN-0034  $155    │</div>
+  <div class="output highlight">│  [FOOT]   Black Derby Shoes               — WRN-0067  $220    │</div>
+  <div class="output highlight">│  ─────────────────────────────────────────────────────────   │</div>
+  <div class="output highlight">│  TOTAL: $790 · ECO: A+ · MATCH: 96.2% · CONFIDENCE: HIGH   │</div>
+  <div class="output highlight">└──────────────────────────────────────────────────────────────┘</div>
+
+  <hr class="divider"/>
+
+  <div class="section-header">SYSTEM STATUS</div>
+  <div class="output success">✓ neural_style_engine     ONLINE    v4.2.1</div>
+  <div class="output success">✓ trend_scanner           ONLINE    47,382 signals active</div>
+  <div class="output success">✓ inventory_db            ONLINE    4,821 items indexed</div>
+  <div class="output success">✓ eco_calculator          ONLINE    carbon API connected</div>
+  <div class="output warn">⚠ trend_predictor        DEGRADED  72h latency (normal)</div>
+  <div class="output success">✓ user_profile_engine     ONLINE    profile loaded</div>
+  <br/>
+  <div class="output">System uptime: 99.7% | Last update: 2025-04-01 09:42:18</div>
+  <div class="output cyan">→ <a href="index.html" class="back-link">cd ../all-formats</a> — Navigate back to all fashion formats</div>
+
+  <hr class="divider"/>
+
+  <div class="input-line">
+    <span class="il-prompt">user@fashion.sh:~$ </span>
+    <input type="text" class="il-input" placeholder="Type a command... (try: style --me, outfit list, trend top)" autofocus/>
+    <span class="cursor"></span>
+  </div>
+
+  <div style="margin-top:3rem;padding-top:1rem;border-top:1px solid rgba(0,255,65,0.1);color:rgba(0,255,65,0.3);font-size:0.75rem;">
+    FASHION.SH v4.2.1 — Neural Style Intelligence © 2025 NeuralFashion Labs<br/>
+    Built on: FashionNet-7B | Trend corpus: 10yr | Items indexed: 4M+ | Uptime: 99.7%<br/>
+    <a href="index.html" class="back-link">← Back to All Formats</a>
+  </div>
+
+</div>
+
+<script>
+  const input = document.querySelector('.il-input');
+  input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      const cmd = this.value.trim();
+      if (!cmd) return;
+      const terminal = document.querySelector('.terminal');
+      const block = document.createElement('div');
+      block.innerHTML = `
+        <div style="margin:0.5rem 0;"><span style="color:#ff9800;">user@fashion.sh:~$ </span><span style="color:#00ff41;">${cmd}</span></div>
+        <div style="color:rgba(0,255,65,0.5);padding-left:2ch;">Processing: ${cmd}...<br/>→ Command acknowledged. Output loading...<br/><span style="color:#00ff41;">✓ Done.</span></div>
+        <hr style="border:none;border-top:1px solid rgba(0,255,65,0.1);margin:1rem 0;"/>
+      `;
+      input.parentElement.before(block);
+      this.value = '';
+      window.scrollTo(0, document.body.scrollHeight);
+    }
+  });
+</script>
+</body>
+</html>

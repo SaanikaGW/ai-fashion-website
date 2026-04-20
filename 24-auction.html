@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ATELIER SALE — AI Luxury Auction</title>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --cream: #f8f5ef; --ink: #1c1c1c; --gold: #8b6914; --silver: #9a9a9a; --border: #d8d0c0; --bg-dark: #1c1c1c; }
+    body { background: var(--cream); color: var(--ink); font-family: 'Inter', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+    /* Top bar */
+    .topbar { background: var(--ink); color: rgba(248,245,239,0.5); padding: 0.5rem 4rem; display: flex; justify-content: space-between; font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; }
+    .tb-live { color: #d4a843; }
+    .tb-live::before { content: '● '; animation: pulse 1.5s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+    .topbar a { color: rgba(248,245,239,0.4); text-decoration: none; }
+    .topbar a:hover { color: rgba(248,245,239,0.8); }
+
+    nav { border-bottom: 1px solid var(--border); padding: 1.5rem 4rem; display: flex; align-items: center; justify-content: space-between; background: var(--cream); }
+    .logo { text-align: center; }
+    .logo-main { font-family: 'Libre Baskerville', serif; font-size: 1.6rem; font-weight: 700; letter-spacing: 0.15em; color: var(--ink); }
+    .logo-sub { font-size: 0.6rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--silver); margin-top: 2px; }
+    .nav-side { display: flex; gap: 2.5rem; }
+    .nav-side a { font-size: 0.72rem; letter-spacing: 0.1em; text-decoration: none; color: var(--silver); text-transform: uppercase; transition: color 0.2s; }
+    .nav-side a:hover { color: var(--ink); }
+    .nav-back { font-size: 0.68rem; letter-spacing: 0.08em; text-decoration: none; color: var(--silver); }
+
+    /* Lot Hero — Single Item Focus */
+    .lot-hero { padding: 4rem; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; min-height: 80vh; align-items: center; border-bottom: 1px solid var(--border); }
+    .lh-image { background: linear-gradient(160deg, #1c1a14, #2a2820); aspect-ratio: 3/4; display: flex; align-items: flex-end; padding: 2.5rem; position: relative; overflow: hidden; }
+    .lh-image::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 60% at 50% 30%, rgba(139,105,20,0.12) 0%, transparent 70%); }
+    .lhi-lot { position: absolute; top: 2rem; left: 2rem; font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(248,245,239,0.3); }
+    .lhi-label { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(139,105,20,0.8); margin-bottom: 0.5rem; position: relative; z-index: 1; }
+    .lhi-title { font-family: 'Libre Baskerville', serif; font-size: 1.2rem; color: rgba(248,245,239,0.9); position: relative; z-index: 1; font-style: italic; }
+    .lh-details { display: flex; flex-direction: column; justify-content: center; }
+    .lhd-pre { font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--silver); margin-bottom: 2rem; }
+    .lhd-lot { font-size: 0.7rem; letter-spacing: 0.15em; color: var(--gold); margin-bottom: 1rem; font-family: 'Libre Baskerville', serif; }
+    .lhd-title { font-family: 'Libre Baskerville', serif; font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 700; line-height: 1.1; margin-bottom: 0.75rem; }
+    .lhd-desc { font-size: 0.92rem; line-height: 1.9; color: var(--silver); max-width: 420px; margin-bottom: 2.5rem; font-style: italic; }
+    .lhd-estimate { margin-bottom: 2.5rem; padding: 1.5rem; background: rgba(139,105,20,0.06); border: 1px solid rgba(139,105,20,0.2); }
+    .est-label { font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--silver); margin-bottom: 0.75rem; }
+    .est-row { display: flex; justify-content: space-between; align-items: baseline; }
+    .est-range { font-family: 'Libre Baskerville', serif; font-size: 1.8rem; font-weight: 700; }
+    .est-currency { font-size: 0.8rem; color: var(--silver); margin-left: 0.25rem; }
+    .est-ai { font-size: 0.72rem; color: var(--gold); }
+    .lhd-btns { display: flex; gap: 1rem; }
+    .btn-auction { padding: 1rem 2.5rem; font-family: 'Libre Baskerville', serif; font-size: 0.8rem; letter-spacing: 0.1em; text-decoration: none; display: inline-block; transition: all 0.3s; border: 1px solid; }
+    .btn-a1 { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+    .btn-a1:hover { background: #333; }
+    .btn-a2 { background: transparent; color: var(--ink); border-color: var(--ink); }
+    .btn-a2:hover { background: var(--ink); color: var(--cream); }
+
+    /* AI Analysis */
+    .ai-analysis { background: var(--ink); color: var(--cream); padding: 3rem 4rem; border-bottom: 1px solid rgba(248,245,239,0.1); }
+    .aa-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2rem; }
+    .aa-title { font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(139,105,20,0.8); }
+    .aa-model { font-size: 0.6rem; color: rgba(248,245,239,0.25); letter-spacing: 0.1em; }
+    .aa-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; }
+    .aa-item { border-top: 1px solid rgba(248,245,239,0.1); padding-top: 1.5rem; }
+    .aai-label { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(248,245,239,0.3); margin-bottom: 0.5rem; }
+    .aai-val { font-family: 'Libre Baskerville', serif; font-size: 1.5rem; font-weight: 700; color: #d4a843; }
+    .aai-sub { font-size: 0.75rem; color: rgba(248,245,239,0.4); margin-top: 0.25rem; }
+
+    /* Past Lots */
+    .past-lots { padding: 4rem; }
+    .pl-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 3rem; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem; }
+    .pl-title { font-family: 'Libre Baskerville', serif; font-size: 2rem; }
+    .pl-sub { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--silver); }
+    .lots-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; }
+    .lot-card { border: 1px solid var(--border); overflow: hidden; cursor: pointer; transition: all 0.3s; }
+    .lot-card:hover { border-color: var(--gold); }
+    .lc-image { aspect-ratio: 3/4; background: linear-gradient(160deg, #1c1a14, #2a2820); display: flex; align-items: flex-end; padding: 1rem; position: relative; }
+    .lci-a { background: linear-gradient(160deg, #1a1410, #2a2018); }
+    .lci-b { background: linear-gradient(160deg, #0d0d14, #1a1a28); }
+    .lci-c { background: linear-gradient(160deg, #140a0a, #281414); }
+    .lci-d { background: linear-gradient(160deg, #0a1414, #142828); }
+    .lc-lot { position: absolute; top: 0.75rem; left: 0.75rem; font-size: 0.55rem; letter-spacing: 0.2em; color: rgba(248,245,239,0.3); }
+    .lc-sold { background: rgba(139,105,20,0.2); border: 1px solid rgba(139,105,20,0.4); padding: 0.2rem 0.5rem; font-size: 0.55rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); }
+    .lc-info { padding: 1.25rem; }
+    .lci-date { font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--silver); margin-bottom: 0.4rem; }
+    .lci-title { font-family: 'Libre Baskerville', serif; font-size: 1rem; margin-bottom: 0.4rem; }
+    .lci-sold { font-size: 0.8rem; font-weight: 400; color: var(--gold); letter-spacing: 0.05em; }
+    .lci-ai { font-size: 0.68rem; color: var(--silver); margin-top: 0.2rem; }
+
+    /* How AI Works */
+    .process { background: var(--ink); color: var(--cream); padding: 4rem; }
+    .proc-title { font-family: 'Libre Baskerville', serif; font-size: 2rem; text-align: center; margin-bottom: 0.5rem; }
+    .proc-sub { font-size: 0.85rem; color: rgba(248,245,239,0.4); text-align: center; font-style: italic; margin-bottom: 3rem; }
+    .proc-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border-top: 1px solid rgba(248,245,239,0.1); }
+    .proc-step { padding: 2.5rem 2rem; border-right: 1px solid rgba(248,245,239,0.08); }
+    .proc-step:last-child { border-right: none; }
+    .ps-num { font-family: 'Libre Baskerville', serif; font-size: 2.5rem; color: rgba(139,105,20,0.3); font-weight: 700; line-height: 1; margin-bottom: 1.5rem; }
+    .ps-title { font-size: 0.9rem; font-weight: 400; letter-spacing: 0.05em; margin-bottom: 0.75rem; }
+    .ps-body { font-size: 0.78rem; line-height: 1.8; color: rgba(248,245,239,0.4); }
+
+    footer { padding: 2rem 4rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .f-logo { font-family: 'Libre Baskerville', serif; font-size: 1.1rem; font-weight: 700; letter-spacing: 0.1em; }
+    .f-copy { font-size: 0.7rem; color: var(--silver); letter-spacing: 0.05em; }
+    footer a { color: var(--silver); text-decoration: none; font-size: 0.7rem; }
+    footer a:hover { color: var(--ink); }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <span>Atelier Sale — Spring 2025 — Online Bidding Now Open</span>
+    <span class="tb-live">Live Auction in Progress</span>
+    <span><a href="index.html">← All Formats</a></span>
+  </div>
+
+  <nav>
+    <div class="nav-side">
+      <a href="#">Catalogue</a>
+      <a href="#">Register to Bid</a>
+      <a href="#">Results</a>
+    </div>
+    <div class="logo">
+      <div class="logo-main">ATELIER SALE</div>
+      <div class="logo-sub">AI Fashion Intelligence · Est. 2024</div>
+    </div>
+    <div class="nav-side">
+      <a href="#">AI Valuation</a>
+      <a href="#">Consign</a>
+      <a class="nav-back" href="index.html">← Hub</a>
+    </div>
+  </nav>
+
+  <section class="lot-hero">
+    <div class="lh-image">
+      <div class="lhi-lot">Lot 47</div>
+      <div>
+        <div class="lhi-label">Featured Lot</div>
+        <div class="lhi-title">Balenciaga Cristóbal, 1953<br/>Wool Couture Jacket</div>
+      </div>
+    </div>
+    <div class="lh-details">
+      <div class="lhd-pre">Spring 2025 · Atelier Sale · Online</div>
+      <div class="lhd-lot">Lot 47 of 120</div>
+      <h1 class="lhd-title">Cristóbal<br/>Balenciaga<br/>Jacket, 1953</h1>
+      <p class="lhd-desc">Structured black wool with characteristic Balenciaga architectural shoulder. Provenance from the collection of Comtesse de Beaumont, acquired directly from the Paris atelier in 1953. AI authentication confidence: 99.4%.</p>
+      <div class="lhd-estimate">
+        <div class="est-label">AI Estimate</div>
+        <div class="est-row">
+          <div class="est-range">€12,000 — €18,000<span class="est-currency">EUR</span></div>
+          <div class="est-ai">AI Model: 94.7% confidence</div>
+        </div>
+      </div>
+      <div class="lhd-btns">
+        <a href="#" class="btn-auction btn-a1">Place Bid</a>
+        <a href="#" class="btn-auction btn-a2">Full Catalogue Entry</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="ai-analysis">
+    <div class="aa-header">
+      <div class="aa-title">AI Authentication & Valuation Report</div>
+      <div class="aa-model">ATELIER_AI v2.1 · Trained on 140yr Archive</div>
+    </div>
+    <div class="aa-grid">
+      <div class="aa-item">
+        <div class="aai-label">Authentication</div>
+        <div class="aai-val">99.4%</div>
+        <div class="aai-sub">Genuine Balenciaga. Stitching signature confirmed.</div>
+      </div>
+      <div class="aa-item">
+        <div class="aai-label">Condition Grade</div>
+        <div class="aai-val">A+</div>
+        <div class="aai-sub">Exceptional preservation for 70-year-old couture.</div>
+      </div>
+      <div class="aa-item">
+        <div class="aai-label">Market Trend</div>
+        <div class="aai-val">↑ +34%</div>
+        <div class="aai-sub">Balenciaga 1950s works up 34% in 24 months.</div>
+      </div>
+      <div class="aa-item">
+        <div class="aai-label">Similar Lots Sold</div>
+        <div class="aai-val">47</div>
+        <div class="aai-sub">Comparable works sold at auction 2022–2025.</div>
+      </div>
+    </div>
+  </div>
+
+  <section class="past-lots">
+    <div class="pl-header">
+      <div class="pl-title">Recent Results</div>
+      <div class="pl-sub">All lots AI-authenticated</div>
+    </div>
+    <div class="lots-grid">
+      <div class="lot-card">
+        <div class="lc-image lci-a">
+          <div class="lc-lot">Lot 031</div>
+          <div class="lc-sold">Sold</div>
+        </div>
+        <div class="lc-info">
+          <div class="lci-date">15 March 2025</div>
+          <div class="lci-title">Chanel No.5 Suit, 1967</div>
+          <div class="lci-sold">Sold: €24,500</div>
+          <div class="lci-ai">AI Est: €18–22,000 · +11%</div>
+        </div>
+      </div>
+      <div class="lot-card">
+        <div class="lc-image lci-b">
+          <div class="lc-lot">Lot 044</div>
+          <div class="lc-sold">Sold</div>
+        </div>
+        <div class="lc-info">
+          <div class="lci-date">14 March 2025</div>
+          <div class="lci-title">YSL Mondrian Dress, 1965</div>
+          <div class="lci-sold">Sold: €38,200</div>
+          <div class="lci-ai">AI Est: €35–45,000 · Within</div>
+        </div>
+      </div>
+      <div class="lot-card">
+        <div class="lc-image lci-c">
+          <div class="lc-lot">Lot 018</div>
+          <div class="lc-sold">Sold</div>
+        </div>
+        <div class="lc-info">
+          <div class="lci-date">12 March 2025</div>
+          <div class="lci-title">Dior New Look, 1947</div>
+          <div class="lci-sold">Sold: €52,000</div>
+          <div class="lci-ai">AI Est: €40–55,000 · Within</div>
+        </div>
+      </div>
+      <div class="lot-card">
+        <div class="lc-image lci-d">
+          <div class="lc-lot">Lot 022</div>
+          <div class="lc-sold">Sold</div>
+        </div>
+        <div class="lc-info">
+          <div class="lci-date">11 March 2025</div>
+          <div class="lci-title">Mainbocher Gown, 1955</div>
+          <div class="lci-sold">Sold: €9,800</div>
+          <div class="lci-ai">AI Est: €8–12,000 · Within</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="process">
+    <div class="proc-title">How Our AI Works</div>
+    <p class="proc-sub">Four stages of authentication and valuation intelligence</p>
+    <div class="proc-steps">
+      <div class="proc-step">
+        <div class="ps-num">01</div>
+        <div class="ps-title">Archive Cross-Reference</div>
+        <div class="ps-body">The AI compares the lot against our archive of 8 million documented garments, including original atelier records, press photographs, and auction histories dating to 1900.</div>
+      </div>
+      <div class="proc-step">
+        <div class="ps-num">02</div>
+        <div class="ps-title">Material Analysis</div>
+        <div class="ps-body">Fabric composition, stitching technique, labelling evolution, and construction method are all matched against the house's documented production practices for the relevant period.</div>
+      </div>
+      <div class="proc-step">
+        <div class="ps-num">03</div>
+        <div class="ps-title">Market Modelling</div>
+        <div class="ps-body">Comparable lot performance across 47 auction houses is processed to generate a confidence-weighted estimate range, adjusted for current market conditions and collector demand.</div>
+      </div>
+      <div class="proc-step">
+        <div class="ps-num">04</div>
+        <div class="ps-title">Human Review</div>
+        <div class="ps-body">Every AI assessment is reviewed by a senior specialist before publication. The machine identifies. The expert certifies. Both signatures appear in the catalogue entry.</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="f-logo">ATELIER SALE</div>
+    <div class="f-copy">© 2025 Atelier Sale · AI Fashion Auction Intelligence</div>
+    <a href="index.html">← Back to Hub</a>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BLOCK — Street & Graffiti Fashion</title>
+  <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Bangers&family=Inter:wght@400;700;900&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --black: #0a0a0a; --white: #f5f5f5; --orange: #ff5722; --yellow: #ffd600; --teal: #00bcd4; --purple: #7c4dff; }
+    body { background: var(--black); color: var(--white); font-family: 'Inter', sans-serif; overflow-x: hidden; }
+
+    /* Texture */
+    body::before { content: ''; position: fixed; inset: 0; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E"); pointer-events: none; z-index: 0; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,10,10,0.95); border-bottom: 3px solid var(--orange); padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; backdrop-filter: blur(10px); }
+    .logo { font-family: 'Bangers', cursive; font-size: 2.2rem; letter-spacing: 0.1em; color: var(--orange); text-shadow: 3px 3px 0 rgba(255,87,34,0.3); }
+    .nav-links { display: flex; gap: 2rem; }
+    .nav-links a { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; color: rgba(245,245,245,0.6); transition: color 0.2s; }
+    .nav-links a:hover { color: var(--orange); }
+    .nav-back { font-size: 0.75rem; font-weight: 700; text-decoration: none; color: var(--yellow); border: 2px solid var(--yellow); padding: 0.3rem 0.75rem; letter-spacing: 0.05em; }
+
+    /* Hero */
+    .hero { min-height: 100vh; display: flex; align-items: center; padding: 6rem 3rem 4rem; position: relative; z-index: 1; overflow: hidden; }
+    .hero-bg-text { position: absolute; font-family: 'Bangers', cursive; font-size: clamp(10rem, 25vw, 24rem); color: rgba(255,255,255,0.02); letter-spacing: 0.05em; top: 50%; left: 50%; transform: translate(-50%, -50%); white-space: nowrap; pointer-events: none; user-select: none; z-index: 0; }
+    .hero-content { position: relative; z-index: 1; max-width: 700px; }
+    .hero-tag { display: inline-block; background: var(--orange); color: var(--black); font-size: 0.7rem; font-weight: 900; letter-spacing: 0.15em; text-transform: uppercase; padding: 0.3rem 0.8rem; margin-bottom: 2rem; transform: rotate(-1deg); }
+    .hero-title { font-family: 'Permanent Marker', cursive; font-size: clamp(3.5rem, 9vw, 9rem); line-height: 0.9; margin-bottom: 2rem; }
+    .ht-orange { color: var(--orange); -webkit-text-stroke: 2px var(--orange); }
+    .ht-outline { color: transparent; -webkit-text-stroke: 3px var(--white); }
+    .ht-yellow { color: var(--yellow); }
+    .hero-desc { font-size: 1rem; line-height: 1.7; color: rgba(245,245,245,0.65); max-width: 420px; margin-bottom: 3rem; border-left: 4px solid var(--orange); padding-left: 1.25rem; }
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-street { font-family: 'Bangers', cursive; font-size: 1.1rem; letter-spacing: 0.1em; padding: 0.8rem 2.5rem; text-decoration: none; border: 3px solid; display: inline-block; transition: all 0.15s; }
+    .btn-orange { background: var(--orange); color: var(--black); border-color: var(--orange); }
+    .btn-orange:hover { background: transparent; color: var(--orange); }
+    .btn-outline { background: transparent; color: var(--white); border-color: var(--white); }
+    .btn-outline:hover { background: var(--white); color: var(--black); }
+
+    /* Tag Strip */
+    .tag-strip { border-top: 3px solid rgba(255,255,255,0.1); border-bottom: 3px solid rgba(255,255,255,0.1); background: rgba(255,87,34,0.1); padding: 1rem 0; overflow: hidden; position: relative; z-index: 1; }
+    .ts-inner { display: inline-block; white-space: nowrap; animation: ts 12s linear infinite; font-family: 'Bangers', cursive; font-size: 1.1rem; letter-spacing: 0.15em; color: rgba(245,245,245,0.5); }
+    @keyframes ts { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+    .ts-sep { margin: 0 2rem; color: var(--orange); }
+
+    /* Grid */
+    .drops { padding: 4rem 2rem; position: relative; z-index: 1; max-width: 1400px; margin: 0 auto; }
+    .drops-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 2rem; }
+    .drops-title { font-family: 'Bangers', cursive; font-size: 3rem; letter-spacing: 0.08em; color: var(--white); }
+    .drops-new { background: var(--yellow); color: var(--black); font-size: 0.7rem; font-weight: 900; padding: 0.2rem 0.6rem; letter-spacing: 0.08em; text-transform: uppercase; animation: pulse 1.5s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.6;} }
+    .drops-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; }
+    .drop-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); overflow: hidden; position: relative; cursor: pointer; transition: all 0.2s; }
+    .drop-card:hover { background: rgba(255,255,255,0.08); border-color: var(--orange); transform: scale(1.02); z-index: 2; }
+    .drop-visual { aspect-ratio: 3/4; display: flex; align-items: center; justify-content: center; position: relative; font-size: 5rem; }
+    .dv-a { background: linear-gradient(160deg, #1a1a00, #332200); }
+    .dv-b { background: linear-gradient(160deg, #1a0000, #330000); }
+    .dv-c { background: linear-gradient(160deg, #001a1a, #003333); }
+    .dv-d { background: linear-gradient(160deg, #0a001a, #1a0033); }
+    .drop-sticker { position: absolute; top: 0.75rem; right: 0.75rem; background: var(--orange); color: var(--black); font-size: 0.6rem; font-weight: 900; padding: 0.2rem 0.5rem; text-transform: uppercase; letter-spacing: 0.08em; transform: rotate(2deg); }
+    .drop-tag { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); padding: 1.5rem 1rem 0.75rem; }
+    .dt-num { font-family: 'Bangers', cursive; font-size: 0.7rem; letter-spacing: 0.1em; color: var(--orange); }
+    .dt-name { font-family: 'Bangers', cursive; font-size: 1.1rem; letter-spacing: 0.05em; }
+    .dt-price { font-size: 0.8rem; font-weight: 700; color: rgba(245,245,245,0.7); }
+
+    /* Wall section */
+    .wall { padding: 4rem 2rem; position: relative; z-index: 1; max-width: 1400px; margin: 0 auto; }
+    .wall-inner { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 3rem; position: relative; overflow: hidden; }
+    .wall-graffiti { position: absolute; font-family: 'Permanent Marker', cursive; opacity: 0.05; pointer-events: none; }
+    .wg1 { font-size: 8rem; top: -1rem; right: -2rem; color: var(--orange); transform: rotate(-10deg); }
+    .wg2 { font-size: 5rem; bottom: 0; left: 20%; color: var(--teal); transform: rotate(5deg); }
+    .wall-content { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; position: relative; }
+    .wc-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--orange); margin-bottom: 1.5rem; }
+    .wc-title { font-family: 'Permanent Marker', cursive; font-size: clamp(2rem, 4vw, 4rem); line-height: 1.1; margin-bottom: 1.5rem; }
+    .wc-body { font-size: 0.95rem; line-height: 1.8; color: rgba(245,245,245,0.6); margin-bottom: 2rem; }
+    .wc-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .ws { border-top: 2px solid var(--orange); padding-top: 1rem; }
+    .ws-num { font-family: 'Bangers', cursive; font-size: 2.5rem; letter-spacing: 0.05em; color: var(--orange); }
+    .ws-label { font-size: 0.75rem; color: rgba(245,245,245,0.5); letter-spacing: 0.05em; }
+    .wall-visual { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; }
+    .wv-cell { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; font-size: 3rem; }
+    .wvc-a { background: rgba(255,87,34,0.15); border: 1px solid rgba(255,87,34,0.2); }
+    .wvc-b { background: rgba(255,214,0,0.1); border: 1px solid rgba(255,214,0,0.15); }
+    .wvc-c { background: rgba(0,188,212,0.1); border: 1px solid rgba(0,188,212,0.15); }
+    .wvc-d { background: rgba(124,77,255,0.15); border: 1px solid rgba(124,77,255,0.2); }
+
+    footer { border-top: 3px solid var(--orange); padding: 2rem; display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 1; }
+    .f-logo { font-family: 'Bangers', cursive; font-size: 1.8rem; letter-spacing: 0.1em; color: var(--orange); }
+    .f-copy { font-size: 0.75rem; color: rgba(245,245,245,0.4); font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; }
+    footer a { color: var(--yellow); text-decoration: none; font-size: 0.75rem; font-weight: 700; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="logo">BLOCK</div>
+    <div class="nav-links">
+      <a href="#">Drops</a>
+      <a href="#">Street Style</a>
+      <a href="#">AI</a>
+      <a href="#">Community</a>
+    </div>
+    <a href="index.html" class="nav-back">← HUB</a>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-bg-text">BLOCK</div>
+    <div class="hero-content">
+      <div class="hero-tag">AI Street Style — Limited Drops</div>
+      <h1 class="hero-title">
+        <span class="ht-orange">Wear</span><br/>
+        <span class="ht-outline">The</span><br/>
+        <span class="ht-yellow">Block</span>
+      </h1>
+      <p class="hero-desc">AI-curated streetwear from the concrete up. The algorithm walks the block so you don't have to. Limited drops. Unlimited expression.</p>
+      <div class="hero-btns">
+        <a href="#" class="btn-street btn-orange">See the Drop</a>
+        <a href="#" class="btn-street btn-outline">AI Style Me</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="tag-strip">
+    <span class="ts-inner">STREET CERTIFIED<span class="ts-sep">★</span>AI CURATED<span class="ts-sep">★</span>LIMITED DROP<span class="ts-sep">★</span>NO FAKES<span class="ts-sep">★</span>BLOCK APPROVED<span class="ts-sep">★</span>STREET CERTIFIED<span class="ts-sep">★</span>AI CURATED<span class="ts-sep">★</span>LIMITED DROP<span class="ts-sep">★</span>NO FAKES<span class="ts-sep">★</span>BLOCK APPROVED<span class="ts-sep">★</span></span>
+  </div>
+
+  <section class="drops">
+    <div class="drops-header">
+      <div class="drops-title">Latest Drop</div>
+      <div class="drops-new">● Live Now</div>
+    </div>
+    <div class="drops-grid">
+      <div class="drop-card">
+        <div class="drop-visual dv-a">
+          <div class="drop-sticker">AI #1</div>
+          🧥
+          <div class="drop-tag">
+            <div class="dt-num">DROP 001</div>
+            <div class="dt-name">Graffiti Cargo Jacket</div>
+            <div class="dt-price">$180</div>
+          </div>
+        </div>
+      </div>
+      <div class="drop-card">
+        <div class="drop-visual dv-b">
+          <div class="drop-sticker">Fire</div>
+          👟
+          <div class="drop-tag">
+            <div class="dt-num">DROP 002</div>
+            <div class="dt-name">Block Air Low</div>
+            <div class="dt-price">$210</div>
+          </div>
+        </div>
+      </div>
+      <div class="drop-card">
+        <div class="drop-visual dv-c">
+          <div class="drop-sticker">Limited</div>
+          🧢
+          <div class="drop-tag">
+            <div class="dt-num">DROP 003</div>
+            <div class="dt-name">Six Panel Fitted</div>
+            <div class="dt-price">$48</div>
+          </div>
+        </div>
+      </div>
+      <div class="drop-card">
+        <div class="drop-visual dv-d">
+          <div class="drop-sticker">Rare</div>
+          🩳
+          <div class="drop-tag">
+            <div class="dt-num">DROP 004</div>
+            <div class="dt-name">Paint Splatter Shorts</div>
+            <div class="dt-price">$85</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wall">
+    <div class="wall-inner">
+      <div class="wall-graffiti wg1">BLOCK</div>
+      <div class="wall-graffiti wg2">REAL</div>
+      <div class="wall-content">
+        <div>
+          <div class="wc-label">The AI That Grew Up On The Block</div>
+          <h2 class="wc-title">Street Smart. Machine Precise.</h2>
+          <p class="wc-body">Our AI was trained on decade of streetwear culture — not fashion week. It knows the difference between hype and heat. It's seen every colourway, every silhouette, every collaboration. And it knows which ones actually go.</p>
+          <a href="#" class="btn-street btn-orange" style="font-size:0.9rem;">Get My Fit</a>
+          <div class="wc-stats" style="margin-top:2rem;">
+            <div class="ws"><div class="ws-num">10yr</div><div class="ws-label">Street Data Trained</div></div>
+            <div class="ws"><div class="ws-num">500K</div><div class="ws-label">Fits Analysed</div></div>
+            <div class="ws"><div class="ws-num">0</div><div class="ws-label">Fakes Recommended</div></div>
+            <div class="ws"><div class="ws-num">Real</div><div class="ws-label">That's the Standard</div></div>
+          </div>
+        </div>
+        <div class="wall-visual">
+          <div class="wv-cell wvc-a">🎨</div>
+          <div class="wv-cell wvc-b">✏️</div>
+          <div class="wv-cell wvc-c">🤖</div>
+          <div class="wv-cell wvc-d">🏙️</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="f-logo">BLOCK.</div>
+    <div class="f-copy">© 2025 — AI Street Fashion — Real Only</div>
+    <a href="index.html">← All Formats</a>
+  </footer>
+
+</body>
+</html>

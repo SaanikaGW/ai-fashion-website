@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>THE FASHION GAZETTE</title>
+  <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #f5f0e8; color: #1a1a1a; font-family: 'IM Fell English', serif; }
+
+    /* Paper texture */
+    body::after { content: ''; position: fixed; inset: 0; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 0; }
+
+    .page { max-width: 1100px; margin: 0 auto; padding: 0 1rem; position: relative; z-index: 1; }
+
+    /* Masthead */
+    .masthead { border-bottom: 3px double #1a1a1a; padding: 0.5rem 0; display: flex; justify-content: space-between; align-items: center; font-size: 0.65rem; letter-spacing: 0.08em; }
+    .mh-date { }
+    .mh-back a { color: #1a1a1a; text-decoration: none; }
+    .mh-back a:hover { text-decoration: underline; }
+
+    .nameplate { text-align: center; padding: 1.5rem 0 1rem; border-bottom: 2px solid #1a1a1a; }
+    .nameplate h1 { font-family: 'UnifrakturMaguntia', cursive; font-size: clamp(2.5rem, 7vw, 6rem); font-weight: 400; letter-spacing: 0.03em; line-height: 1; }
+    .nameplate-sub { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; margin-top: 0.5rem; }
+
+    .edition-line { display: flex; justify-content: space-between; align-items: center; padding: 0.4rem 0; border-bottom: 1px solid #1a1a1a; font-size: 0.65rem; letter-spacing: 0.05em; }
+    .el-rule { font-style: italic; }
+    .el-price { font-weight: 700; }
+
+    /* Cover story */
+    .cover { display: grid; grid-template-columns: 2fr 1px 1fr; gap: 1.5rem; padding: 1.5rem 0; border-bottom: 2px solid #1a1a1a; }
+    .cover-divider { background: #1a1a1a; }
+    .cover-main {}
+    .cm-label { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; border-bottom: 1px solid #1a1a1a; padding-bottom: 0.25rem; margin-bottom: 0.75rem; }
+    .cm-headline { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 4vw, 3.5rem); font-weight: 700; line-height: 1.1; margin-bottom: 0.75rem; }
+    .cm-deck { font-size: 1rem; font-style: italic; margin-bottom: 1rem; line-height: 1.5; }
+    .cm-byline { font-size: 0.65rem; letter-spacing: 0.08em; margin-bottom: 1rem; font-style: italic; color: #555; }
+    .cm-body { font-size: 0.88rem; line-height: 1.8; columns: 2; column-gap: 1.5rem; column-rule: 1px solid rgba(0,0,0,0.15); text-align: justify; }
+    .cm-body p { margin-bottom: 0.5rem; }
+    .cm-body p:first-child::first-letter { float: left; font-family: 'Playfair Display', serif; font-size: 4.5rem; line-height: 0.75; margin: 0.05em 0.08em 0 0; font-weight: 700; }
+    .cover-sidebar {}
+    .cs-item { margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px dotted #999; }
+    .cs-item:last-child { border-bottom: none; }
+    .csi-cat { font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: #555; margin-bottom: 0.25rem; }
+    .csi-head { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; margin-bottom: 0.3rem; line-height: 1.3; }
+    .csi-body { font-size: 0.78rem; line-height: 1.6; color: #333; }
+
+    /* Ad block */
+    .ad { border: 3px double #1a1a1a; padding: 1.5rem; text-align: center; margin: 1.5rem 0; }
+    .ad-top { font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 0.5rem; color: #555; }
+    .ad-title { font-family: 'UnifrakturMaguntia', cursive; font-size: 2rem; margin-bottom: 0.5rem; }
+    .ad-body { font-size: 0.8rem; font-style: italic; margin-bottom: 1rem; }
+    .ad-cta { display: inline-block; border: 1px solid #1a1a1a; padding: 0.4rem 1.5rem; font-size: 0.7rem; letter-spacing: 0.15em; text-decoration: none; color: #1a1a1a; text-transform: uppercase; }
+    .ad-cta:hover { background: #1a1a1a; color: #f5f0e8; }
+
+    /* Features row */
+    .features { display: grid; grid-template-columns: 1fr 1px 1fr 1px 1fr; gap: 1.5rem; padding: 1.5rem 0; border-bottom: 2px solid #1a1a1a; }
+    .feat-divider { background: #1a1a1a; }
+    .feat-cat { font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; border-bottom: 1px solid #1a1a1a; padding-bottom: 0.25rem; margin-bottom: 0.75rem; }
+    .feat-head { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; line-height: 1.3; margin-bottom: 0.5rem; }
+    .feat-deck { font-size: 0.8rem; font-style: italic; color: #444; line-height: 1.5; margin-bottom: 0.5rem; }
+    .feat-body { font-size: 0.78rem; line-height: 1.7; text-align: justify; }
+
+    /* Products as classifieds */
+    .classifieds { padding: 1.5rem 0; border-bottom: 2px solid #1a1a1a; }
+    .cl-title { font-family: 'UnifrakturMaguntia', cursive; font-size: 1.5rem; text-align: center; margin-bottom: 1rem; }
+    .cl-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border: 1px solid #1a1a1a; }
+    .cl-item { padding: 1rem; border-right: 1px solid #1a1a1a; border-bottom: 1px solid #1a1a1a; }
+    .cl-item:nth-child(4n) { border-right: none; }
+    .cl-item:nth-last-child(-n+4) { border-bottom: none; }
+    .cli-num { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em; color: #555; margin-bottom: 0.3rem; }
+    .cli-name { font-family: 'Playfair Display', serif; font-size: 0.95rem; font-weight: 700; margin-bottom: 0.3rem; }
+    .cli-desc { font-size: 0.72rem; line-height: 1.5; color: #444; font-style: italic; margin-bottom: 0.5rem; }
+    .cli-price { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em; }
+
+    /* Quote */
+    .pull-quote { text-align: center; padding: 2rem 4rem; border-top: 1px solid #1a1a1a; border-bottom: 1px solid #1a1a1a; margin: 1rem 0; }
+    .pq-text { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-style: italic; line-height: 1.5; }
+    .pq-attr { font-size: 0.7rem; letter-spacing: 0.1em; margin-top: 0.75rem; color: #555; }
+
+    footer { border-top: 3px double #1a1a1a; padding: 1rem 0; display: flex; justify-content: space-between; font-size: 0.65rem; letter-spacing: 0.05em; }
+    footer a { color: #1a1a1a; text-decoration: none; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <div class="masthead">
+    <span>Tuesday, 1 April 2025</span>
+    <span>THE FASHION GAZETTE — ARTIFICIAL INTELLIGENCE EDITION</span>
+    <span class="mh-back"><a href="index.html">← Return to Hub</a></span>
+  </div>
+
+  <div class="nameplate">
+    <h1>The Fashion Gazette</h1>
+    <div class="nameplate-sub">Intelligently Curated · Artificially Inspired · Est. 2024</div>
+  </div>
+
+  <div class="edition-line">
+    <span>Vol. XII · No. 4</span>
+    <span class="el-rule">"All the Fashion Fit to Print — Selected by Machine, Curated by Algorithm"</span>
+    <span class="el-price">Price: Nothing. It's the Internet.</span>
+  </div>
+
+  <div class="cover">
+    <div class="cover-main">
+      <div class="cm-label">Cover Story · Special AI Edition</div>
+      <h2 class="cm-headline">The Machine Learns to Dress the Modern Woman — and Does It Remarkably Well</h2>
+      <div class="cm-deck">An Artificial Intelligence, trained upon the complete annals of fashion history, has produced a collection of singular brilliance — prompting some to ask: what, precisely, is the role of the human designer henceforth?</div>
+      <div class="cm-byline">By Our Fashion Correspondent · Illustration by the AI itself</div>
+      <div class="cm-body">
+        <p>It began, as so many of the great fashion revolutions have, not on a runway in Paris nor in the atelier of a celebrated couturier, but in a server room in San Francisco, where an artificial intelligence of remarkable sophistication was presented with a simple instruction: dress us well.</p>
+        <p>The results, which have now been made available to the general public through the medium of this very publication's digital apparatus, are nothing short of extraordinary. The AI, which has been trained upon some forty million garments spanning the better part of two centuries, has produced recommendations of uncanny precision — as though it had been personally acquainted with each of its customers for the whole of their sartorial lives.</p>
+        <p>"It knew," reports one satisfied customer, a solicitor of some distinction from Edinburgh, "that I would require something for both the courtroom and the countryside. It produced three suggestions. All three were precisely right." Such testimonials are, we are given to understand, entirely typical.</p>
+      </div>
+    </div>
+    <div class="cover-divider"></div>
+    <div class="cover-sidebar">
+      <div class="cs-item">
+        <div class="csi-cat">Fashion Intelligence</div>
+        <div class="csi-head">The Algorithm That Predicted the Coat of the Season — Three Months Prior</div>
+        <div class="csi-body">Our AI identified the camel-coloured oversized wool coat as the decisive piece of autumn before a single designer had shown their collection. Extraordinary.</div>
+      </div>
+      <div class="cs-item">
+        <div class="csi-cat">Society</div>
+        <div class="csi-head">Lady F. Reports That Her Digital Stylist Is "More Reliable Than Any Human She Has Employed"</div>
+        <div class="csi-body">The AI's recommendation of a particular silk blouse caused something of a sensation at last month's charity gala.</div>
+      </div>
+      <div class="cs-item">
+        <div class="csi-cat">Commerce</div>
+        <div class="csi-head">Return Rates Fall 94% When Dressing Is Left to the Machine</div>
+        <div class="csi-body">The implications for the postal service are considerable.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ad">
+    <div class="ad-top">Advertisement</div>
+    <div class="ad-title">Maison Artificielle</div>
+    <div class="ad-body">Purveyors of Intelligently Selected Garments to the Discerning Public since the Year of Our Lord 2024. Each piece selected by our celebrated Neural Engine with the utmost care and discretion.</div>
+    <a href="#" class="ad-cta">Consult Our Engine</a>
+  </div>
+
+  <div class="features">
+    <div class="feat">
+      <div class="feat-cat">Style Intelligence</div>
+      <div class="feat-head">On the Matter of Proportion: What the AI Understands That We Have Forgotten</div>
+      <div class="feat-deck">The golden ratio, applied to the human form in fabric — a lesson in aesthetic mathematics.</div>
+      <div class="feat-body">The AI, having analysed some four million outfit combinations, has arrived at certain conclusions regarding proportion that fashion schools have been circling for decades without quite landing upon.</div>
+    </div>
+    <div class="feat-divider"></div>
+    <div class="feat">
+      <div class="feat-cat">Sustainable Commerce</div>
+      <div class="feat-head">The Great Unbuying: How AI Recommends Less, and Better</div>
+      <div class="feat-deck">The algorithm's most radical act is restraint — suggesting the fewer, finer thing.</div>
+      <div class="feat-body">In an age of abundance, the AI's most counterintuitive recommendation is to buy not more, but less — and to invest the savings in quality that endures beyond a single season.</div>
+    </div>
+    <div class="feat-divider"></div>
+    <div class="feat">
+      <div class="feat-cat">Technology</div>
+      <div class="feat-head">The Neural Style Engine: An Explanation for the Generally Curious</div>
+      <div class="feat-deck">How, precisely, does the machine know what you wish to wear? A demystification.</div>
+      <div class="feat-body">The answer lies in the intersection of preference vectors, historical trend analysis, and a rather sophisticated understanding of how fabric behaves upon different bodies in different lights.</div>
+    </div>
+  </div>
+
+  <div class="pull-quote">
+    <div class="pq-text">"The AI asked what I wished to feel. Not to look. To feel. I have never been asked that before by any shop assistant in any establishment."</div>
+    <div class="pq-attr">— A reader's correspondence, received Monday last</div>
+  </div>
+
+  <div class="classifieds">
+    <div class="cl-title">Classified Garments</div>
+    <div class="cl-grid">
+      <div class="cl-item">
+        <div class="cli-num">REF. 001</div>
+        <div class="cli-name">The Camel Wool Overcoat</div>
+        <div class="cli-desc">A coat of considerable distinction. Suitable for all seasons of moderate chill. Recommended by the Engine for 94% of its clients.</div>
+        <div class="cli-price">£840</div>
+      </div>
+      <div class="cl-item">
+        <div class="cli-num">REF. 002</div>
+        <div class="cli-name">The Midnight Silk Blouse</div>
+        <div class="cli-desc">Cut on the bias from the finest Italian silk. The AI recommends this with remarkable frequency. There is likely a reason.</div>
+        <div class="cli-price">£320</div>
+      </div>
+      <div class="cl-item">
+        <div class="cli-num">REF. 003</div>
+        <div class="cli-name">The Narrow Trouser</div>
+        <div class="cli-desc">In charcoal wool. Versatile beyond reasonable expectation. The cornerstone of seventeen separate outfit matrices.</div>
+        <div class="cli-price">£280</div>
+      </div>
+      <div class="cl-item">
+        <div class="cli-num">REF. 004</div>
+        <div class="cli-name">The Canvas Day Bag</div>
+        <div class="cli-desc">Substantial without ostentation. The AI gave it 97 out of 100 for what it terms "wardrobe coherence utility."</div>
+        <div class="cli-price">£190</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <span>THE FASHION GAZETTE · Vol. XII · © 2025</span>
+    <span>Printed in the Ether by Neural Press Ltd.</span>
+    <a href="index.html">← Return to the Hub</a>
+  </footer>
+
+</div>
+</body>
+</html>

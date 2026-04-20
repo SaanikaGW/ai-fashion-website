@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NEBULA — Cosmic AI Fashion</title>
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,200;0,400;0,700;1,200&family=Orbitron:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --void: #02010a; --deep: #080418; --nebula1: #6f2dbd; --nebula2: #c7538a; --nebula3: #3a86ff; --star: #fff; --text: #d4cfed; --dim: rgba(212,207,237,0.45); }
+    body { background: var(--void); color: var(--text); font-family: 'Exo 2', sans-serif; font-weight: 200; overflow-x: hidden; }
+
+    /* Nebula background */
+    .nebula-bg { position: fixed; inset: 0; z-index: 0; overflow: hidden; }
+    .nb1 { position: absolute; width: 800px; height: 600px; background: radial-gradient(ellipse, rgba(111,45,189,0.25) 0%, transparent 70%); top: -200px; left: -200px; }
+    .nb2 { position: absolute; width: 700px; height: 500px; background: radial-gradient(ellipse, rgba(199,83,138,0.2) 0%, transparent 70%); top: 30%; right: -200px; }
+    .nb3 { position: absolute; width: 600px; height: 600px; background: radial-gradient(ellipse, rgba(58,134,255,0.15) 0%, transparent 70%); bottom: -100px; left: 30%; }
+    .stars-field { position: absolute; inset: 0; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 1.25rem 3rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(111,45,189,0.2); background: rgba(2,1,10,0.85); backdrop-filter: blur(20px); }
+    .logo { font-family: 'Orbitron', sans-serif; font-size: 1.3rem; font-weight: 700; letter-spacing: 0.15em; background: linear-gradient(90deg, var(--nebula3), var(--nebula1), var(--nebula2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .nav-links { display: flex; gap: 2.5rem; }
+    .nav-links a { font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; color: var(--dim); transition: color 0.3s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-back { font-size: 0.72rem; text-decoration: none; color: var(--dim); letter-spacing: 0.08em; }
+
+    /* Hero */
+    .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 6rem 2rem 4rem; position: relative; z-index: 1; }
+    .hero-orbit { width: 300px; height: 300px; border-radius: 50%; border: 1px solid rgba(111,45,189,0.2); position: relative; margin: 0 auto 3rem; display: flex; align-items: center; justify-content: center; }
+    .hero-orbit::before { content: ''; position: absolute; width: 200px; height: 200px; border-radius: 50%; border: 1px solid rgba(58,134,255,0.15); }
+    .hero-orbit::after { content: ''; position: absolute; width: 100px; height: 100px; border-radius: 50%; background: radial-gradient(circle, rgba(111,45,189,0.4), rgba(199,83,138,0.2)); box-shadow: 0 0 40px rgba(111,45,189,0.4), 0 0 80px rgba(199,83,138,0.2); }
+    .orbit-dot { position: absolute; width: 8px; height: 8px; border-radius: 50%; background: var(--nebula3); box-shadow: 0 0 10px var(--nebula3); top: 0; left: 50%; transform: translateX(-50%); animation: orbit1 6s linear infinite; }
+    @keyframes orbit1 { from{transform:translateX(-50%) rotate(0deg) translateX(150px) rotate(0deg);} to{transform:translateX(-50%) rotate(360deg) translateX(150px) rotate(-360deg);} }
+    .hero-title { font-family: 'Orbitron', sans-serif; font-size: clamp(2.5rem, 7vw, 6.5rem); font-weight: 700; line-height: 0.9; margin-bottom: 1.5rem; letter-spacing: 0.05em; background: linear-gradient(135deg, #fff 0%, var(--nebula1) 40%, var(--nebula2) 80%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero-sub { font-size: 1rem; font-weight: 200; font-style: italic; color: var(--dim); max-width: 500px; line-height: 1.9; margin-bottom: 3rem; }
+    .hero-btns { display: flex; gap: 1.5rem; }
+    .btn-cosmic { padding: 1rem 2.5rem; font-family: 'Orbitron', sans-serif; font-size: 0.7rem; letter-spacing: 0.15em; text-decoration: none; display: inline-block; transition: all 0.3s; }
+    .btn-nebula { background: linear-gradient(135deg, var(--nebula1), var(--nebula2)); color: #fff; border: none; }
+    .btn-nebula:hover { opacity: 0.85; box-shadow: 0 0 30px rgba(111,45,189,0.4); }
+    .btn-outline-c { border: 1px solid rgba(111,45,189,0.5); color: var(--text); background: transparent; }
+    .btn-outline-c:hover { border-color: var(--nebula1); box-shadow: 0 0 20px rgba(111,45,189,0.2); }
+
+    /* Constellations / Products */
+    .collection { padding: 5rem 3rem; max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
+    .coll-title { font-family: 'Orbitron', sans-serif; font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--nebula1); text-align: center; margin-bottom: 0.75rem; }
+    .coll-head { font-size: clamp(2rem, 4vw, 3rem); font-weight: 200; text-align: center; margin-bottom: 0.5rem; }
+    .coll-sub { text-align: center; color: var(--dim); font-style: italic; margin-bottom: 4rem; }
+    .coll-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(111,45,189,0.1); }
+    .coll-card { background: var(--deep); padding: 0; overflow: hidden; position: relative; transition: all 0.4s; }
+    .coll-card:hover { background: rgba(111,45,189,0.08); }
+    .coll-card:hover .cc-glow { opacity: 1; }
+    .cc-glow { position: absolute; inset: 0; background: radial-gradient(circle at 50% 30%, rgba(111,45,189,0.1) 0%, transparent 70%); opacity: 0; transition: opacity 0.4s; pointer-events: none; }
+    .cc-visual { aspect-ratio: 3/4; display: flex; align-items: center; justify-content: center; position: relative; font-size: 4rem; }
+    .ccv-a { background: radial-gradient(ellipse at 50% 30%, rgba(111,45,189,0.2) 0%, rgba(2,1,10,1) 70%); }
+    .ccv-b { background: radial-gradient(ellipse at 50% 30%, rgba(199,83,138,0.2) 0%, rgba(2,1,10,1) 70%); }
+    .ccv-c { background: radial-gradient(ellipse at 50% 30%, rgba(58,134,255,0.2) 0%, rgba(2,1,10,1) 70%); }
+    .cc-info { padding: 2rem; border-top: 1px solid rgba(111,45,189,0.12); }
+    .cci-label { font-family: 'Orbitron', sans-serif; font-size: 0.55rem; letter-spacing: 0.2em; color: var(--nebula1); margin-bottom: 0.5rem; }
+    .cci-name { font-size: 1.3rem; font-weight: 400; margin-bottom: 0.5rem; }
+    .cci-desc { font-size: 0.82rem; color: var(--dim); line-height: 1.7; font-style: italic; margin-bottom: 1rem; }
+    .cci-row { display: flex; justify-content: space-between; align-items: center; }
+    .cci-price { font-family: 'Orbitron', sans-serif; font-size: 0.85rem; }
+    .cci-match { font-size: 0.7rem; color: var(--dim); }
+
+    /* AI section */
+    .ai-cosmic { padding: 5rem 3rem; max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
+    .aic-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; }
+    .aic-label { font-family: 'Orbitron', sans-serif; font-size: 0.65rem; letter-spacing: 0.25em; color: var(--nebula2); margin-bottom: 1.5rem; }
+    .aic-title { font-size: 2.5rem; font-weight: 200; line-height: 1.2; margin-bottom: 1.5rem; }
+    .aic-title strong { font-weight: 700; color: #fff; }
+    .aic-body { font-size: 0.92rem; line-height: 1.9; color: var(--dim); margin-bottom: 2.5rem; font-style: italic; }
+    .aic-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .aic-stat { border: 1px solid rgba(111,45,189,0.2); padding: 1.5rem; }
+    .as-num { font-family: 'Orbitron', sans-serif; font-size: 2rem; font-weight: 700; background: linear-gradient(90deg, var(--nebula3), var(--nebula1)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .as-label { font-size: 0.72rem; color: var(--dim); margin-top: 0.3rem; }
+    .aic-visual { position: relative; }
+    .cosmos { width: 100%; aspect-ratio: 1; background: radial-gradient(ellipse at 40% 40%, rgba(111,45,189,0.3) 0%, rgba(2,1,10,0.9) 60%); border: 1px solid rgba(111,45,189,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+    .cosmos-center { font-family: 'Orbitron', sans-serif; font-size: 0.7rem; letter-spacing: 0.2em; text-align: center; color: rgba(212,207,237,0.5); line-height: 2; z-index: 1; }
+
+    footer { border-top: 1px solid rgba(111,45,189,0.15); padding: 2rem 3rem; display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 1; }
+    .f-logo { font-family: 'Orbitron', sans-serif; font-size: 1.1rem; font-weight: 700; letter-spacing: 0.15em; background: linear-gradient(90deg, var(--nebula3), var(--nebula1)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .f-copy { font-size: 0.75rem; color: var(--dim); font-style: italic; }
+    footer a { color: var(--dim); text-decoration: none; font-size: 0.75rem; }
+    footer a:hover { color: var(--text); }
+  </style>
+</head>
+<body>
+
+  <div class="nebula-bg">
+    <div class="nb1"></div>
+    <div class="nb2"></div>
+    <div class="nb3"></div>
+    <canvas class="stars-field" id="stars"></canvas>
+  </div>
+
+  <nav>
+    <div class="logo">NEBULA</div>
+    <div class="nav-links">
+      <a href="#">Collections</a>
+      <a href="#">Star Map</a>
+      <a href="#">AI Oracle</a>
+      <a href="#">Universe</a>
+    </div>
+    <a href="index.html" class="nav-back">← All Formats</a>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-orbit">
+      <div class="orbit-dot"></div>
+    </div>
+    <h1 class="hero-title">DRESS<br/>THE<br/>COSMOS</h1>
+    <p class="hero-sub">Fashion distilled from the mathematics of starlight. Our AI maps the celestial coordinates of your style and returns a wardrobe from the furthest reaches of the aesthetic universe.</p>
+    <div class="hero-btns">
+      <a href="#" class="btn-cosmic btn-nebula">Enter The Nebula</a>
+      <a href="#" class="btn-cosmic btn-outline-c">Explore Universe</a>
+    </div>
+  </section>
+
+  <section class="collection">
+    <div class="coll-title">Stellar Collection</div>
+    <h2 class="coll-head">Objects From The Deep</h2>
+    <p class="coll-sub">Three garments selected from across the fabric of the cosmos.</p>
+    <div class="coll-grid">
+      <div class="coll-card">
+        <div class="cc-glow"></div>
+        <div class="cc-visual ccv-a">🌌</div>
+        <div class="cc-info">
+          <div class="cci-label">Galaxy Class · Outerwear</div>
+          <div class="cci-name">The Dark Matter Coat</div>
+          <div class="cci-desc">Woven from deep indigo wool. The AI assigns this coat to those whose gravity bends the room.</div>
+          <div class="cci-row"><span class="cci-price">$840</span><span class="cci-match">Match: 97.1%</span></div>
+        </div>
+      </div>
+      <div class="coll-card">
+        <div class="cc-glow"></div>
+        <div class="cc-visual ccv-b">✨</div>
+        <div class="cc-info">
+          <div class="cci-label">Nebula Class · Dress</div>
+          <div class="cci-name">The Stardust Gown</div>
+          <div class="cci-desc">Silk chiffon that catches light like a constellation at dusk. For evenings that are themselves cosmological events.</div>
+          <div class="cci-row"><span class="cci-price">$620</span><span class="cci-match">Match: 94.8%</span></div>
+        </div>
+      </div>
+      <div class="coll-card">
+        <div class="cc-glow"></div>
+        <div class="cc-visual ccv-c">🪐</div>
+        <div class="cc-info">
+          <div class="cci-label">Orbit Class · Essentials</div>
+          <div class="cci-name">The Saturn Ring Set</div>
+          <div class="cci-desc">Two pieces that orbit each other perfectly. Worn separately or together, they maintain gravitational coherence.</div>
+          <div class="cci-row"><span class="cci-price">$380</span><span class="cci-match">Match: 91.4%</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ai-cosmic">
+    <div class="aic-inner">
+      <div>
+        <div class="aic-label">Stellar Intelligence</div>
+        <h2 class="aic-title">The AI That<br/>Reads the <strong>Stars</strong></h2>
+        <p class="aic-body">Our neural network was trained on the visual language of the universe — light spectra, orbital mechanics, the mathematics of cosmic structure — and applied it to the human form. The result is a style engine that sees your body as a cosmological event and dresses it accordingly.</p>
+        <a href="#" class="btn-cosmic btn-nebula">Map Your Style Universe</a>
+        <div class="aic-stats" style="margin-top:2rem;">
+          <div class="aic-stat"><div class="as-num">∞</div><div class="as-label">Style Combinations</div></div>
+          <div class="aic-stat"><div class="as-num">4.6B</div><div class="as-label">Light Years of Data</div></div>
+          <div class="aic-stat"><div class="as-num">0.1s</div><div class="as-label">Warp Speed Styling</div></div>
+          <div class="aic-stat"><div class="as-num">100%</div><div class="as-label">Stellar Accuracy</div></div>
+        </div>
+      </div>
+      <div class="aic-visual">
+        <div class="cosmos">
+          <div class="cosmos-center">
+            STYLE<br/>UNIVERSE<br/>LOADING...<br/>↓<br/>YOU
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="f-logo">NEBULA</div>
+    <div class="f-copy">© 2025 NEBULA · Cosmic AI Fashion Intelligence</div>
+    <a href="index.html">← Back to Hub</a>
+  </footer>
+
+  <script>
+    const canvas = document.getElementById('stars');
+    const ctx = canvas.getContext('2d');
+    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; drawStars(); }
+    function drawStars() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < 200; i++) {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height;
+        const r = Math.random() * 1.5;
+        const a = Math.random() * 0.8 + 0.1;
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,255,255,${a})`;
+        ctx.fill();
+      }
+    }
+    resize();
+    window.addEventListener('resize', resize);
+  </script>
+</body>
+</html>

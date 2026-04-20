@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BRUTAL WEAR</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #fff; color: #000; font-family: Arial, Helvetica, sans-serif; overflow-x: hidden; }
+
+    /* NAVIGATION — raw */
+    nav { border-bottom: 4px solid #000; padding: 0; display: flex; }
+    .nav-logo { font-size: 2.5rem; font-weight: 900; padding: 1rem 2rem; border-right: 4px solid #000; letter-spacing: -0.04em; text-transform: uppercase; flex-shrink: 0; background: #000; color: #fff; }
+    .nav-links { display: flex; flex: 1; }
+    .nav-links a { padding: 1rem 1.5rem; font-size: 0.8rem; font-weight: 700; text-decoration: none; color: #000; border-right: 2px solid #000; text-transform: uppercase; letter-spacing: 0.05em; transition: background 0.1s; }
+    .nav-links a:hover { background: #000; color: #fff; }
+    .nav-back { padding: 1rem 1.5rem; font-size: 0.8rem; font-weight: 700; text-decoration: none; color: #000; text-transform: uppercase; margin-left: auto; background: #ff0; border-left: 4px solid #000; }
+
+    /* HERO */
+    .hero { min-height: 80vh; display: grid; grid-template-columns: 1fr 1fr; border-bottom: 4px solid #000; }
+    .hero-left { padding: 4rem 3rem; border-right: 4px solid #000; display: flex; flex-direction: column; justify-content: center; }
+    .h-overline { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; border-bottom: 2px solid #000; padding-bottom: 0.5rem; margin-bottom: 2rem; display: inline-block; }
+    .h-title { font-size: clamp(4rem, 9vw, 10rem); font-weight: 900; line-height: 0.85; text-transform: uppercase; letter-spacing: -0.04em; margin-bottom: 2rem; }
+    .h-title .invert { background: #000; color: #fff; padding: 0 0.1em; }
+    .h-title .red { background: #ff0000; color: #fff; padding: 0 0.1em; }
+    .h-body { font-size: 1rem; line-height: 1.6; max-width: 380px; margin-bottom: 3rem; border-left: 4px solid #000; padding-left: 1rem; }
+    .btn-brutal { display: inline-block; padding: 1.2rem 3rem; background: #ff0000; color: #fff; font-size: 0.85rem; font-weight: 900; text-decoration: none; text-transform: uppercase; letter-spacing: 0.1em; border: 3px solid #000; box-shadow: 6px 6px 0 #000; transition: all 0.1s; }
+    .btn-brutal:hover { transform: translate(3px,3px); box-shadow: 3px 3px 0 #000; }
+    .btn-brutal.yellow { background: #ff0; color: #000; }
+    .hero-right { position: relative; overflow: hidden; }
+    .hero-right-inner { height: 100%; background: #f0f0f0; display: flex; align-items: center; justify-content: center; font-size: 12rem; font-weight: 900; color: #e0e0e0; text-transform: uppercase; letter-spacing: -0.1em; position: relative; }
+    .hr-text { position: absolute; bottom: 2rem; left: 2rem; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; background: #ff0; padding: 0.3rem 0.75rem; border: 2px solid #000; }
+
+    /* Marquee */
+    .marquee { border-top: 4px solid #000; border-bottom: 4px solid #000; background: #ff0000; color: #fff; padding: 0.75rem 0; overflow: hidden; font-weight: 900; font-size: 1rem; letter-spacing: 0.08em; text-transform: uppercase; }
+    .marquee-inner { display: inline-block; white-space: nowrap; animation: mq 10s linear infinite; }
+    @keyframes mq { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+    .msep { margin: 0 2rem; }
+
+    /* Brutal Grid */
+    .brutal-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-bottom: 4px solid #000; }
+    .bg-cell { padding: 3rem 2.5rem; border-right: 2px solid #000; border-bottom: 2px solid #000; }
+    .bg-cell:nth-child(3n) { border-right: none; }
+    .bg-cell.dark { background: #000; color: #fff; }
+    .bg-cell.yellow { background: #ff0; }
+    .bg-cell.red { background: #ff0000; color: #fff; }
+    .bgc-num { font-size: 4rem; font-weight: 900; line-height: 1; margin-bottom: 1rem; opacity: 0.2; }
+    .bgc-title { font-size: 1.3rem; font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; margin-bottom: 0.75rem; }
+    .bgc-body { font-size: 0.85rem; line-height: 1.6; }
+
+    /* Products */
+    .products { border-bottom: 4px solid #000; }
+    .prod-header { border-bottom: 4px solid #000; padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items: center; background: #ff0; }
+    .ph-title { font-size: 2rem; font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; }
+    .ph-count { font-size: 0.75rem; font-weight: 700; border: 2px solid #000; padding: 0.25rem 0.75rem; }
+    .prod-grid { display: grid; grid-template-columns: repeat(4, 1fr); }
+    .prod-item { border-right: 2px solid #000; padding: 0; overflow: hidden; }
+    .prod-item:last-child { border-right: none; }
+    .prod-swatch { aspect-ratio: 1; border-bottom: 2px solid #000; position: relative; display: flex; align-items: center; justify-content: center; }
+    .ps-w { background: #f0f0f0; }
+    .ps-b { background: #111; }
+    .ps-r { background: #cc0000; }
+    .ps-y { background: #ffdd00; }
+    .prod-label { position: absolute; top: 0; left: 0; background: #000; color: #fff; font-size: 0.6rem; font-weight: 700; text-transform: uppercase; padding: 0.25rem 0.5rem; letter-spacing: 0.08em; }
+    .prod-info { padding: 1rem; }
+    .pi-name { font-size: 0.9rem; font-weight: 900; text-transform: uppercase; margin-bottom: 0.25rem; letter-spacing: -0.01em; }
+    .pi-price { font-size: 1.1rem; font-weight: 900; }
+    .pi-add { display: block; width: 100%; padding: 0.5rem; background: #000; color: #fff; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; border: none; cursor: pointer; margin-top: 0.5rem; transition: background 0.1s; }
+    .pi-add:hover { background: #ff0000; }
+
+    /* Statement */
+    .statement { padding: 5rem 3rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-bottom: 4px solid #000; }
+    .st-left { padding-right: 4rem; border-right: 4px solid #000; }
+    .st-title { font-size: clamp(2.5rem, 5vw, 5rem); font-weight: 900; text-transform: uppercase; line-height: 0.9; letter-spacing: -0.03em; margin-bottom: 2rem; }
+    .st-body { font-size: 1rem; line-height: 1.7; color: #333; }
+    .st-right { padding-left: 4rem; display: flex; flex-direction: column; justify-content: center; gap: 2rem; }
+    .sr-stat { border-bottom: 2px solid #000; padding-bottom: 1.5rem; }
+    .sr-num { font-size: 3.5rem; font-weight: 900; line-height: 1; }
+    .sr-label { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #555; }
+
+    footer { border-top: 4px solid #000; padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items: center; background: #000; color: #fff; }
+    .f-logo { font-size: 1.5rem; font-weight: 900; text-transform: uppercase; letter-spacing: -0.03em; }
+    .f-copy { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em; }
+    footer a { color: #ff0; text-decoration: none; font-size: 0.75rem; font-weight: 700; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-logo">BRUTAL</div>
+    <div class="nav-links">
+      <a href="#">Shop</a>
+      <a href="#">AI Picks</a>
+      <a href="#">Manifesto</a>
+      <a href="#">Drop</a>
+    </div>
+    <a href="index.html" class="nav-back">← ALL</a>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-left">
+      <div class="h-overline">AI Fashion System — No Apologies</div>
+      <h1 class="h-title">
+        DRESS<br/>
+        <span class="invert">LIKE</span><br/>
+        <span class="red">YOU</span><br/>
+        MEAN IT
+      </h1>
+      <p class="h-body">We fed 10 years of fashion trends into an AI and told it to ignore all of them. What came out was better than everything that came before.</p>
+      <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+        <a href="#" class="btn-brutal">Shop Now</a>
+        <a href="#" class="btn-brutal yellow">AI Picks Me</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-right-inner">
+        <span style="opacity:0.15;font-size:clamp(4rem,15vw,15rem);">B</span>
+        <div class="hr-text">New Drop — 48 Pieces</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="marquee">
+    <span class="marquee-inner">NO TRENDS<span class="msep">■</span>NO RULES<span class="msep">■</span>AI-POWERED<span class="msep">■</span>BUILT TO LAST<span class="msep">■</span>JUST WEAR IT<span class="msep">■</span>NO TRENDS<span class="msep">■</span>NO RULES<span class="msep">■</span>AI-POWERED<span class="msep">■</span>BUILT TO LAST<span class="msep">■</span>JUST WEAR IT<span class="msep">■</span></span>
+  </div>
+
+  <div class="brutal-grid">
+    <div class="bg-cell">
+      <div class="bgc-num">01</div>
+      <div class="bgc-title">Your Body. Your Rules.</div>
+      <div class="bgc-body">Our AI maps 214 data points and finds clothes that actually fit. No more buying large to be safe. No more returns.</div>
+    </div>
+    <div class="bg-cell dark">
+      <div class="bgc-num">02</div>
+      <div class="bgc-title">No More Trends</div>
+      <div class="bgc-body">Trends are the fashion industry selling you last season's ideas. Our AI cuts through the noise and finds what's actually good.</div>
+    </div>
+    <div class="bg-cell yellow">
+      <div class="bgc-num">03</div>
+      <div class="bgc-title">Built To Last</div>
+      <div class="bgc-body">Every piece scores above 90% on durability. Buy less, own better, stop throwing things away after 6 washes.</div>
+    </div>
+    <div class="bg-cell red">
+      <div class="bgc-num">04</div>
+      <div class="bgc-title">Radical Honesty</div>
+      <div class="bgc-body">The AI tells you when something doesn't work. Not what you want to hear — what's actually true about fit and style.</div>
+    </div>
+    <div class="bg-cell">
+      <div class="bgc-num">05</div>
+      <div class="bgc-title">Zero Curation Theatre</div>
+      <div class="bgc-body">No mood boards. No aesthetic language. Just clothes that work, explained in plain words.</div>
+    </div>
+    <div class="bg-cell dark">
+      <div class="bgc-num">06</div>
+      <div class="bgc-title">The Price Is The Price</div>
+      <div class="bgc-body">No fake sales. No manufactured urgency. The price is what the quality costs. That's it.</div>
+    </div>
+  </div>
+
+  <section class="products">
+    <div class="prod-header">
+      <div class="ph-title">Current Drop</div>
+      <div class="ph-count">48 Items Available</div>
+    </div>
+    <div class="prod-grid">
+      <div class="prod-item">
+        <div class="prod-swatch ps-w">
+          <div class="prod-label">AI #1</div>
+          <span style="font-size:4rem;opacity:0.2;font-weight:900;">T</span>
+        </div>
+        <div class="prod-info">
+          <div class="pi-name">White Heavyweight Tee</div>
+          <div class="pi-price">$48</div>
+          <button class="pi-add">Add to Cart</button>
+        </div>
+      </div>
+      <div class="prod-item">
+        <div class="prod-swatch ps-b">
+          <div class="prod-label">AI #2</div>
+          <span style="font-size:4rem;opacity:0.2;font-weight:900;color:#fff;">J</span>
+        </div>
+        <div class="prod-info">
+          <div class="pi-name">Black Raw Denim</div>
+          <div class="pi-price">$140</div>
+          <button class="pi-add">Add to Cart</button>
+        </div>
+      </div>
+      <div class="prod-item">
+        <div class="prod-swatch ps-r">
+          <div class="prod-label">Drop</div>
+          <span style="font-size:4rem;opacity:0.2;font-weight:900;color:#fff;">C</span>
+        </div>
+        <div class="prod-info">
+          <div class="pi-name">Red Drill Jacket</div>
+          <div class="pi-price">$210</div>
+          <button class="pi-add">Add to Cart</button>
+        </div>
+      </div>
+      <div class="prod-item">
+        <div class="prod-swatch ps-y">
+          <div class="prod-label">AI #4</div>
+          <span style="font-size:4rem;opacity:0.2;font-weight:900;">W</span>
+        </div>
+        <div class="prod-info">
+          <div class="pi-name">Canvas Work Pant</div>
+          <div class="pi-price">$95</div>
+          <button class="pi-add">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="statement">
+    <div class="st-left">
+      <h2 class="st-title">The AI Doesn't Care About Your Feelings.</h2>
+      <p class="st-body">It cares about what works. It tells you when the proportions are wrong. It refuses to recommend things just because they're popular. It will not flatter you into a bad purchase. That's not coldness. That's respect.</p>
+    </div>
+    <div class="st-right">
+      <div class="sr-stat"><div class="sr-num">94%</div><div class="sr-label">Return Rate Reduction</div></div>
+      <div class="sr-stat"><div class="sr-num">$420</div><div class="sr-label">Avg Annual Savings</div></div>
+      <div class="sr-stat"><div class="sr-num">0</div><div class="sr-label">Fake Sales</div></div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="f-logo">BRUTAL WEAR</div>
+    <div class="f-copy">© 2025 — FASHION WITHOUT BULLSHIT</div>
+    <a href="index.html">← ALL FORMATS</a>
+  </footer>
+
+</body>
+</html>

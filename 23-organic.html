@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BLOOM — Organic AI Fashion</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --bg: #faf7f2; --ink: #1e1a14; --blush: #e8a898; --sage: #8aaa8a; --mist: #b8ccd8; --peach: #f5d5c0; --olive: #7a8a60; --cream: #f0ead8; }
+    body { background: var(--bg); color: var(--ink); font-family: 'DM Sans', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+    /* Blob generator */
+    .blob-bg { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+    .blob { position: absolute; border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; animation: morph var(--d,8s) ease-in-out infinite; }
+    @keyframes morph { 0%,100%{border-radius:60% 40% 30% 70% / 60% 30% 70% 40%;} 25%{border-radius:30% 60% 70% 40% / 50% 60% 30% 60%;} 50%{border-radius:50% 60% 30% 70% / 30% 40% 70% 50%;} 75%{border-radius:70% 30% 50% 60% / 40% 70% 60% 30%;} }
+    .blob1 { width: 600px; height: 600px; background: rgba(232,168,152,0.15); top: -200px; right: -100px; --d:12s; }
+    .blob2 { width: 500px; height: 500px; background: rgba(138,170,138,0.1); bottom: -100px; left: -100px; --d:9s; animation-delay:-3s; }
+    .blob3 { width: 400px; height: 400px; background: rgba(184,204,216,0.12); top: 40%; left: 40%; --d:15s; animation-delay:-6s; }
+
+    nav { position: sticky; top: 0; z-index: 100; background: rgba(250,247,242,0.95); backdrop-filter: blur(16px); padding: 1.25rem 3rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(30,26,20,0.08); }
+    .logo { font-family: 'DM Serif Display', serif; font-size: 1.6rem; font-style: italic; color: var(--ink); letter-spacing: 0.02em; }
+    .nav-links { display: flex; gap: 2.5rem; }
+    .nav-links a { font-size: 0.82rem; letter-spacing: 0.04em; text-decoration: none; color: rgba(30,26,20,0.5); transition: color 0.2s; }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-back { font-size: 0.78rem; text-decoration: none; color: rgba(30,26,20,0.4); }
+    .nav-back:hover { color: var(--ink); }
+
+    /* Hero */
+    .hero { min-height: 90vh; display: flex; align-items: center; padding: 5rem 5rem; position: relative; z-index: 1; gap: 4rem; }
+    .hero-left { flex: 1; }
+    .hero-blob-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--peach); color: var(--ink); font-size: 0.75rem; padding: 0.5rem 1.25rem; border-radius: 100px; margin-bottom: 2.5rem; }
+    .hero-title { font-family: 'DM Serif Display', serif; font-size: clamp(3rem, 6vw, 5.5rem); line-height: 1.05; margin-bottom: 1.5rem; }
+    .ht-italic { font-style: italic; color: var(--olive); }
+    .hero-body { font-size: 1rem; line-height: 1.9; color: rgba(30,26,20,0.6); max-width: 420px; margin-bottom: 3rem; }
+    .hero-btns { display: flex; gap: 1.25rem; flex-wrap: wrap; }
+    .btn-bloom { padding: 1rem 2.5rem; border-radius: 100px; font-size: 0.85rem; font-weight: 500; text-decoration: none; display: inline-block; transition: all 0.3s; }
+    .btn-b1 { background: var(--ink); color: var(--bg); }
+    .btn-b1:hover { background: var(--olive); }
+    .btn-b2 { background: var(--peach); color: var(--ink); }
+    .btn-b2:hover { background: var(--blush); }
+    .hero-right { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+    .h-card { border-radius: 24px; overflow: hidden; }
+    .h-card.tall { grid-row: span 2; }
+    .hc-inner { height: 100%; min-height: 200px; display: flex; flex-direction: column; justify-content: flex-end; padding: 1.5rem; }
+    .hc-a { background: linear-gradient(160deg, var(--peach), var(--blush)); }
+    .hc-b { background: linear-gradient(160deg, var(--cream), var(--peach)); }
+    .hc-c { background: linear-gradient(160deg, var(--sage), var(--olive)); }
+    .hc-d { background: linear-gradient(160deg, var(--mist), #8ab8d0); }
+    .hc-name { font-family: 'DM Serif Display', serif; font-size: 1.1rem; font-style: italic; color: rgba(30,26,20,0.8); }
+    .hc-price { font-size: 0.8rem; color: rgba(30,26,20,0.55); margin-top: 0.2rem; }
+
+    /* Organic section */
+    .organic { padding: 5rem 5rem; position: relative; z-index: 1; }
+    .og-header { max-width: 700px; margin-bottom: 4rem; }
+    .og-badge { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--olive); margin-bottom: 1rem; }
+    .og-title { font-family: 'DM Serif Display', serif; font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.15; margin-bottom: 1rem; }
+    .og-sub { font-size: 0.92rem; line-height: 1.9; color: rgba(30,26,20,0.55); }
+    .og-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+    .og-card { border-radius: 24px; overflow: hidden; padding: 0; transition: transform 0.4s; }
+    .og-card:hover { transform: translateY(-6px); }
+    .ogc-visual { aspect-ratio: 3/4; display: flex; align-items: center; justify-content: center; font-size: 4rem; position: relative; }
+    .ogcv-a { background: linear-gradient(160deg, var(--cream), #e0d8c8); }
+    .ogcv-b { background: linear-gradient(160deg, #d8e8d8, var(--sage)); }
+    .ogcv-c { background: linear-gradient(160deg, #d8e0e8, var(--mist)); }
+    .ogc-info { padding: 1.5rem; background: var(--bg); border-top: 1px solid rgba(30,26,20,0.06); }
+    .ogci-label { font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--olive); margin-bottom: 0.4rem; }
+    .ogci-name { font-family: 'DM Serif Display', serif; font-size: 1.1rem; font-style: italic; margin-bottom: 0.3rem; }
+    .ogci-price { font-size: 0.82rem; color: rgba(30,26,20,0.5); }
+
+    /* Features */
+    .features { background: var(--ink); color: var(--bg); padding: 5rem; border-radius: 40px; margin: 0 2rem 5rem; position: relative; z-index: 1; }
+    .feat-header { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: end; margin-bottom: 4rem; }
+    .fh-title { font-family: 'DM Serif Display', serif; font-size: 3rem; line-height: 1.1; }
+    .fh-title em { font-style: italic; color: var(--peach); }
+    .fh-body { font-size: 0.92rem; line-height: 1.9; color: rgba(250,247,242,0.55); }
+    .feat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+    .feat-item { border-top: 1px solid rgba(250,247,242,0.1); padding-top: 1.5rem; }
+    .fi-icon { font-size: 2rem; margin-bottom: 1rem; }
+    .fi-title { font-family: 'DM Serif Display', serif; font-size: 1.2rem; margin-bottom: 0.75rem; }
+    .fi-body { font-size: 0.85rem; line-height: 1.8; color: rgba(250,247,242,0.5); }
+
+    /* Testimonial */
+    .testimonial { padding: 5rem 5rem; text-align: center; position: relative; z-index: 1; }
+    .test-text { font-family: 'DM Serif Display', serif; font-size: clamp(1.5rem, 3vw, 2.5rem); font-style: italic; max-width: 700px; margin: 0 auto 2rem; line-height: 1.4; color: var(--ink); }
+    .test-author { font-size: 0.8rem; color: rgba(30,26,20,0.5); letter-spacing: 0.1em; }
+
+    footer { padding: 2.5rem 5rem; border-top: 1px solid rgba(30,26,20,0.08); display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 1; }
+    .f-logo { font-family: 'DM Serif Display', serif; font-size: 1.3rem; font-style: italic; }
+    .f-copy { font-size: 0.78rem; color: rgba(30,26,20,0.4); }
+    footer a { color: rgba(30,26,20,0.4); text-decoration: none; font-size: 0.78rem; }
+    footer a:hover { color: var(--ink); }
+  </style>
+</head>
+<body>
+
+  <div class="blob-bg">
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
+    <div class="blob blob3"></div>
+  </div>
+
+  <nav>
+    <div class="logo">Bloom</div>
+    <div class="nav-links">
+      <a href="#">Collection</a>
+      <a href="#">Studio</a>
+      <a href="#">AI Style</a>
+      <a href="#">Journal</a>
+    </div>
+    <a href="index.html" class="nav-back">← All Formats</a>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-left">
+      <div class="hero-blob-badge">🌸 Organic AI Fashion · Spring 2025</div>
+      <h1 class="hero-title">Fashion that<br/>breathes<br/><span class="ht-italic">with you</span></h1>
+      <p class="hero-body">A living wardrobe intelligence. Our AI evolves with your taste, your body, your seasons — like a garden that knows exactly what it needs to grow.</p>
+      <div class="hero-btns">
+        <a href="#" class="btn-bloom btn-b1">Start Blooming</a>
+        <a href="#" class="btn-bloom btn-b2">Explore Looks</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="h-card tall">
+        <div class="hc-inner hc-a">
+          <div class="hc-name">The Blush Linen</div>
+          <div class="hc-price">$240</div>
+        </div>
+      </div>
+      <div class="h-card">
+        <div class="hc-inner hc-b">
+          <div class="hc-name">Cloud Knit</div>
+          <div class="hc-price">$185</div>
+        </div>
+      </div>
+      <div class="h-card">
+        <div class="hc-inner hc-c">
+          <div class="hc-name">Sage Set</div>
+          <div class="hc-price">$310</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="organic">
+    <div class="og-header">
+      <div class="og-badge">Spring Collection · AI Curated</div>
+      <h2 class="og-title">In Bloom Right Now</h2>
+      <p class="og-sub">Soft shapes, natural palettes, and AI curation that feels like a gentle hand on your shoulder rather than an algorithm on a screen.</p>
+    </div>
+    <div class="og-grid">
+      <div class="og-card">
+        <div class="ogc-visual ogcv-a">🌸</div>
+        <div class="ogc-info">
+          <div class="ogci-label">Organic Cotton · Portugal</div>
+          <div class="ogci-name">The Petal Dress</div>
+          <div class="ogci-price">€220</div>
+        </div>
+      </div>
+      <div class="og-card">
+        <div class="ogc-visual ogcv-b">🌿</div>
+        <div class="ogc-info">
+          <div class="ogci-label">Linen Blend · Belgium</div>
+          <div class="ogci-name">The Garden Trousers</div>
+          <div class="ogci-price">€165</div>
+        </div>
+      </div>
+      <div class="og-card">
+        <div class="ogc-visual ogcv-c">🌊</div>
+        <div class="ogc-info">
+          <div class="ogci-label">Tencel · Austria</div>
+          <div class="ogci-name">The Morning Blouse</div>
+          <div class="ogci-price">€145</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="feat-header">
+      <h2 class="fh-title">An AI that<br/>grows with <em>you</em></h2>
+      <p class="fh-body">Our style engine is not a static algorithm. It breathes, adapts, evolves — learning from each season of your life and reflecting it back in fabric and form.</p>
+    </div>
+    <div class="feat-grid">
+      <div class="feat-item">
+        <div class="fi-icon">🌱</div>
+        <h3 class="fi-title">Living Style Profile</h3>
+        <p class="fi-body">Your profile updates in real time — season by season, mood by mood. The AI doesn't just remember what you bought. It remembers who you were becoming.</p>
+      </div>
+      <div class="feat-item">
+        <div class="fi-icon">🎨</div>
+        <h3 class="fi-title">Colour Intuition</h3>
+        <p class="fi-body">Trained on colour theory and seasonal palettes, our AI understands which colours will make your particular complexion sing — and which will silence it.</p>
+      </div>
+      <div class="feat-item">
+        <div class="fi-icon">✨</div>
+        <h3 class="fi-title">Organic Discovery</h3>
+        <p class="fi-body">Instead of showing you what's popular, Bloom shows you what's yours — sourced from independent makers, natural materials, and production that respects the earth.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="testimonial">
+    <div class="test-text">"It felt less like a shopping app and more like a conversation with a friend who actually listens."</div>
+    <div class="test-author">— Margot, Amsterdam</div>
+  </section>
+
+  <footer>
+    <div class="f-logo">Bloom</div>
+    <div class="f-copy">© 2025 Bloom · Organic AI Fashion · Growing Daily</div>
+    <a href="index.html">← Back to Hub</a>
+  </footer>
+
+</body>
+</html>
